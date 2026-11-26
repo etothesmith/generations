@@ -186,6 +186,7 @@ js/fx.js              confetti, stamp slam, shockwave, banners
 js/editor.js          Family Questions editor
 data/questions.json   question bank (917 questions)
 data/practice.json    Practice Run questions and decks (kept out of real games)
+how-to-play.html      10 swipeable slides (short version); rules.html = full rules
 solo.html             🎮 Try the real show solo: TV + phone side by side, practice bots, Auto-Host on
 js/autohost.js        Auto-Host (show runs itself so the host can play) + practice bots
 learn.html            🎓 Practice Academy: solo, self-paced lessons for every game (js/learn.js)

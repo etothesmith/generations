@@ -2,240 +2,220 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>How to Play GENERATIONS — The Family Game Show</title>
 <meta name="description" content="The live family game show about Black culture and history. Your TV runs the show, everybody buzzes in on their phone. Free, nothing to install.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="GENERATIONS — The Family Game Show">
-<meta property="og:description" content="Black culture &amp; history trivia, hot takes, charades and more. TV is the stage, phones are the buzzers. Free — here's how to set up and play.">
+<meta property="og:title" content="GENERATIONS — How to Play">
+<meta property="og:description" content="Swipe through 10 quick slides: set up, the games, and how to play from anywhere. TV is the stage, phones are the buzzers.">
 <meta property="og:image" content="https://etothesmith.github.io/generations/assets/share_card.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://etothesmith.github.io/generations/how-to-play.html">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#1A1B3A">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
 <style>
 @font-face { font-family: 'Bungee'; src: url('fonts/bungee.woff2') format('woff2'); font-display: swap; }
-@font-face { font-family: 'Outfit'; src: url('fonts/outfit-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'Outfit'; src: url('fonts/outfit-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
-@font-face { font-family: 'Outfit'; src: url('fonts/outfit-800.woff2') format('woff2'); font-weight: 800; font-display: swap; }
 @font-face { font-family: 'Outfit'; src: url('fonts/outfit-900.woff2') format('woff2'); font-weight: 900; font-display: swap; }
-:root { --navy:#1A1B3A; --navy2:#24264F; --ink:#151515; --gold:#F2B632; --red:#C8102E; --green:#1E9E5A; --violet:#5B3FA0; --teal:#12A4A4; --orange:#E2711D; --cream:#FFF6E5; }
+:root { --gold: #F2B632; --crimson: #C8102E; --navy: #1A1B3A; --teal: #12A4A4; --cream: #FFF6E3; --green: #2E9E5B; }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--navy); color: var(--cream); font: 400 17px/1.55 Outfit, system-ui, sans-serif; }
-a { color: var(--gold); }
-.wrap { max-width: 860px; margin: 0 auto; padding: 0 18px; }
-.kente { height: 10px; background: repeating-linear-gradient(90deg, var(--gold) 0 28px, var(--red) 28px 40px, var(--green) 40px 68px, var(--ink) 68px 76px); }
-header.hero { background: linear-gradient(rgba(26,27,58,.55), rgba(26,27,58,.95)), url('assets/stage_bg_party.jpg') center/cover; text-align: center; padding: 34px 0 26px; }
-.hero .logo { width: min(520px, 90%); height: auto; }
-.hero .tag { font-weight: 900; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); font-size: 15px; margin-top: 8px; }
-.hero .family { width: min(720px, 100%); height: auto; margin-top: 18px; }
-.hero p.lead { font-size: 19px; max-width: 640px; margin: 12px auto 0; }
-.cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
-.btn { display: inline-block; text-decoration: none; font-weight: 900; font-size: 18px; color: var(--ink); background: var(--gold); border: 3px solid var(--ink); border-radius: 14px; padding: 12px 20px; box-shadow: 0 5px 0 var(--ink); }
-.btn.red { background: var(--red); color: var(--cream); }
-.btn:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--ink); }
-nav.toc { position: sticky; top: 0; z-index: 5; background: rgba(21,21,21,.92); border-bottom: 2px solid var(--gold); }
-nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding: 8px 18px; }
-nav.toc a { flex: none; text-decoration: none; color: var(--cream); font-weight: 800; font-size: 14px; padding: 6px 12px; border: 2px solid rgba(255,246,229,.3); border-radius: 999px; }
-section { padding: 30px 0 8px; scroll-margin-top: 50px; }
-h2 { font-family: Bungee, sans-serif; font-weight: 400; color: var(--gold); font-size: clamp(26px, 6vw, 38px); line-height: 1.1; margin: 0 0 12px; }
-h3 { font-family: Bungee, sans-serif; font-weight: 400; font-size: 21px; line-height: 1.15; margin: 0; color: var(--cream); }
-.card { background: var(--navy2); border: 3px solid var(--ink); border-radius: 18px; padding: 16px 18px; margin: 12px 0; box-shadow: 0 5px 0 rgba(0,0,0,.35); }
-.need { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
-.need .card { margin: 0; }
-.need b { display: block; color: var(--gold); letter-spacing: .12em; font-size: 13px; text-transform: uppercase; }
-ol.steps { list-style: none; padding: 0; margin: 0; counter-reset: s; }
-ol.steps li { counter-increment: s; position: relative; padding: 14px 16px 14px 70px; background: var(--cream); color: var(--ink); border: 3px solid var(--ink); border-radius: 16px; margin: 10px 0; }
-ol.steps li::before { content: counter(s); position: absolute; left: 14px; top: 14px; width: 42px; height: 42px; border-radius: 50%; background: var(--red); color: var(--cream); font-family: Bungee, sans-serif; display: grid; place-items: center; font-size: 22px; }
-ol.steps li:nth-child(2)::before { background: var(--green); } ol.steps li:nth-child(3)::before { background: var(--violet); } ol.steps li:nth-child(4)::before { background: var(--teal); } ol.steps li:nth-child(5)::before { background: var(--orange); color: var(--ink); }
-ol.steps strong.t { display: block; font-size: 19px; font-weight: 900; }
-.formats { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
-.formats .card { margin: 0; }
-.pill { display: inline-block; font-weight: 900; font-size: 13px; letter-spacing: .06em; padding: 2px 10px; border-radius: 999px; border: 2px solid var(--ink); background: var(--gold); color: var(--ink); vertical-align: middle; margin-left: 6px; }
-.pill.party { background: var(--red); color: var(--cream); }
-.game { display: grid; grid-template-columns: 120px 1fr; gap: 14px; align-items: center; }
-.game img { width: 120px; height: auto; }
-.game .ico { width: 64px; height: 64px; border-radius: 16px; display: grid; place-items: center; font-size: 34px; background: var(--navy); border: 3px solid var(--ink); justify-self: center; }
-.game p { margin: 6px 0 0; }
-.pts { color: var(--gold); font-weight: 800; }
-ul.tight { margin: 8px 0 0; padding-left: 20px; } ul.tight li { margin: 4px 0; }
-.shots { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; align-items: end; }
-.shots img { width: 100%; height: auto; border: 3px solid var(--ink); border-radius: 14px; }
-footer { text-align: center; padding: 30px 0 40px; }
-@media (max-width: 520px) { .game { grid-template-columns: 1fr; } .game img { width: 200px; justify-self: center; } .game .ico { justify-self: start; } ol.steps li { padding-left: 64px; } }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #12132b; color: var(--cream); font-family: Outfit, system-ui, sans-serif; font-weight: 600; }
+body { background: radial-gradient(ellipse at 50% 0%, #2c2e6b 0%, #14152f 60%, #0c0d1f 100%); }
+.deck { position: fixed; inset: 0; display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; }
+.deck::-webkit-scrollbar { display: none; }
+.slide { flex: 0 0 100%; height: 100%; scroll-snap-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: max(18px, env(safe-area-inset-top)) 22px 96px; overflow-y: auto; }
+.slide > * { max-width: 760px; }
+.kick { font-weight: 900; letter-spacing: .22em; font-size: clamp(11px, 2.6vw, 14px); color: var(--teal); text-transform: uppercase; }
+h1, h2 { font-family: Bungee, sans-serif; font-weight: 400; margin: 6px 0 10px; line-height: 1; }
+h1 { font-size: clamp(34px, 9vw, 72px); color: var(--gold); text-shadow: 0 4px 0 var(--crimson); }
+h2 { font-size: clamp(28px, 7vw, 54px); color: var(--gold); }
+.big { font-size: clamp(64px, 18vw, 120px); line-height: 1; margin-bottom: 4px; }
+.lead { font-size: clamp(18px, 4.4vw, 26px); line-height: 1.3; margin: 6px 0; }
+.lead b { color: var(--gold); }
+.art { max-height: 30vh; max-width: 90%; margin: 6px auto; display: block; }
+.steps { display: grid; gap: 10px; width: 100%; margin-top: 8px; }
+.step { display: flex; gap: 14px; align-items: center; text-align: left; background: rgba(255,255,255,.07); border: 2px solid rgba(255,255,255,.14); border-radius: 18px; padding: 12px 16px; font-size: clamp(16px, 4vw, 22px); line-height: 1.25; }
+.step .n { flex: none; width: 42px; height: 42px; border-radius: 50%; background: var(--gold); color: var(--navy); font-family: Bungee; display: grid; place-items: center; font-size: 20px; }
+.step .e { flex: none; font-size: 34px; width: 42px; text-align: center; }
+.step b { color: var(--gold); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 10px; }
+.chip { background: rgba(255,255,255,.08); border: 2px solid rgba(255,255,255,.16); border-radius: 999px; padding: 8px 14px; font-size: clamp(14px, 3.6vw, 18px); }
+.chip b { color: var(--gold); }
+.games { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; margin-top: 8px; }
+.game { background: rgba(255,255,255,.07); border: 2px solid rgba(255,255,255,.14); border-radius: 16px; padding: 10px; text-align: left; font-size: clamp(13px, 3.3vw, 17px); line-height: 1.25; display: flex; gap: 10px; align-items: center; }
+.game .e { font-size: 28px; flex: none; }
+.game img { width: 44px; height: 44px; object-fit: contain; flex: none; }
+.game b { display: block; color: var(--gold); font-size: 1.05em; }
+.btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 14px 20px; border-radius: 999px; font-weight: 900; font-size: clamp(15px, 3.8vw, 19px); color: var(--navy); background: var(--gold); text-decoration: none; box-shadow: 0 5px 0 #a8770f; }
+.btn.red { background: var(--crimson); color: #fff; box-shadow: 0 5px 0 #7a0a1c; }
+.btn.ghost { background: transparent; color: var(--cream); border: 2px solid rgba(255,255,255,.35); box-shadow: none; }
+.nav { position: fixed; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 12px 12px max(14px, env(safe-area-inset-bottom)); background: linear-gradient(rgba(12,13,31,0), rgba(12,13,31,.95) 40%); }
+.nav button { width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--gold); background: rgba(26,27,58,.9); color: var(--gold); font-size: 22px; font-weight: 900; cursor: pointer; }
+.nav button:disabled { opacity: .25; }
+.dots { display: flex; gap: 7px; }
+.dots i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: all .2s; }
+.dots i.on { background: var(--gold); width: 24px; border-radius: 9px; }
+.hint { position: fixed; top: max(10px, env(safe-area-inset-top)); right: 12px; font-size: 13px; opacity: .6; }
+.hint a { color: var(--cream); }
+@media (prefers-reduced-motion: reduce) { .deck { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
-<div class="kente"></div>
-<header class="hero">
-  <div class="wrap">
-    <img class="logo" src="assets/logo.png" alt="GENERATIONS">
-    <div class="tag">The family game show where every generation plays</div>
-    <img class="family" src="assets/family_banner.webp" alt="Four generations of a Black family cheering">
-    <p class="lead">A live game show about <b>Black culture &amp; history</b> for the whole family. The TV is the stage, and everybody's phone is their buzzer. It's free, with no app to download.</p>
-    <div class="cta">
-      <a class="btn" href="host.html">📺 Host on the Big Screen</a>
-      <a class="btn red" href="play.html">📱 Join on My Phone</a>
+<div class="hint"><a href="rules.html">Full rules</a></div>
+<main class="deck" id="deck">
+
+  <section class="slide" aria-label="Slide 1">
+    <img class="art" src="assets/logo.png" alt="GENERATIONS" style="max-height:18vh">
+    <div class="lead">The family game show about <b>Black culture &amp; history</b>.</div>
+    <img class="art" src="assets/family_banner.webp" alt="Four generations of a family cheering">
+    <div class="lead"><b>The TV</b> is the stage. <b>Phones</b> are the buzzers.</div>
+    <div class="lead" style="font-size:16px;opacity:.7">Swipe or tap → to learn it in 1 minute</div>
+  </section>
+
+  <section class="slide" aria-label="Slide 2">
+    <div class="kick">Setup</div>
+    <h2>3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><span>On the TV or laptop, go to <b>etothesmith.github.io/generations</b> and tap <b>Host</b>.</span></div>
+      <div class="step"><span class="n">2</span><span>Everybody <b>scans the QR code</b> with their phone and types their name + birth year.</span></div>
+      <div class="step"><span class="n">3</span><span>Pick a show, tap <b>Make Teams</b>, then <b>Start!</b></span></div>
     </div>
-  </div>
-</header>
-<nav class="toc"><div class="wrap">
-  <a href="#setup">Set up</a><a href="#shows">Show formats</a><a href="#round1">Round 1</a><a href="#round2">Round 2 games</a><a href="#party">Party games</a><a href="#final">Final Wager</a><a href="#extras">Bonuses</a><a href="#away">Playing from away</a><a href="#tips">Host tips</a><a href="#cookout">🍗 Cookout game</a>
-</div></nav>
+  </section>
 
-<main class="wrap">
-<section id="setup">
-  <h2>Set up in 2 minutes</h2>
-  <div class="need">
-    <div class="card"><b>Big screen</b>A TV with a web browser, or a laptop hooked up to the TV.</div>
-    <div class="card"><b>Phones</b>One per player. Any phone with a browser works.</div>
-    <div class="card"><b>Internet</b>Wi-Fi or data. Players can even join from another house.</div>
-    <div class="card"><b>Players</b>2 or more. It's best with every generation in the room.</div>
-  </div>
-  <ol class="steps">
-    <li><strong class="t">Open the show on the big screen</strong>Go to <b>etothesmith.github.io/generations</b> and tap <b>Host on the Big Screen</b>. Go full screen and turn the sound up. A 4-letter room code and a QR code pop up.</li>
-    <li><strong class="t">Everybody joins on their phone</strong>Scan the QR code, or tap <b>Join on My Phone</b> and type the code. Enter your name and birth year (that sorts you into your generation), then build your avatar. If you're just watching, check <b>Audience</b>. While you wait, answer the <b>Family Survey</b> questions on your phone, because they come back later!</li>
-    <li><strong class="t">Pick the show</strong>Choose <b>Classic Show</b>, <b>Party Night</b>, <b>Trivia Only</b> or <b>🎓 Practice Run</b> (first time? start here). Tap <b>⚙️ Customize the show</b> for teams, answer time (Quick, Relaxed or Grandma-Friendly), themes (Juneteenth, Christmas, Family Reunion) and which games to play.</li>
-    <li><strong class="t">Make teams and start</strong>Under <b>How should we split?</b> pick how the generations get mixed: <b>each generation its own team</b>, <b>Old Heads vs. Young Bucks</b>, <b>Grandparents &amp; Grandkids vs. The Parents</b>, <b>Older Crew vs. Younger Crew</b> (split by birth year), <b>Mixed families</b> (every team gets a little of every age) or <b>Random</b>. The choices change with how many generations showed up. Tap a player to move them, or tap a team name to rename it. Then hit <b>Start the Show!</b></li>
-    <li><strong class="t">Try the whole show by yourself (optional)</strong>Open <b>🎮 Try the Show Solo</b> (etothesmith.github.io/generations/solo.html). Type your name and the real show starts with you and a practice bot against the family bots (Grandma Pearl, Uncle Ray, Auntie Dee…). Auto-Host runs it, so just play. On a laptop the TV and your phone sit side by side; on a phone, tap 📺 to peek at the TV.</li>
-    <li><strong class="t">New to the games? (optional)</strong>Anybody can open <b>🎓 Practice on My Own</b> (etothesmith.github.io/generations/learn.html) on their own phone. It walks through every game with practice questions against Grandma Pearl, Uncle Ray and Auntie Dee, and gives you a "Ready for Game Night" diploma. No room code needed.</li>
-    <li><strong class="t">Run it from your hand (optional)</strong>Tap <b>📱 Remote</b> on the TV and scan it with the <i>host's</i> phone. You'll get every button, plus the answers privately. Keep that code to yourself!</li>
-  </ol>
-</section>
+  <section class="slide" aria-label="Slide 3">
+    <div class="kick">Teams</div>
+    <h2>Generations face off</h2>
+    <div class="lead">Your birth year puts you in a generation:</div>
+    <div class="chips">
+      <span class="chip">👑 Elders</span><span class="chip">📻 Gen X</span><span class="chip">📱 Millennials</span><span class="chip">⚡ Gen Z</span>
+    </div>
+    <div class="lead" style="font-size:16px;opacity:.75;margin-top:12px">…each its own team, or mix them up:</div>
+    <div class="chips">
+      <span class="chip"><b>Old Heads</b> vs <b>Young Bucks</b></span>
+      <span class="chip"><b>Grandparents &amp; Grandkids</b> vs <b>The Parents</b></span>
+      <span class="chip">🎲 Mixed or random</span>
+    </div>
+  </section>
 
-<section id="shows">
-  <h2>Show formats</h2>
-  <div class="formats">
-    <div class="card"><h3>Classic Show</h3><p>The full game show: the <b>Board</b>, the <b>Remix</b> round with party games mixed in, then the <b>Final Wager</b>.</p></div>
-    <div class="card"><h3>Party Night</h3><p>No board, just a long run of laughs and arguments: Settle It!, Who in the Family…?, Top That!, Two Truths &amp; a Lie, Mama Said, Charades and more.</p></div>
-    <div class="card"><h3>Trivia Only</h3><p>Straight culture knowledge with no party games. Perfect for a classroom or a competitive crowd.</p></div>
-    <div class="card"><h3>🎓 Practice Run</h3><p>A short warm-up that walks through <b>every</b> game once with its own easy practice questions, with a quick "here's how this one works" before each. Practice questions never show up in a real game, and practice scores don't count toward a Season.</p></div>
-  </div>
-  <div class="shots" style="margin-top:14px">
-    <img src="assets/stage_bg_party.jpg" alt="The Party Night stage, a backyard cookout at night">
-    <img src="assets/party_most_likely.webp" alt="" style="border:0">
-  </div>
-</section>
+  <section class="slide" aria-label="Slide 4">
+    <div class="kick">Round 1</div>
+    <h2>The Board</h2>
+    <div class="steps">
+      <div class="step"><span class="e">🔔</span><span>Wait for <b>BUZZ!</b> on your phone. Too early = locked out.</span></div>
+      <div class="step"><span class="e">✋🏾</span><span>First buzz answers. Miss it? The other team can <b>steal</b>.</span></div>
+      <div class="step"><span class="e">📞</span><span>Stuck? <b>Family Huddle</b>: your team gets 15 seconds to help.</span></div>
+    </div>
+    <div class="chips"><span class="chip">💰 Hidden <b>Family Wager</b> tiles</span><span class="chip">🎡 <b>Sankofa Spin</b> prizes</span><span class="chip">⚡ Fast answers = bonus</span></div>
+  </section>
 
-<section id="round1">
-  <h2>Round 1: The Board</h2>
-  <div class="card">
-    <p style="margin-top:0">Six categories, from <b>$100</b> to <b>$500</b>. There are 22 categories in rotation, including Slang Across the Generations, Classic Black Cinema, Motown &amp; Soul, R&amp;B &amp; Hip-Hop, Black TV Classics, Civil Rights Movement, HBCU Life, Soul Food Kitchen, Church &amp; Gospel, Jazz &amp; Blues, Barbershop &amp; Beauty Shop and Card Check.</p>
-    <ul class="tight">
-      <li><b>Buzz in:</b> one player per team is at the podium, and it rotates every question so everybody plays. Wait for <b>BUZZ!</b> If you buzz early, you're locked out for a second.</li>
-      <li><b>Answer:</b> tap your choice on your phone. Typed-in answers get judged by the host.</li>
-      <li><b>Steal:</b> miss it, and the other team gets a few seconds to steal.</li>
-      <li><b>📞 Family Huddle:</b> each team gets 2 per game. It adds 15 seconds so the whole team can help.</li>
-      <li><b>💰 Family Wager:</b> two hidden tiles. Bet what you want, up to your score.</li>
-      <li><b>Card Check:</b> miss one of these and get your Black card <b>REVOKED</b> on the big screen. 😂</li>
-      <li><b>🎡 Sankofa Spin:</b> every 6 tiles, the team in control spins the prize wheel for +200, +300, Double Next, an extra Huddle, Cookout (+100 to every team) or Spin Again.</li>
-    </ul>
-  </div>
-</section>
+  <section class="slide" aria-label="Slide 5">
+    <div class="kick">Round 2</div>
+    <h2>The Remix</h2>
+    <div class="lead">Quick games where <b>everybody</b> plays on their phone.</div>
+    <div class="games">
+      <div class="game"><span class="e">🗳️</span><span><b>Majority Rules</b>Vote with the room</span></div>
+      <div class="game"><span class="e">📋</span><span><b>Family Survey</b>Guess what the family said</span></div>
+      <div class="game"><span class="e">👟</span><span><b>Mama Said</b>Finish the saying</span></div>
+      <div class="game"><span class="e">😎</span><span><b>Emoji Decode</b>Name the movie or song</span></div>
+      <div class="game"><span class="e">🥧</span><span><b>One's Gotta Go</b>Kick one out, defend it</span></div>
+      <div class="game"><span class="e">⚡</span><span><b>60-Second Blitz</b>Answer fast!</span></div>
+    </div>
+  </section>
 
-<section id="round2">
-  <h2>Round 2: The Remix</h2>
-  <p>Each mini-game gets its own intro card. Here's the full lineup:</p>
-  <div class="card game"><div class="ico" aria-hidden="true">🗳️</div><div><h3>Majority Rules</h3><p>Everybody votes on a question like "best cookout side." Match the room and your team scores. <span class="pts">+50 per match</span></p></div></div>
-  <div class="card game"><div class="ico" aria-hidden="true">#️⃣</div><div><h3>Hashtag Decode</h3><p>What does <b>#BlackGirlMagic</b> or <b>#ReclaimingMyTime</b> really mean? Buzz in. <span class="pts">200</span></p></div></div>
-  <div class="card game"><div class="ico" aria-hidden="true">🩴</div><div><h3>Mama Said</h3><p>Finish what Mama always said: "We got food at…" <span class="pts">200</span></p></div></div>
-  <div class="card game"><div class="ico" aria-hidden="true">😎</div><div><h3>Emoji Decode</h3><p>Movies, shows and songs told in emoji. 🏀❤️ = ? <span class="pts">200</span></p></div></div>
-  <div class="card game"><div class="ico" aria-hidden="true">📋</div><div><h3>The Family Survey</h3><p>Remember the survey questions everyone answered on their phones in the lobby? Now find the room's top answers. Three strikes and the other team can <b>steal the whole bank</b>.</p></div></div>
-  <div class="card game"><div class="ico" aria-hidden="true">🎭</div><div><h3>Culture Charades</h3><p>One player per team acts out the clue on their phone, with no talking! The team shouts guesses for 45 seconds. <span class="pts">+100 each</span></p></div></div>
-  <div class="card game"><div class="ico" aria-hidden="true">🥧</div><div><h3>One's Gotta Go</h3><p>Four favorites, like "Desserts: sweet potato pie, peach cobbler, banana pudding, pound cake." Kick one out, then defend it in 10 seconds. The room votes on the best defense.</p></div></div>
-  <div class="card game"><div class="ico" aria-hidden="true">📼</div><div><h3>Name That Era</h3><p>"September" by Earth, Wind &amp; Fire: what decade? Buzz in. <span class="pts">200</span></p></div></div>
-  <div class="card game"><div class="ico" aria-hidden="true">⚡</div><div><h3>60-Second Blitz</h3><p>Podium players race through 15 rapid-fire questions on their phones at the same time. <span class="pts">+100 every right answer</span></p></div></div>
-</section>
+  <section class="slide" aria-label="Slide 6">
+    <div class="kick">Party games</div>
+    <h2>Laughs &amp; arguments</h2>
+    <div class="games">
+      <div class="game"><img src="assets/party_hot_take.webp" alt=""><span><b>Settle It!</b>Agree or disagree, then debate</span></div>
+      <div class="game"><img src="assets/party_most_likely.webp" alt=""><span><b>Who in the Family…?</b>Who's most likely to…</span></div>
+      <div class="game"><img src="assets/party_top_that.webp" alt=""><span><b>Top That!</b>Funniest answer wins</span></div>
+      <div class="game"><img src="assets/party_two_truths.webp" alt=""><span><b>Two Truths &amp; a Lie</b>Spot the lie</span></div>
+      <div class="game"><span class="e">🎤</span><span><b>Sing It!</b>Sing a song with the word</span></div>
+      <div class="game"><span class="e">🎶</span><span><b>Hum That Tune</b>Hum it, no words</span></div>
+      <div class="game"><span class="e">🎭</span><span><b>Charades</b>Act it out, no talking</span></div>
+    </div>
+  </section>
 
-<section id="party">
-  <h2>Party games <span class="pill party">laughs &amp; arguments</span></h2>
-  <div class="card game"><img src="assets/party_hot_take.webp" alt=""><div><h3>Settle It!</h3><p>A hot take hits the screen, like "Raisins belong in potato salad." Everybody votes <b>Agree</b> or <b>Disagree</b>. Then one person from each side gets <b>20 seconds</b> to argue, and everyone votes again. Whichever side <b>flips the most minds</b> wins. <span class="pts">+200</span></p></div></div>
-  <div class="card game"><img src="assets/party_most_likely.webp" alt=""><div><h3>Who in the Family…?</h3><p>"Who's most likely to show up two hours late to the cookout?" Everybody votes for someone (not yourself!). Pick who the room picks to score. The winner gets crowned on the TV. <span class="pts">+50 per match</span></p></div></div>
-  <div class="card game"><img src="assets/party_top_that.webp" alt=""><div><h3>Top That!</h3><p>"The Wi-Fi password at Grandma's house: ____." Everybody types the funniest answer they can. Answers show with no names, and the room votes. <span class="pts">+50 per vote, +100 for the favorite</span></p></div></div>
-  <div class="card game"><img src="assets/party_two_truths.webp" alt=""><div><h3>Two Truths &amp; a Lie</h3><p>A family member secretly types two true things and one lie about themselves. Everybody else hunts for the lie. <span class="pts">+50 if you catch it. The teller's team gets +50 for every person fooled.</span></p></div></div>
-  <div class="card game"><div class="ico" aria-hidden="true">🎤</div><div><h3>Sing It!</h3><p>A word drops on the screen, like <b>LOVE</b>, <b>RAIN</b> or <b>GEORGIA</b>. Teams take turns <b>singing a song with that word in it</b>, with 15 seconds on the clock. You have to sing at least a line, and no repeats! The host decides if it counts. Miss, stall or get ruled out and your team is done for that word. The last team singing wins. <span class="pts">+100 per song, +200 to the last team standing</span></p></div></div>
-  <div class="card game"><div class="ico" aria-hidden="true">🎵</div><div><h3>Hum That Tune</h3><p>One player per team gets a classic song on their phone, from "My Girl" to "Before I Let Go" to "Kill Bill," and has to <b>hum it</b>. No words and no lyrics! The team shouts the title. <span class="pts">45 seconds, +100 each</span></p></div></div>
-</section>
+  <section class="slide" aria-label="Slide 7">
+    <div class="kick">Round 3</div>
+    <h2>Final Wager</h2>
+    <img class="art" src="assets/trophy.png" alt="" style="max-height:24vh">
+    <div class="steps">
+      <div class="step"><span class="n">1</span><span>See the <b>category</b>. Bet some or all of your points.</span></div>
+      <div class="step"><span class="n">2</span><span>Type your answer on your phone.</span></div>
+      <div class="step"><span class="n">3</span><span>Right = win the bet. Wrong = lose it. <b>Most points wins!</b></span></div>
+    </div>
+  </section>
 
-<section id="final">
-  <h2>Round 3: The Final Wager</h2>
-  <div class="card"><p style="margin:0">Each team's captain gets the category, then <b>wagers privately</b> on their phone: anything up to their score, or up to $500 if they're behind. Then the question drops. The team huddles and the captain types the answer. Answers are revealed lowest score first, the host judges each one, and the champions get crowned. 🏆</p></div>
-</section>
+  <section class="slide" aria-label="Slide 8">
+    <div class="kick">Not in the house?</div>
+    <h2>Play from anywhere</h2>
+    <div class="big">🏠📱</div>
+    <div class="lead">Text them the <b>4-letter room code</b>. They join on their phone and play the whole game.</div>
+    <div class="chips"><span class="chip">💬 Family chat on the TV</span><span class="chip">🎤 Voice notes</span><span class="chip">📹 Video call</span></div>
+  </section>
 
-<section id="extras">
-  <h2>Bonuses &amp; awards</h2>
-  <div class="card">
-    <ul class="tight" style="margin-top:0">
-      <li><b>🌉 Generation Crossover:</b> answer a question written for <i>another</i> generation (Grandma nails a Gen Z slang question) for <span class="pts">+half the value</span>.</li>
-      <li><b>🔥 On Fire:</b> 3 right in a row for <span class="pts">+50</span>.</li>
-      <li><b>🐾 Underdog:</b> if your team is in last and 500+ behind, right answers pay <span class="pts">+50%</span>.</li>
-      <li><b>📱 Play-Along:</b> folks on the bench answer secretly on their phones for a small team bonus.</li>
-      <li><b>Reactions:</b> everybody can fire 👏🏾🔥😂🙌🏾 emojis onto the big screen.</li>
-      <li><b>Awards at the end:</b> MVP, Bridge Builder, Master Thief, The Closer, Family Comedian, Smooth Liar, Most Likely Legend, Songbird and more.</li>
-      <li><b>📺 Season Mode:</b> tap <b>Next Episode</b> for a new game with the same teams. The season standings keep adding up wins all night.</li>
-    </ul>
-  </div>
-</section>
+  <section class="slide" aria-label="Slide 9">
+    <div class="kick">For the host</div>
+    <h2>Easy mode</h2>
+    <div class="steps">
+      <div class="step"><span class="e">🎮</span><span><b>Auto-Host</b> runs the show by itself, so you can play too.</span></div>
+      <div class="step"><span class="e">🎛️</span><span>Or run it from your phone with the <b>📱 Remote</b> (answers + sound effects).</span></div>
+      <div class="step"><span class="e">Aa</span><span>Grandma can tap <b>Aa</b> for bigger text on her phone.</span></div>
+    </div>
+  </section>
 
-<section id="away">
-  <h2>Not in the house? Play anyway 🏠📱</h2>
-  <div class="card">
-    <p style="margin-top:0">Cousins across the country, Grandma in another room, the college kid at school: everybody plays the <b>full game</b> from their phone, wherever they are.</p>
-    <ul class="tight">
-      <li><b>Join like everyone else:</b> open <b>etothesmith.github.io/generations</b>, tap <b>Join on My Phone</b>, type the 4-letter room code (text it to them!), and check <b>🏠 I'm playing from somewhere else</b>.</li>
-      <li><b>Your phone has everything:</b> the scoreboard, the board, the questions and your buzzer. When it's your team's turn you can <b>pick the tile right from your phone</b>.</li>
-      <li><b>💬 Family Chat:</b> tap the chat button to talk trash in real time. Messages pop up on the big TV.</li>
-      <li><b>🎤 Voice notes:</b> tap the mic, talk up to 30 seconds, tap again to send. It <b>plays out loud on the TV</b> in the house!</li>
-      <li><b>📹 Video call:</b> tap <b>Join video call</b> (or <b>Voice only</b>). Your face shows up on the side of the big screen, and the host can tap <b>📹 Video call</b> on the TV to use the laptop's camera so you can see the whole living room.</li>
-      <li><b>📺 Watch the show on a bigger screen:</b> on a laptop or smart TV, open <b>etothesmith.github.io/generations/host.html?watch=CODE</b> (use your room code) to see the live game board, then play on your phone.</li>
-    </ul>
-    <p style="margin-bottom:0;opacity:.85;font-size:15px">Video works best with about 6 people or fewer on camera. If someone on a work or hotel Wi-Fi can't connect to video, they can still chat, send voice notes and play.</p>
-  </div>
-</section>
+  <section class="slide" aria-label="Slide 10">
+    <h1>Let's play!</h1>
+    <div class="lead">New? Try it first, then get the family together.</div>
+    <div class="btns">
+      <a class="btn" href="host.html">📺 Host a Game</a>
+      <a class="btn red" href="play.html">📱 Join a Game</a>
+    </div>
+    <div class="btns">
+      <a class="btn ghost" href="learn.html">🎓 Practice</a>
+      <a class="btn ghost" href="solo.html">🎮 Play Solo</a>
+      <a class="btn ghost" href="cookout.html">🍗 Cookout Game</a>
+    </div>
+    <div class="lead" style="font-size:15px;opacity:.7;margin-top:14px">Every detail: <a href="rules.html" style="color:var(--gold)">full rules</a></div>
+  </section>
 
-<section id="cookout">
-  <h2>🍗 Side game: Invited to the Cookout</h2>
-  <div class="card">
-    <p style="margin-top:0">No show going yet? Waiting on Uncle to find parking? Open <b>etothesmith.github.io/generations/cookout.html</b> on any phone or laptop (it's also on the home page and in the phone lobby).</p>
-    <ul class="tight">
-      <li><b>Pick who you're rolling up as</b>, then run the backyard tablecloth.</li>
-      <li><b>Catch the food</b> (mac &amp; cheese, ribs, peach cobbler…) and <b>greet the family</b>. Grandma's blessing gives an extra heart.</li>
-      <li><b>Dodge the uninvited:</b> hop over ants, burnt hot dogs, store-bought cake and raisin potato salad. Wasps and rain clouds can't be hopped, so switch lanes.</li>
-      <li><b>RSVP Mat:</b> drop it in your lane and anything uninvited that rolls onto it gets bounced. You earn more mats by keeping a streak.</li>
-      <li><b>Power-ups:</b> the golden Spades card is a shield; the red drink is slow-mo.</li>
-      <li>Controls: swipe or arrow keys to move, swipe up / Space to hop, swipe down / ↓ for a mat. Your best score is saved on your device.</li>
-    </ul>
-  </div>
-</section>
-
-<section id="tips">
-  <h2>Host tips</h2>
-  <div class="card">
-    <ul class="tight" style="margin-top:0">
-      <li><b>🎮 Auto-Host lets the host play too.</b> Turn it on in the lobby (next to the show formats) or any time with <b>🎮 Auto</b> on the TV. The show moves itself along: it opens each game, moves on after reveals, picks a random tile if a team takes too long, counts Sing It! songs whose titles aren't repeats, and checks typed Final Wager answers. Peek is hidden so nobody sees answers. You can still press Next or ✅/❌ any time to take over.</li>
-      <li><b>🤖 Practice bots:</b> short on players? <b>⚙️ Customize → Add a bot</b> fills a seat with a family bot that buzzes, votes and plays every game.</li>
-      <li><b>Next</b> (or the Space bar) moves the show along. <b>C</b> = correct, <b>X</b> = wrong, <b>P</b> = pause, <b>S</b> = skip, <b>T</b> = +10 seconds on the clock.</li>
-      <li><b>📱 Host Remote:</b> starts in <b>Simple</b> mode (one big button at the bottom for whatever comes next, plus ✅/❌ when you judge). Tap <b>⚙️ Full</b> for score adjusting and undo. The sound pad plays <b>👏🏾 Applause, 😮 Ooooh, 🥁 Drumroll, 📢 Airhorn</b> (and more in Full mode) on the TV. <b>⏱ +10s</b> gives a slow reader more time.</li>
-      <li><b>Grandma-friendly phones:</b> anybody can tap <b>Aa</b> at the top of their phone for bigger text and buttons. Phones also buzz and flash when it's your turn, and stay awake during the show.</li>
-      <li><b>👁 Peek</b> shows you the answer for a couple of seconds. The Remote shows it privately.</li>
-      <li><b>± Scores</b> and <b>Undo Last Points</b> settle family debates.</li>
-      <li>If a phone falls asleep, just reopen it. You can also rejoin with the <b>same name</b> to get your seat back.</li>
-      <li>Add your own family trivia with <b>✏️ Family Questions</b> in the lobby. ("What year did Grandma and Grandpa get married?")</li>
-      <li>There are 910+ questions, and the game deals ones you haven't seen first, so every game night is different.</li>
-    </ul>
-  </div>
-</section>
 </main>
-
-<footer>
-  <div class="cta">
-    <a class="btn" href="host.html">📺 Host a Game</a>
-    <a class="btn red" href="play.html">📱 Join a Game</a>
-  </div>
-  <p style="margin-top:18px;opacity:.8">GENERATIONS · etothesmith.github.io/generations</p>
-</footer>
-<div class="kente"></div>
+<nav class="nav" aria-label="Slides">
+  <button id="prev" aria-label="Previous slide">‹</button>
+  <div class="dots" id="dots"></div>
+  <button id="next" aria-label="Next slide">›</button>
+</nav>
+<script>
+(() => {
+  const deck = document.getElementById('deck'), slides = [...deck.children];
+  const dots = document.getElementById('dots');
+  dots.innerHTML = slides.map((_, i) => `<i data-i="${i}" title="Slide ${i + 1}"></i>`).join('');
+  const go = (i) => { i = Math.max(0, Math.min(slides.length - 1, i)); deck.scrollTo({ left: i * deck.clientWidth }); };
+  const cur = () => Math.round(deck.scrollLeft / deck.clientWidth);
+  const paint = () => {
+    const i = cur();
+    [...dots.children].forEach((d, k) => d.classList.toggle('on', k === i));
+    document.getElementById('prev').disabled = i === 0;
+    document.getElementById('next').disabled = i === slides.length - 1;
+    if (location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  };
+  deck.addEventListener('scroll', () => { clearTimeout(paint.t); paint.t = setTimeout(paint, 60); });
+  document.getElementById('prev').onclick = () => go(cur() - 1);
+  document.getElementById('next').onclick = () => go(cur() + 1);
+  dots.onclick = (e) => { const d = e.target.closest('i'); if (d) go(+d.dataset.i); };
+  addEventListener('keydown', (e) => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur() + 1); }
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(cur() - 1); }
+  });
+  addEventListener('resize', () => go(cur()));
+  const start = parseInt(location.hash.slice(1), 10);
+  if (start > 1) { deck.style.scrollBehavior = 'auto'; go(start - 1); deck.style.scrollBehavior = ''; }
+  paint();
+})();
+</script>
 </body>
 </html>
