@@ -5,19 +5,37 @@ import { createTransport } from './transport.js';
 import { GENERATIONS, genFromYear, uid, esc, money, $, LETTERS } from './util.js';
 import { renderAvatar, AVATAR_OPTIONS, randomAvatar } from './avatar.js';
 import { loadArt, ART } from './assets.js';
+import { normalize } from './normalize.js';
+import { CallManager, VideoWall, chatItemHTML, startVoiceNote, playVoice, canRecord, CHAT_MAX, VOICE_MAX_SEC } from './social.js';
 
 let T, S = null, pid, room;
 let profile = { name: '', year: '', gen: '', avatar: randomAvatar() };
 let joined = false, editingAvatar = false, step = 1;
 let local = {};
 let lastFx = null;
+// ---- play-from-anywhere: chat, voice notes, video ----
+const chat = { list: [], byId: {}, unread: 0, open: false, wired: false };
+let call = null, wall = null, rec = null;
 const app = () => $('#app');
 const cache = new WeakMap();
 function setHTML(el, html) { if (cache.get(el) === html) return; cache.set(el, html); el.innerHTML = html; }
 const vib = (p) => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) { /* no-op */ } };
 
 async function boot() {
-  document.body.innerHTML = `<div class="stage-bg"><div class="floor"></div></div><div class="phone" id="app"></div>`;
+  document.body.innerHTML = `<div class="stage-bg"><div class="floor"></div></div><div class="vw phone-vw" id="vw"></div><div class="phone" id="app"></div>
+    <div id="social" class="hidden">
+      <button class="chat-fab" data-act="chatopen" aria-label="Open family chat">💬<span class="badge hidden" id="chatbadge">0</span></button>
+      <div class="chat-sheet hidden" id="chatsheet" role="dialog" aria-label="Family chat">
+        <div class="cs-head"><b>Family Chat</b><span id="callinfo" class="cs-callinfo"></span><button class="cs-x" data-act="chatclose" aria-label="Close chat">✕</button></div>
+        <div class="cs-call" id="callbar"></div>
+        <div class="cs-list" id="chatlist"></div>
+        <div class="cs-input">
+          <input id="chat-in" maxlength="${CHAT_MAX}" autocomplete="off" placeholder="Say something to the family…" aria-label="Message">
+          <button class="cs-send" data-act="chatsend" aria-label="Send">➤</button>
+          <button class="cs-mic" data-act="rec" id="micbtn" aria-label="Record a voice note">🎤</button>
+        </div>
+      </div>
+    </div>`;
   room = (new URLSearchParams(location.search).get('room') || '').toUpperCase();
   T = await createTransport();
   try { await loadArt({ only: ['sprites', 'logo', 'family'] }); } catch (e) { /* art is optional */ }
@@ -40,49 +58,54 @@ async function boot() {
   requestAnimationFrame(frame);
 }
 
+function where() { return profile.remote ? '🏠 away' : ''; }
+function wireSocial() {
+  if (chat.wired) return;
+  chat.wired = true;
+  $('#social').classList.remove('hidden');
+  wall = new VideoWall($('#vw'));
+  call = new CallManager(T, { pid, name: profile.name || 'Player', where: where() }, { onChange: () => { wall.update(call.tiles()); document.body.classList.toggle('in-call', call.inCall && call.tiles().length > 0); drawCallBar(); } });
+  T.onChat((m, old) => {
+    if (!m || chat.byId[m.id]) return;
+    chat.byId[m.id] = m; chat.list.push(m);
+    if (chat.list.length > 80) { const x = chat.list.shift(); delete chat.byId[x.id]; }
+    if (!old && m.pid !== pid) {
+      if (!chat.open) { chat.unread++; vib(30); toast(m.kind === 'voice' ? `🎤 ${m.name} sent a voice note` : `💬 ${m.name}: ${String(m.text || '').slice(0, 40)}`); }
+    }
+    drawChat();
+  });
+  drawCallBar();
+}
+function drawChat() {
+  const el = $('#chatlist'); if (!el) return;
+  const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 60;
+  el.innerHTML = chat.list.length ? chat.list.map((m) => chatItemHTML(m, pid)).join('') : '<div class="cs-empty">No messages yet. Say hi to the family! 👋🏾</div>';
+  if (atBottom || chat.open) el.scrollTop = el.scrollHeight;
+  const b = $('#chatbadge'); if (b) { b.textContent = chat.unread; b.classList.toggle('hidden', !chat.unread); }
+}
+function drawCallBar() {
+  const el = $('#callbar'); if (!el || !call) return;
+  const n = call.count();
+  if (!call.inCall) {
+    el.innerHTML = `<button class="btn green" data-act="calljoin" data-v="video">📹 Join video call${n ? ` (${n} in)` : ''}</button><button class="btn navy" data-act="calljoin" data-v="audio">🎧 Voice only</button>`;
+  } else {
+    el.innerHTML = `<button class="btn ${call.muted ? 'red' : 'navy'}" data-act="callmute">${call.muted ? '🔇 Unmute' : '🎙️ Mute'}</button>${call.local && call.local.getVideoTracks().length ? `<button class="btn ${call.camOff ? 'red' : 'navy'}" data-act="callcam">${call.camOff ? '📷 Camera on' : '📷 Camera off'}</button>` : ''}<button class="btn red" data-act="callleave">Leave call</button>`;
+  }
+  const ci = $('#callinfo'); if (ci) ci.textContent = n ? `📹 ${n} on video` : '';
+}
+async function sendVoice(res) {
+  if (!res || !res.dataUrl) return;
+  if (res.dataUrl.length > 380000) return toast('That voice note was too long — keep it under 30 seconds');
+  if (res.dur < 0.8) return toast('Hold on — that was too short');
+  try { await T.sendChat({ pid, name: profile.name, where: where(), color: myTeam()?.color || '', kind: 'voice', audio: res.dataUrl, dur: Math.round(res.dur * 10) / 10 }); toast('🎤 Voice note sent!'); }
+  catch (e) { toast('Could not send that voice note'); }
+}
+
 async function connect(code) {
   room = code;
   await T.joinRoom(code, pid);
+  wireSocial();
   T.onState((s) => { S = normalize(s); onState(); });
-}
-// Firebase drops empty arrays/objects — put the defaults back.
-function normalize(s) {
-  s.players = s.players || {};
-  s.teams = (s.teams || []).filter(Boolean);
-  for (const t of s.teams) { t.members = t.members || []; t.score = t.score || 0; t.lifelines = t.lifelines || 0; t.rot = t.rot || 0; }
-  s.categories = s.categories || [];
-  if (s.q) {
-    const q = s.q;
-    q.podium = q.podium || {}; q.attempted = q.attempted || []; q.eligible = q.eligible || [];
-    q.lockouts = q.lockouts || {}; q.choices = q.choices || null; q.timerEnd = q.timerEnd || 0;
-    q.huddleUntil = q.huddleUntil || 0; q.voteCount = q.voteCount || 0; q.value = q.value || 0;
-    if (q.top !== undefined || q.stage === 'reveal') q.top = q.top || [];
-    q.awards = q.awards || {}; q.counts = q.counts || {};
-    if (q.type === 'family_survey') { q.board = (q.board || []).map((b) => b || { revealed: false }); q.foTries = q.foTries || []; q.bank = q.bank || 0; q.strikes = q.strikes || 0; }
-    if (q.ch) { q.ch.counts = q.ch.counts || {}; q.ch.log = q.ch.log || []; q.ch.order = q.ch.order || []; q.ch.idx = q.ch.idx || 0; }
-    q.bench = q.bench || null; q.alongCount = q.alongCount || 0;
-    if (q.blitz) { q.blitz.qs = q.blitz.qs || []; q.blitz.progress = q.blitz.progress || {}; for (const k of Object.keys(q.podium)) q.blitz.progress[k] = Object.assign({ idx: 0, correct: 0 }, q.blitz.progress[k]); }
-    q.voted = q.voted || {};
-    if (q.type === 'hot_take') { q.ht = q.ht || {}; q.ht.speakers = q.ht.speakers || {}; q.ht.devil = q.ht.devil || {}; q.ht.turn = q.ht.turn || 0; }
-    if (q.type === 'most_likely') { q.ml = q.ml || {}; q.ml.cands = q.ml.cands || []; q.ml.counts = q.ml.counts || {}; q.ml.top = q.ml.top || []; q.ml.matchers = q.ml.matchers || []; }
-    if (q.type === 'top_that') { q.tt = q.tt || {}; q.tt.entries = q.tt.entries || null; q.tt.topIds = q.tt.topIds || []; if (q.tt.entries) q.tt.entries = q.tt.entries.filter(Boolean); }
-    if (q.type === 'two_truths') { q.tw = q.tw || {}; q.tw.counts = q.tw.counts || [0, 0, 0]; q.tw.right = q.tw.right || []; q.tw.fooled = q.tw.fooled || 0; }
-    if (q.ogg) { q.ogg.picks = q.ogg.picks || {}; q.ogg.order = q.ogg.order || []; if (q.ogg.pitchIdx === undefined) q.ogg.pitchIdx = -1; }
-  }
-  if (s.final) {
-    const f = s.final;
-    f.captains = f.captains || {}; f.wagered = f.wagered || {}; f.answered = f.answered || {};
-    f.results = f.results || {}; f.order = f.order || []; f.timerEnd = f.timerEnd || 0;
-    for (const r of Object.values(f.results)) { if (r.correct === undefined) r.correct = null; if (r.wager === undefined) r.wager = null; }
-  }
-  if (s.remix) { s.remix.segments = s.remix.segments || []; s.remix.segIdx = s.remix.segIdx || 0; }
-  if (s.fx) s.fx.data = s.fx.data || {};
-  s.winners = s.winners || [];
-  s.stats = s.stats || {}; s.awards = s.awards || {}; s.settings = s.settings || {};
-  if (s.season) s.season.teams = s.season.teams || {};
-  if (s.survey) { s.survey.prompts = s.survey.prompts || []; s.survey.answered = s.survey.answered || {}; }
-  s.round = s.round || 0;
-  return s;
 }
 
 function sendJoin() {
@@ -90,7 +113,7 @@ function sendJoin() {
   sessionStorage.setItem('gen-joined', room);
   localStorage.setItem('gen-last', JSON.stringify({ room, pid, at: Date.now() }));
   saveProfile();
-  T.sendInput({ type: 'join', pid, audience: !!profile.audience, name: profile.name, year: profile.year ? +profile.year : null, gen: profile.gen || genFromYear(profile.year), avatar: profile.avatar });
+  T.sendInput({ type: 'join', pid, audience: !!profile.audience, remote: !!profile.remote, name: profile.name, year: profile.year ? +profile.year : null, gen: profile.gen || genFromYear(profile.year), avatar: profile.avatar });
 }
 function saveProfile() {
   sessionStorage.setItem('gen-profile', JSON.stringify(profile));
@@ -177,6 +200,7 @@ function joinView() {
       ${profile.gen && !profile.year ? `<div class="sub" style="color:var(--gold)">Generation: ${GENERATIONS[profile.gen].label}</div>` : ''}
       <div id="genpick" class="hidden picker"><div class="opts-row" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">${Object.values(GENERATIONS).map((g) => `<button class="tx" data-act="gen" data-gen="${g.key}">${g.icon} ${g.label}</button>`).join('')}</div></div>
       <label class="sub" style="display:flex;gap:8px;align-items:center;justify-content:center"><input type="checkbox" id="j-aud" style="width:auto" ${profile.audience ? 'checked' : ''}> 👀 I'm just watching (Audience — no team)</label>
+      <label class="sub" style="display:flex;gap:8px;align-items:center;justify-content:center"><input type="checkbox" id="j-remote" style="width:auto" ${profile.remote ? 'checked' : ''}> 🏠 I'm playing from somewhere else</label>
       <button class="btn big" data-act="step2">Next: My Avatar →</button>
     </div>`;
   }
@@ -255,6 +279,7 @@ function body() {
         <h2>You're in!</h2><div class="msg">${g.icon} ${g.label} <span class="sub">(${g.nick})</span></div>
         <div class="sub">${m.audience ? "You're in the audience 👀 — react, play along, and vote!" : "Watch the big screen. The host will make teams when everybody's here."}</div>
         ${surveyCard()}
+        <div class="away-card"><b>📍 Not near the TV?</b> You can play the whole game from this phone. Want the big-screen view too? Open <a href="host.html?watch=${esc(room)}${T.mode === 'demo' ? '&demo' : ''}" target="_blank" rel="noopener">the live show</a> on a laptop or TV. Tap 💬 to chat, send voice notes or hop on video with the family.</div>
         <button class="btn navy" data-act="editav">✏️ Change My Avatar</button>`;
     case 'teams':
       return t ? `<div class="team-banner" style="background:${t.color}">You're on<br><span style="font-size:24px">${esc(t.name)}</span></div>
@@ -262,8 +287,9 @@ function body() {
     case 'board': {
       const ctrl = teamById(s.controlTeam);
       const up = t ? upNext(t) : null;
-      return `<div class="big-emoji">📺</div><div class="msg">Eyes on the board!</div>
-        <div class="sub">${ctrl ? esc(ctrl.name) + ' picks the next tile.' : ''}</div>
+      const mine = t && ctrl && t.id === ctrl.id;
+      return `${scoreStrip()}<div class="msg">${mine ? '<b style="color:var(--gold)">Your team picks!</b> Tap a tile 👇🏾' : ctrl ? esc(ctrl.name) + ' is picking…' : 'Eyes on the board!'}</div>
+        ${miniBoard(mine)}
         ${up ? `<div class="team-banner" style="background:${t.color}">${up === pid ? "YOU'RE UP NEXT! Get ready to buzz 🔔" : 'Up next for your team: ' + esc(pname(up))}</div>` : ''}
         ${(S.survey && (S.survey.answered[pid] || 0) < S.survey.prompts.length) ? surveyCard() : ''}`;
     }
@@ -315,6 +341,15 @@ function body() {
   return '';
 }
 
+function scoreStrip() {
+  return `<div class="ph-scores">${S.teams.map((x) => `<div style="--tc:${x.color}"><span>${esc(x.name)}</span><b>${money(x.score)}</b></div>`).join('')}</div>`;
+}
+function miniBoard(canPick) {
+  const b = S.board; if (!b || !b.cats) return '';
+  const cats = b.cats;
+  return `<div class="ph-board" style="--n:${cats.length}">${cats.map((c) => `<div class="pb-cat">${esc(c.name)}</div>`).join('')}
+    ${[0, 1, 2, 3, 4].map((r) => cats.map((c, ci) => { const tl = (c.tiles || [])[r]; return !tl || tl.used ? '<span class="pb-used"></span>' : canPick ? `<button class="pb-tile" data-act="pickboard" data-ci="${ci}" data-ti="${r}">${tl.value}</button>` : `<span class="pb-tile">${tl.value}</span>`; }).join('')).join('')}</div>`;
+}
 function upNext(team) {
   const mbr = team.members;
   if (!mbr.length) return null;
@@ -556,11 +591,13 @@ function toast(t) {
   const d = document.createElement('div'); d.className = 'toast'; d.textContent = t;
   document.body.appendChild(d); setTimeout(() => d.remove(), 2200);
 }
+document.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target && e.target.id === 'chat-in') { e.preventDefault(); onClick({ target: document.querySelector('[data-act=chatsend]') }); } });
 function onInput(e) {
   if (e.target.id === 'w-range') { const a = $('#w-amt'); if (a) a.textContent = money(+e.target.value); }
   if (e.target.id === 'j-room') { e.target.value = e.target.value.toUpperCase().replace(/[^A-Z]/g, ''); }
   if (e.target.id === 'j-name') profile.name = e.target.value;
   if (e.target.id === 'j-aud') profile.audience = e.target.checked;
+  if (e.target.id === 'j-remote') profile.remote = e.target.checked;
   if (e.target.id === 'j-year') { profile.year = e.target.value; if (profile.year) profile.gen = genFromYear(profile.year); }
 }
 async function onClick(e) {
@@ -628,6 +665,34 @@ async function onClick(e) {
       vib(60); send({ type: 'party', list, lie: local.twLie }); break;
     }
     case 'twvote': if (local.twVote !== undefined) return; local.twVote = +v; vib(40); send({ type: 'party', v: +v }); draw(); break;
+    case 'chatopen': chat.open = true; chat.unread = 0; $('#chatsheet').classList.remove('hidden'); document.body.classList.add('chat-open'); drawChat(); break;
+    case 'chatclose': chat.open = false; $('#chatsheet').classList.add('hidden'); document.body.classList.remove('chat-open'); break;
+    case 'chatsend': {
+      const inp = $('#chat-in'); const txt = (inp.value || '').trim().slice(0, CHAT_MAX);
+      if (!txt) return;
+      inp.value = ''; vib(15);
+      T.sendChat({ pid, name: profile.name, where: where(), color: myTeam()?.color || '', kind: 'text', text: txt });
+      break;
+    }
+    case 'rec': {
+      const b = $('#micbtn');
+      if (rec) { const r = rec; rec = null; b.classList.remove('live'); b.textContent = '🎤'; sendVoice(await r.stop()); break; }
+      if (!canRecord()) return toast("This phone can't record voice notes in the browser");
+      try {
+        rec = await startVoiceNote((sec) => { b.textContent = `⏹ ${Math.ceil(VOICE_MAX_SEC - sec)}`; if (sec >= VOICE_MAX_SEC && rec) { const r = rec; rec = null; b.classList.remove('live'); b.textContent = '🎤'; r.stop().then(sendVoice); } });
+        b.classList.add('live'); vib(40); toast('Recording… tap ⏹ to send');
+      } catch (e) { rec = null; toast('Allow the microphone to send voice notes'); }
+      break;
+    }
+    case 'playvoice': { const m = chat.byId[el.dataset.id]; if (m && m.audio) { el.classList.add('playing'); playVoice(m.audio, () => el.classList.remove('playing')); } break; }
+    case 'calljoin':
+      try { await call.join({ video: v === 'video', audio: true }); toast(v === 'video' ? '📹 You joined the video call' : '🎧 You joined by voice'); }
+      catch (e) { toast('Allow the camera/microphone to join the call'); }
+      drawCallBar(); break;
+    case 'callleave': call.leave(); drawCallBar(); break;
+    case 'callmute': call.toggleMute(); break;
+    case 'callcam': call.toggleCam(); break;
+    case 'pickboard': vib(30); send({ type: 'tile', ci: +el.dataset.ci, ti: +el.dataset.ti }); break;
     case 'chgot': vib(40); send({ type: 'charades', action: 'got' }); break;
     case 'chskip': vib(15); send({ type: 'charades', action: 'skip' }); break;
     case 'blitz': {

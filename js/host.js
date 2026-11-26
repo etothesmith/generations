@@ -11,6 +11,12 @@ import { strikeFx } from './fx.js';
 import { confetti, stamp, banner, shockwave, shake, reaction, mountCrowd, crowdReact, showOpen, roundCard, mountMascot, mascotSay, mascotUnpin, setConfettiTheme } from './fx.js';
 import qrcode from '../vendor/qrcode.mjs';
 import { openEditor, loadCustom } from './editor.js';
+import { CallManager, VideoWall, playVoice } from './social.js';
+import { normalize } from './normalize.js';
+
+const WATCH = (new URLSearchParams(location.search).get('watch') || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 4);
+// TV social layer: family chat feed, voice notes, and the video wall
+const tvs = { feed: true, voices: true, call: null, wall: null, seen: new Set(), q: [] };
 
 let T, E, S;              // transport, engine, latest state
 const exprOverride = {};  // pid -> { expr, until }
@@ -45,6 +51,8 @@ async function boot() {
       <div class="controls" id="controls"></div>
     </div>`;
   ui.top = $('#top'); ui.main = $('#main'); ui.scores = $('#scores'); ui.controls = $('#controls'); ui.bg = $('#bg');
+  document.body.insertAdjacentHTML('beforeend', '<div class="tv-chat" id="tvchat" aria-live="polite"></div><div class="vw tv-vw" id="tvvw"></div>');
+  if (WATCH) return bootWatch();
 
   const [art, bank] = await Promise.all([loadArt(), loadBank(), loadExtras()]);
   if (art.stage) { ui.bg.style.backgroundImage = `url(${art.stage})`; ui.bg.classList.add('has-art'); }
@@ -83,6 +91,7 @@ async function boot() {
   T.onInput((m) => E.handleInput(m));
   T.onPresence((map) => E.setPresence(map));
   E.publish();
+  wireTvSocial('tv-' + code, '📺 The House');
   window.GEN = { engine: E, transport: T }; // handy for debugging in the browser console
 
   document.addEventListener('click', delegate);
@@ -103,6 +112,99 @@ export async function loadBank() {
   try { base = await (await fetch('data/questions.json', { cache: 'no-cache' })).json(); }
   catch (e) { alert('Could not load data/questions.json. Open the game through a web server (see README).'); }
   return base.concat(loadCustom());
+}
+
+// ---------------- remote "watch" screen: the live show anywhere (no engine) ----------------
+async function bootWatch() {
+  document.body.classList.add('watch');
+  const [art] = await Promise.all([loadArt(), loadExtras()]);
+  if (art.stage) { ui.bg.style.backgroundImage = `url(${art.stage})`; ui.bg.classList.add('has-art'); }
+  mountCrowd(ui.bg);
+  mountMascot(document.body);
+  T = await createTransport();
+  if (!(await T.roomExists(WATCH))) { ui.main.innerHTML = `<div class="segment"><h1>Room ${esc(WATCH)} not found</h1><p>Check the 4-letter code on the big screen.</p></div>`; return; }
+  await T.watchRoom(WATCH);
+  // a tiny stand-in for the engine so the TV views can render from the published state
+  E = { s: {}, cur: null, pausedAt: 0, hostKey: null, availableCategories: () => [], freshness: () => ({ unseen: 0, total: 0 }) };
+  let lastFxId = null;
+  T.onState((raw) => {
+    const st = normalize(raw);
+    E.s = st;
+    if (st.paused && !E.pausedAt) E.pausedAt = T.serverNow(); if (!st.paused) E.pausedAt = 0;
+    const fxNew = st.fx && st.fx.id !== lastFxId && lastFxId !== null;
+    if (st.fx) { if (fxNew) onFx(st.fx.type, st.fx.data || {}); lastFxId = st.fx.id; } else if (lastFxId === null) lastFxId = '';
+    render(st);
+  });
+  window.GEN = { engine: E, transport: T, watch: true };
+  wireTvSocial('watch-' + Math.random().toString(36).slice(2, 8), '🏠 ' + (localStorage.getItem('gen-watch-name') || 'Watch party'));
+  document.addEventListener('click', delegate);
+  document.addEventListener('pointerdown', unlockAudio, { once: true });
+  requestAnimationFrame(frame);
+}
+function viewWatchLobby(s) {
+  const players = Object.values(s.players || {}).sort((a, b) => a.joinedAt - b.joinedAt);
+  const url = joinUrl(s.code);
+  return `<div class="lobby">
+    <div class="join-card"><div class="lbl">Join from your phone</div><div class="code">${s.code}</div><div class="qr">${qrSvg(url)}</div><div class="url">${esc(url)}</div></div>
+    <div class="lobby-right">
+      ${ART.logo ? `<div class="logo huge"><img src="${ART.logo}" alt="GENERATIONS"></div>` : `<div class="logo huge">GENERATIONS</div>`}
+      <div class="tagline">📍 Watching the live show from away</div>
+      <div class="player-grid">${players.length ? players.map((p) => playerCard(p)).join('') : `<div class="empty-note">${ART.family ? `<img class="family-hero" src="${ART.family}" alt="">` : ''}Waiting for the family to join…</div>`}</div>
+      <div class="hint">Scan the code to play on your phone. Use 📹 below to video chat with the house.</div>
+    </div></div>`;
+}
+
+// ---------------- TV social: chat feed, voice notes, video wall ----------------
+function wireTvSocial(myPid, myName) {
+  if (!T.onChat) return;
+  tvs.wall = new VideoWall($('#tvvw'));
+  tvs.call = new CallManager(T, { pid: myPid, name: myName, where: WATCH ? 'away' : '' }, { onChange: () => { tvs.wall.update(tvs.call.tiles()); document.body.classList.toggle('tv-call', tvs.wall.tiles.size > 0); if (S) renderControls(S); } });
+  const startAt = Date.now();
+  T.onChat((m, old) => {
+    if (!m || tvs.seen.has(m.id)) return;
+    tvs.seen.add(m.id);
+    const fresh = !old && (m.at || 0) > startAt - 15000;
+    if (fresh) showChatBubble(m);
+  });
+}
+function showChatBubble(m) {
+  const feed = $('#tvchat'); if (!feed) return;
+  const el = document.createElement('div');
+  el.className = 'tvc-msg' + (m.kind === 'voice' ? ' voice' : '');
+  const who = `<b style="color:${m.color || 'var(--gold)'}">${esc(m.name || 'Family')}</b>${m.where ? ` <small>${esc(m.where)}</small>` : ''}`;
+  el.innerHTML = m.kind === 'voice' ? `${who}<span class="tvc-v">🎤 voice note · ${Math.round(m.dur || 0)}s <span class="tvc-bars"><i></i><i></i><i></i><i></i></span></span>` : `${who}<span>${esc(m.text || '')}</span>`;
+  feed.appendChild(el);
+  while (feed.children.length > 5) feed.firstChild.remove();
+  sfx('join');
+  const life = m.kind === 'voice' ? Math.max(9000, (m.dur || 5) * 1000 + 4000) : 12000;
+  setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 600); }, life);
+  if (m.kind === 'voice' && m.audio && tvs.voices && soundOn()) {
+    tvs.q.push({ m, el });
+    if (tvs.q.length === 1) playNextVoice();
+  }
+}
+function playNextVoice() {
+  const item = tvs.q[0]; if (!item) return;
+  item.el.classList.add('playing');
+  playVoice(item.m.audio, () => { item.el.classList.remove('playing'); tvs.q.shift(); setTimeout(playNextVoice, 400); });
+}
+function showCallModal() {
+  const wrap = document.createElement('div');
+  wrap.className = 'modal';
+  wrap.innerHTML = `<div class="box" style="text-align:center;max-width:560px">
+    <h2>📹 Video call with the family</h2>
+    <p class="note">Family playing from somewhere else can join from their phone (💬 → Join video call). Their faces show up on this screen.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+      <button class="btn green" data-act="tvcalljoin" data-v="cam">📷 Use this computer's camera &amp; mic</button>
+      <button class="btn navy" data-act="tvcalljoin" data-v="watch">👀 Just show their video here</button>
+      <button class="btn ghost" data-act="modalclose">Cancel</button>
+    </div></div>`;
+  document.body.appendChild(wrap);
+}
+async function tvCallJoin(mode, el) {
+  el.closest('.modal')?.remove();
+  try { await tvs.call.join({ video: true, audio: true, send: mode === 'cam' }); }
+  catch (e) { await tvs.call.join({ send: false }); alert('No camera/microphone allowed — showing family video only.'); }
 }
 
 // ---------------- render ----------------
@@ -157,16 +259,18 @@ function qrSvg(text) {
 }
 
 function playerCard(p, opts = {}) {
+  if (p.remote && !opts.noAway) opts = { ...opts, away: true };
   const g = GENERATIONS[p.gen] || GENERATIONS.millennial;
   return `<div class="pcard ${p.connected ? '' : 'off'}" data-k="p-${S ? S.phase : ''}-${p.pid}" data-act="${opts.act || ''}" data-pid="${p.pid}">
     <div class="av">${renderAvatar(p.avatar, 'idle', 120)}</div>
-    <div class="nm">${esc(p.name)}</div>
+    <div class="nm">${esc(p.name)}${opts.away ? ' <span class="away-tag" title="Playing from somewhere else">🏠</span>' : ''}</div>
     <span class="gen-chip" style="background:${g.color};color:${p.gen === 'genx' || p.gen === 'millennial' ? '#fff' : '#2B2B2B'}">${badgeHTML(p.gen) || g.icon} ${g.label}</span>
     ${opts.kick ? `<button class="x" data-act="kick" data-pid="${p.pid}" title="Remove">✕</button>` : ''}
   </div>`;
 }
 
 function renderMain(s) {
+  if (WATCH && s.phase === 'lobby') return setHTML(ui.main, viewWatchLobby(s));
   const fn = { spin: viewSpin, lobby: viewLobby, teams: viewTeams, board: viewBoard, question: viewQuestion, segment: viewSegment, round_end: viewRoundEnd, final_intro: viewFinal, final_wager: viewFinal, final_answer: viewFinal, final_reveal: viewFinal, champion: viewChampion }[s.phase];
   setHTML(ui.main, fn ? fn(s) : '');
 }
@@ -745,7 +849,17 @@ function peekText(s) {
   return '';
 }
 
+function socialButtons() {
+  if (!tvs.call) return '';
+  const c = tvs.call;
+  const n = c.count();
+  return `<button class="btn navy ${tvs.feed ? 'on' : ''}" data-act="tvfeed" title="Show family chat on screen">💬 Chat ${tvs.feed ? 'ON' : 'OFF'}</button>`
+    + `<button class="btn navy ${tvs.voices ? 'on' : ''}" data-act="tvvoices" title="Play voice notes out loud">🎤 Voice notes ${tvs.voices ? 'ON' : 'OFF'}</button>`
+    + (c.inCall ? `${c.local ? `<button class="btn navy" data-act="tvmute">${c.muted ? '🔇 Unmute' : '🎙️ Mute'}</button>` : ''}<button class="btn red" data-act="tvcallleave">📹 Leave call</button>`
+      : `<button class="btn green" data-act="tvcall">📹 Video call${n ? ` (${n})` : ''}</button>`);
+}
 function renderControls(s) {
+  if (WATCH) { setHTML(ui.controls, socialButtons() + `<button class="btn navy" data-act="sound">${soundOn() ? '🔊' : '🔇'}</button>`); return; }
   const b = [];
   const q = s.q;
   const next = (label, extra = '') => b.push(`<button class="btn" data-act="next" ${extra}>${label}<span class="kbd">␣</span></button>`);
@@ -801,6 +915,7 @@ function renderControls(s) {
     b.push(`<button class="btn navy" data-act="undo">↶ Undo Last Points</button>`);
   }
   b.push(`<button class="btn navy" data-act="remote" title="Run the show from your phone">📱 Remote</button>`);
+  b.push(socialButtons());
   b.push(`<button class="btn navy" data-act="sound">${soundOn() ? '🔊' : '🔇'}</button>`);
   if (!['lobby', 'teams', 'champion'].includes(s.phase)) b.push(`<button class="btn ghost" data-act="end">End Game</button>`);
   setHTML(ui.controls, b.join(''));
@@ -951,7 +1066,16 @@ function delegate(e) {
   if (!el || !el.dataset.act) return;
   unlockAudio();
   const a = el.dataset.act, d = el.dataset;
+  const social = { tvfeed: 1, tvvoices: 1, tvcall: 1, tvcalljoin: 1, tvcallleave: 1, tvmute: 1, modalclose: 1, sound: 1 };
+  if (WATCH && !social[a]) return;
   switch (a) {
+    case 'tvfeed': tvs.feed = !tvs.feed; $('#tvchat').classList.toggle('hidden', !tvs.feed); renderControls(S); break;
+    case 'tvvoices': tvs.voices = !tvs.voices; renderControls(S); break;
+    case 'tvcall': showCallModal(); break;
+    case 'tvcalljoin': tvCallJoin(d.v, el); break;
+    case 'tvcallleave': tvs.call.leave(); break;
+    case 'tvmute': tvs.call.toggleMute(); break;
+    case 'modalclose': el.closest('.modal')?.remove(); break;
     case 'mode': E.setTeamMode(d.mode, d.n ? +d.n : null); break;
     case 'cat': {
       const list = S.categories.slice();

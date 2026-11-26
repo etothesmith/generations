@@ -53,6 +53,10 @@ class DemoTransport {
     if (m.kind === 'hb' && this.handlers.presence) {
       this.presence[m.pid] = Date.now();
     }
+    if (m.kind === 'chat' && this.handlers.chat) this.handlers.chat(m.m);
+    if (m.kind === 'callhb') { this._peers = this._peers || {}; this._peers[m.pid] = { info: m.info, seen: Date.now() }; }
+    if (m.kind === 'callbye' && this._peers) delete this._peers[m.pid];
+    if (m.kind === 'sig' && this.handlers.sig && m.to === this.handlers.sig.pid) this.handlers.sig.cb(m.msg);
     if (m.kind === 'hello' && this.isHost && this._last) {
       this.chan.postMessage({ kind: 'state', state: this._last });
     }
@@ -74,6 +78,7 @@ class DemoTransport {
     this.heartbeat = setInterval(beat, 2000);
     this.chan.postMessage({ kind: 'hello' });
   }
+  async watchRoom(code) { this._open(code); this.chan.postMessage({ kind: 'hello' }); }
   publishState(state) {
     state = stripEmpty(JSON.parse(JSON.stringify(state))) || {}; // behave like Firebase (drops empty arrays/objects/nulls)
     this._last = state;
@@ -95,6 +100,39 @@ class DemoTransport {
   async closeRoom() {
     localStorage.removeItem('gen-demo-room-' + this.code);
   }
+
+  // ---------- family chat + voice notes ----------
+  _chatKey() { return 'gen-demo-chat-' + this.code; }
+  sendChat(msg) {
+    const m = { ...msg, at: Date.now(), id: Math.random().toString(36).slice(2) };
+    try { const list = JSON.parse(localStorage.getItem(this._chatKey()) || '[]'); list.push(m); localStorage.setItem(this._chatKey(), JSON.stringify(list.slice(-60))); } catch (e) { /* storage full */ }
+    if (this.chan) this.chan.postMessage({ kind: 'chat', m });
+    if (this.handlers.chat) this.handlers.chat(m);
+  }
+  onChat(cb) {
+    this.handlers.chat = cb;
+    try { for (const m of JSON.parse(localStorage.getItem(this._chatKey()) || '[]')) cb(m, true); } catch (e) { /* none */ }
+  }
+  // ---------- video call signaling ----------
+  callJoin(pid, info) {
+    this._callMe = { pid, info };
+    const beat = () => this.chan && this._callMe && this.chan.postMessage({ kind: 'callhb', pid, info });
+    beat(); clearInterval(this._callBeat); this._callBeat = setInterval(beat, 1500);
+  }
+  callLeave(pid) { this._callMe = null; clearInterval(this._callBeat); if (this.chan) this.chan.postMessage({ kind: 'callbye', pid }); }
+  onCallPeers(cb) {
+    this.handlers.callPeers = cb;
+    this._peers = this._peers || {};
+    clearInterval(this._peerTick);
+    this._peerTick = setInterval(() => {
+      const now = Date.now(), map = {};
+      for (const [k, v] of Object.entries(this._peers)) if (now - v.seen < 5000) map[k] = v.info;
+      if (this._callMe) map[this._callMe.pid] = this._callMe.info;
+      cb(map);
+    }, 700);
+  }
+  sendSignal(to, msg) { if (this.chan) this.chan.postMessage({ kind: 'sig', to, msg }); }
+  onSignal(pid, cb) { this.handlers.sig = { pid, cb }; }
   // private host data (answer key for the host remote) — keyed by a secret
   publishPrivate(key, data) {
     this._priv = this._priv || new BroadcastChannel('generations-priv');
@@ -170,6 +208,29 @@ class FirebaseTransport {
   }
   async closeRoom() {
     try { await this.fb.remove(this.fb.ref(this.db, `rooms/${this.code}`)); } catch (e) { /* ignore */ }
+  }
+
+  async watchRoom(code) { this.code = code; }
+  // ---------- family chat + voice notes ----------
+  sendChat(msg) {
+    return this.fb.push(this.r('chat'), { ...msg, uid: this.uid, at: this.serverNow() });
+  }
+  onChat(cb) {
+    const q = this.fb.query(this.r('chat'), this.fb.limitToLast(40));
+    this.fb.onChildAdded(q, (s) => cb({ ...s.val(), id: s.key }));
+  }
+  // ---------- video call signaling (WebRTC offers/answers/ICE over the database) ----------
+  callJoin(pid, info) {
+    const ref = this.r('call/peers/' + pid);
+    this.fb.onDisconnect(ref).remove();
+    this.fb.set(ref, { ...info, uid: this.uid, at: this.serverNow() });
+    this.fb.onDisconnect(this.r('call/sig/' + pid)).remove();
+  }
+  callLeave(pid) { this.fb.remove(this.r('call/peers/' + pid)); this.fb.remove(this.r('call/sig/' + pid)); }
+  onCallPeers(cb) { this.fb.onValue(this.r('call/peers'), (s) => cb(s.val() || {})); }
+  sendSignal(to, msg) { this.fb.push(this.r('call/sig/' + to), { ...msg, uid: this.uid }); }
+  onSignal(pid, cb) {
+    this.fb.onChildAdded(this.r('call/sig/' + pid), (s) => { const v = s.val(); this.fb.remove(s.ref); cb(v); });
   }
   publishPrivate(key, data) {
     this.fb.set(this.fb.ref(this.db, `hostpriv/${key}`), JSON.parse(JSON.stringify({ ...data, uid: this.uid, at: this.serverNow() }))).catch(() => {});

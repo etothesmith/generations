@@ -176,12 +176,12 @@ export class Engine {
       if (old) { this.renamePid(old.pid, m.pid); p = this.s.players[m.pid]; }
     }
     if (!p) {
-      p = { pid: m.pid, name, year: m.year || null, gen, avatar: m.avatar || null, connected: true, joinedAt: this.now(), audience: !!m.audience };
+      p = { pid: m.pid, name, year: m.year || null, gen, avatar: m.avatar || null, connected: true, joinedAt: this.now(), audience: !!m.audience, remote: !!m.remote };
       this.s.players[m.pid] = p;
       if (this.s.teams.length && !p.audience) this.placeLateJoiner(p);
       this.fx('join', { pid: m.pid });
     } else {
-      p.name = name; p.year = m.year || p.year; p.gen = gen; if (m.avatar) p.avatar = m.avatar; p.connected = true;
+      p.name = name; p.year = m.year || p.year; p.gen = gen; if (m.avatar) p.avatar = m.avatar; p.connected = true; p.remote = !!m.remote;
       if (m.audience !== undefined && !this.teamOf(p.pid)) p.audience = !!m.audience;
     }
     this.publish();
@@ -1477,6 +1477,11 @@ export class Engine {
       case 'sguess': return this.onSurveyGuess(m.pid, m.text);
       case 'charades': return this.onCharades(m.pid, m.action);
       case 'spin': return this.doSpin(m.pid);
+      case 'tile': { // a player on the team in control can pick from their phone (great for family playing from elsewhere)
+        const t = this.teamOf(m.pid);
+        if (this.s.phase === 'board' && t && t.id === this.s.controlTeam) this.pickTile(+m.ci, +m.ti);
+        return;
+      }
       case 'party': return this.onParty(m.pid, m);
       case 'host': return this.onHostCmd(m);
     }

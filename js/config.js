@@ -22,3 +22,10 @@ export const firebaseConfig = {
 };
 
 export const USE_FIREBASE = !!(firebaseConfig.apiKey && firebaseConfig.databaseURL) && !/[?&]demo\b/.test(location.search);
+
+// Video calls: STUN finds a direct path between devices (works for most home Wi-Fi).
+// For family on strict networks (some offices, hotels, cell carriers) add a TURN relay here, e.g.
+// { urls: 'turn:YOUR-TURN-HOST:3478', username: '…', credential: '…' }  (metered.ca has a free tier)
+export const iceServers = [
+  { urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] },
+];
