@@ -80,7 +80,8 @@ function body() {
         if (['fo_answer', 'play', 'steal'].includes(q.stage)) acts += btn('sstrike', '❌ Strike', 'red');
       }
       if (q.stage === 'answering') acts += btn('judge', '✅ Correct', 'green', 1) + btn('judge', '❌ Wrong', 'red', 0);
-      const nextLabel = { reading: 'Open Buzzers', wager: 'Default Wager', vote: 'Reveal Votes', pick: 'Start Pitches', pitch: 'Next Pitch', pitchvote: 'Reveal Winner', blitz: 'End Blitz', ch_ready: '▶ Start Clock', ch_act: 'Time!', ch_recap: 'Next Team', reveal: 'Next →', ht_vote1: 'Lock Votes → Debate', ht_argue: 'Next Speaker / Vote', ht_vote2: 'Reveal the Shift', ml_vote: 'Reveal', tt_write: 'Close Writing', tt_vote: 'Reveal Winner', tw_write: 'Skip Teller', tw_vote: 'Reveal the Lie' }[q.stage];
+      if (q.stage === 'si_turn') acts += btn('judge', '✅ That Counts', 'green', 1) + btn('judge', '❌ Nope / Repeat', 'red', 0);
+      const nextLabel = { reading: 'Open Buzzers', wager: 'Default Wager', vote: 'Reveal Votes', pick: 'Start Pitches', pitch: 'Next Pitch', pitchvote: 'Reveal Winner', blitz: 'End Blitz', ch_ready: '▶ Start Clock', ch_act: 'Time!', ch_recap: 'Next Team', reveal: 'Next →', ht_vote1: 'Lock Votes → Debate', ht_argue: 'Next Speaker / Vote', ht_vote2: 'Reveal the Shift', ml_vote: 'Reveal', tt_write: 'Close Writing', tt_vote: 'Reveal Winner', tw_write: 'Skip Teller', tw_vote: 'Reveal the Lie', si_ready: '🎤 Start / Next Team' }[q.stage];
       if (nextLabel) acts += btn('next', nextLabel, 'big');
       if (q.stage !== 'reveal') acts += btn('skip', 'Skip', 'navy');
       if (q.voted && ['ht_vote1', 'ht_vote2', 'ml_vote', 'tt_write', 'tt_vote', 'tw_vote'].includes(q.stage)) main += `<div class="sub">${Object.keys(q.voted).length} in so far</div>`;

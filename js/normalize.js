@@ -20,6 +20,7 @@ export function normalize(s) {
     if (q.type === 'hot_take') { q.ht = q.ht || {}; q.ht.speakers = q.ht.speakers || {}; q.ht.devil = q.ht.devil || {}; q.ht.turn = q.ht.turn || 0; }
     if (q.type === 'most_likely') { q.ml = q.ml || {}; q.ml.cands = q.ml.cands || []; q.ml.counts = q.ml.counts || {}; q.ml.top = q.ml.top || []; q.ml.matchers = q.ml.matchers || []; }
     if (q.type === 'top_that') { q.tt = q.tt || {}; q.tt.entries = q.tt.entries || null; q.tt.topIds = q.tt.topIds || []; if (q.tt.entries) q.tt.entries = q.tt.entries.filter(Boolean); }
+    if (q.type === 'sing_it') { q.si = q.si || {}; q.si.order = q.si.order || []; q.si.alive = q.si.alive || []; q.si.songs = (q.si.songs || []).filter(Boolean); q.si.counts = q.si.counts || {}; q.si.turn = q.si.turn || 0; q.si.winner = q.si.winner || []; q.si.word = q.si.word || ''; }
     if (q.type === 'two_truths') { q.tw = q.tw || {}; q.tw.counts = q.tw.counts || [0, 0, 0]; q.tw.right = q.tw.right || []; q.tw.fooled = q.tw.fooled || 0; }
     if (q.ogg) { q.ogg.picks = q.ogg.picks || {}; q.ogg.order = q.ogg.order || []; if (q.ogg.pitchIdx === undefined) q.ogg.pitchIdx = -1; }
   }

@@ -12,10 +12,11 @@ export const PARTY = {
   mlVote: 25000, mlMatch: 50,
   ttWrite: 60000, ttVote: 30000, ttPerVote: 50, ttTop: 100,
   twWrite: 90000, twVote: 25000, twRight: 50, twFool: 50,
+  siTurn: 15000, siPoints: 100, siBonus: 200, siCap: 14,
 };
-export const PARTY_TYPES = ['hot_take', 'most_likely', 'top_that', 'two_truths'];
-export const PARTY_STAGES = ['ht_vote1', 'ht_argue', 'ht_vote2', 'ml_vote', 'tt_write', 'tt_vote', 'tw_write', 'tw_vote'];
-const POOL_KEY = { hot_take: 'hotTakes', most_likely: 'mostLikely', top_that: 'topThat' };
+export const PARTY_TYPES = ['hot_take', 'most_likely', 'top_that', 'two_truths', 'sing_it'];
+export const PARTY_STAGES = ['ht_vote1', 'ht_argue', 'ht_vote2', 'ml_vote', 'tt_write', 'tt_vote', 'tw_write', 'tw_vote', 'si_ready', 'si_turn', 'si_win'];
+const POOL_KEY = { hot_take: 'hotTakes', most_likely: 'mostLikely', top_that: 'topThat', sing_it: 'singWords' };
 const clean = (t, n) => String(t || '').replace(/\s+/g, ' ').trim().slice(0, n);
 
 const methods = {
@@ -53,6 +54,76 @@ const methods = {
     if (type === 'most_likely') return this.startMostLikely();
     if (type === 'top_that') return this.startTopThat();
     if (type === 'two_truths') return this.startTwoTruths();
+    if (type === 'sing_it') return this.startSingIt();
+  },
+
+  // ---------- Sing It! (lyric battle) ----------
+  // A word drops. Teams take turns singing any song lyric with that word in it.
+  // The host rules each one ✅ / ❌. Miss, repeat a song, or run out the clock and you're out.
+  // Last team singing wins the word.
+  startSingIt() {
+    const teams = this.s.teams.filter((t) => t.members.length).map((t) => t.id);
+    const order = shuffle(teams);
+    const word = this.partyPrompt('sing_it');
+    this.partyBase('sing_it', 'Sing It!', word, 'si_ready', {
+      value: PARTY.siPoints,
+      si: { word, order, alive: order.slice(), turn: 0, songs: [], counts: {}, last: null, winner: null, round: (this.siRound = (this.siRound || 0) + 1) },
+    });
+    for (const t of order) this.s.q.si.counts[t] = 0;
+    this.fx('singword', { word });
+    this.publish();
+  },
+  siActive() { const si = this.s.q.si; return si.alive[si.turn % Math.max(1, si.alive.length)]; },
+  singGo() {
+    const q = this.s.q;
+    q.stage = 'si_turn';
+    q.si.last = null;
+    const ms = { quick: 12000, relaxed: 15000, family: 20000 }[this.s.settings.answerTime] || PARTY.siTurn;
+    this.setTimer(ms);
+    this.fx('singturn', { team: this.siActive() });
+    this.publish();
+  },
+  singJudge(ok, why) {
+    const q = this.s.q;
+    if (!q || q.type !== 'sing_it' || q.stage !== 'si_turn') return;
+    const si = q.si, tid = this.siActive();
+    if (ok) {
+      si.counts[tid] = (si.counts[tid] || 0) + 1;
+      this.award(tid, q.value, 'sing-it');
+      si.songs.push({ team: tid, title: this.cur.pendingTitle || '' });
+      this.cur.pendingTitle = '';
+      si.last = { team: tid, ok: true };
+      for (const pid of (this.s.teams.find((t) => t.id === tid)?.members || [])) { const st = this.stat(pid); st.songs = (st.songs || 0) + 1; }
+      this.fx('singok', { team: tid });
+      if (si.songs.length >= PARTY.siCap) return this.singEnd(si.alive.slice());
+      si.turn = (si.alive.indexOf(tid) + 1) % si.alive.length;
+    } else {
+      this.cur.pendingTitle = '';
+      si.last = { team: tid, ok: false, why: why || 'nope' };
+      const i = si.alive.indexOf(tid);
+      si.alive.splice(i, 1);
+      this.fx('singout', { team: tid, why });
+      if (si.alive.length <= 1) return this.singEnd(si.alive.slice());
+      si.turn = i % si.alive.length;
+    }
+    q.timerEnd = 0;
+    q.stage = 'si_ready';
+    this.publish();
+    // keep it moving: next team's clock starts on its own after a beat
+    clearTimeout(this._siNext);
+    this._siNext = setTimeout(() => { const qq = this.s.q; if (qq && qq.type === 'sing_it' && qq.stage === 'si_ready' && !this.s.paused) this.singGo(); }, 2200);
+  },
+  singEnd(winners) {
+    const q = this.s.q, si = q.si;
+    clearTimeout(this._siNext);
+    const awards = {};
+    for (const [tid, n] of Object.entries(si.counts)) if (n) awards[tid] = n * q.value;
+    const bonus = winners.length === 1 ? PARTY.siBonus : Math.round(PARTY.siBonus / 2 / 50) * 50;
+    for (const tid of winners) { this.award(tid, bonus, 'sing-it-win'); awards[tid] = (awards[tid] || 0) + bonus; }
+    si.winner = winners;
+    Object.assign(q, { stage: 'reveal', timerEnd: 0, awards, result: 'party', top: winners });
+    this.fx('partyreveal', { kind: 'si', team: winners[0] || null });
+    this.publish();
   },
 
   // ---------- Settle It! ----------
@@ -315,6 +386,13 @@ const methods = {
         this.cur.twLie = lie;
         return this.twVoteStage();
       }
+      case 'si_turn': case 'si_ready': {
+        const t = this.teamOf(pid);
+        if (!t || t.id !== this.siActive()) return;
+        const title = clean(m.text, 60);
+        if (title) { this.cur.pendingTitle = title; q.si.typing = title; this.publish(); }
+        return;
+      }
       case 'tw_vote': {
         const i = +m.v;
         if (pid === q.tw.teller || ![0, 1, 2].includes(i)) return;
@@ -338,6 +416,9 @@ const methods = {
       case 'tt_vote': this.ttReveal(); break;
       case 'tw_write': this.twReveal(); break;
       case 'tw_vote': this.twReveal(); break;
+      case 'si_ready': this.singGo(); break;
+      case 'si_turn': if (q.timerEnd === 0) this.singJudge(false, 'time'); break; // only the clock (or ✅/❌) ends a turn
+      case 'si_win': this.singEnd(q.si.alive.slice()); break;
     }
     return true;
   },
@@ -351,6 +432,7 @@ const methods = {
       v.entries = q.tt.entries.map((e) => ({ id: e.id, text: e.text, hidden: !!e.hidden, by: this.s.players[this.cur.ttAuthors[e.id]]?.name || '?' }));
     }
     if (q.type === 'hot_take' || q.type === 'most_likely') v.answerText = 'No right answer — the room decides';
+    if (q.type === 'sing_it') v.answerText = `Word: ${q.si.word}${this.cur.pendingTitle ? ` · they say: "${this.cur.pendingTitle}"` : ''}`;
   },
 
   // ---------- Season mode ----------

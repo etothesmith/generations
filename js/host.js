@@ -580,21 +580,22 @@ function viewSurvey(s, q, paused) {
 
 function viewCharades(s, q, paused) {
   const ch = q.ch, tid = ch.order[ch.idx], t = teamById(s, tid);
+  const hum = q.mode === 'hum';
   const lanes = ch.order.map((id) => {
     const tt = teamById(s, id);
     return `<div class="lock ${id === tid && q.stage !== 'reveal' ? 'done' : ''}" style="--tc:${tt.color}">${esc(tt.name)}<div class="st">${ch.counts[id] || 0} ✓</div></div>`;
   }).join('');
   let body;
-  if (q.stage === 'ch_ready') body = `<div class="dd-splash" style="font-size:clamp(28px,4.6vw,86px)">CULTURE CHARADES</div>
+  if (q.stage === 'ch_ready') body = `<div class="dd-splash" style="font-size:clamp(28px,4.6vw,86px)">${hum ? '🎵 HUM THAT TUNE' : 'CULTURE CHARADES'}</div>
       <div class="ch-actor">${renderAvatar(s.players[ch.actor]?.avatar, 'focused', 150)}<div><div class="ch-who">${esc(pname(s, ch.actor))}</div><div style="color:${t.color};font-weight:900">${esc(t.name)}</div></div></div>
-      <div class="status-banner">Actor: your phone shows the clue. NO TALKING! ${esc(t.name)} shouts guesses. Host starts the clock.</div>`;
-  else if (q.stage === 'ch_act') body = `<div class="ch-who" style="color:${t.color}">${esc(pname(s, ch.actor))} is acting for ${esc(t.name)}!</div>
+      <div class="status-banner">${hum ? `Hummer: your phone shows the song. HUM ONLY — no words, no lyrics! ${esc(t.name)} shouts the title.` : `Actor: your phone shows the clue. NO TALKING! ${esc(t.name)} shouts guesses.`} Host starts the clock.</div>`;
+  else if (q.stage === 'ch_act') body = `<div class="ch-who" style="color:${t.color}">${esc(pname(s, ch.actor))} is ${hum ? 'humming' : 'acting'} for ${esc(t.name)}!${hum ? ' 🎶' : ''}</div>
       <div class="blitz-cd" style="font-size:clamp(70px,12vw,220px)">${ch.counts[tid]}</div><div class="status-banner">GUESS OUT LOUD! <span class="hl">+${money(q.value)}</span> each</div>${timerHTML(q)}`;
   else if (q.stage === 'ch_recap') body = `<div class="ch-who" style="color:${t.color}">${esc(t.name)}: ${ch.counts[tid]} correct!</div>
       <div class="ch-log">${ch.log.map((l) => `<span class="${l.got ? 'got' : 'skip'}">${l.got ? '✓' : '↷'} ${esc(l.word)}</span>`).join('') || '<span>No clues played</span>'}</div>
       <div class="status-banner">${ch.idx + 1 < ch.order.length ? 'Next team up!' : 'Final tally next!'}</div>`;
-  else body = `<div class="dd-splash" style="font-size:clamp(28px,4.6vw,86px)">CHARADES RESULTS</div><div class="status-banner">${q.top.length ? `Best actors: <span class="hl">${q.top.map((id) => esc(teamById(s, id).name)).join(' & ')}</span>` : 'Nobody scored!'}</div>`;
-  return `<div class="qwrap" style="grid-template-rows:auto"><div class="qcard" data-k="q-${q.flipId}-${q.stage}-${ch.idx}" style="min-height:0">${paused}<div class="qmeta">${iconHTML('masks')}<span>Culture Charades</span></div>${body}<div class="lock-grid">${lanes}</div></div></div>`;
+  else body = `<div class="dd-splash" style="font-size:clamp(28px,4.6vw,86px)">${hum ? 'HUM RESULTS' : 'CHARADES RESULTS'}</div><div class="status-banner">${q.top.length ? `${hum ? 'Best hummers' : 'Best actors'}: <span class="hl">${q.top.map((id) => esc(teamById(s, id).name)).join(' & ')}</span>` : 'Nobody scored!'}</div>`;
+  return `<div class="qwrap" style="grid-template-rows:auto"><div class="qcard" data-k="q-${q.flipId}-${q.stage}-${ch.idx}" style="min-height:0">${paused}<div class="qmeta">${iconHTML(hum ? 'vinyl' : 'masks')}<span>${hum ? 'Hum That Tune' : 'Culture Charades'}</span></div>${body}<div class="lock-grid">${lanes}</div></div></div>`;
 }
 
 
@@ -679,7 +680,35 @@ function viewParty(s, q, paused) {
       else status = !tw.statements ? 'No statements this time — skipped!' : tw.fooled ? `${esc(pname(s, tw.teller))} fooled <span class="hl">${tw.fooled}</span> ${tw.fooled === 1 ? 'person' : 'people'}! 🤥` : `Nobody fell for it… ${esc(pname(s, tw.teller))} can't lie to this family! 😂`;
     }
   }
+  if (q.type === 'sing_it') return viewSingIt(s, q, paused);
   return `<div class="qwrap" style="grid-template-rows:auto"><div class="qcard party ${q.type}" data-k="q-${q.flipId}" style="min-height:0">${paused}${ART.party[q.type] ? `<img class="party-sticker" src="${ART.party[q.type]}" alt="">` : ''}<div class="qmeta">${iconHTML(ICON[q.type])}<span>${esc(q.category)}</span></div>${body}<div class="status-banner">${status}</div>${timerHTML(q)}</div>${teamStrip(s, q)}</div>`;
+}
+
+function viewSingIt(s, q, paused) {
+  const si = q.si;
+  const active = si.alive.length ? si.alive[si.turn % si.alive.length] : null;
+  const at = active ? teamById(s, active) : null;
+  const letters = si.word.split('').map((c, i) => `<span style="animation-delay:${i * 0.07}s">${esc(c)}</span>`).join('');
+  const lanes = si.order.map((tid) => {
+    const t = teamById(s, tid), out = !si.alive.includes(tid), now = tid === active && q.stage !== 'reveal';
+    const win = q.stage === 'reveal' && (si.winner || []).includes(tid);
+    return `<div class="si-lane ${out ? 'out' : ''} ${now ? 'now' : ''} ${win ? 'win' : ''}" style="--tc:${t.color}">
+      <div class="si-tn">${esc(t.name)}</div><div class="si-n">${si.counts[tid] || 0} 🎵</div>
+      <div class="si-st">${win ? '👑 LAST ONE SINGING' : out ? '❌ OUT' : now ? '🎤 ON THE MIC' : 'waiting…'}</div></div>`;
+  }).join('');
+  let status = '';
+  if (q.stage === 'si_ready' && !si.songs.length && !si.last) status = `Any song with the word <span class="hl">"${esc(si.word)}"</span>. Sing at least a line! No repeats. <span class="hl">${esc(at?.name || '')}</span> goes first.`;
+  else if (q.stage === 'si_ready' && si.last) status = si.last.ok ? `<span class="hl">THAT COUNTS!</span> Next up: ${esc(at?.name || '')}` : `${esc(teamById(s, si.last.team)?.name || '')} is <span class="hl">OUT!</span> ${si.last.why === 'time' ? '⏰ Time ran out.' : ''} Next up: ${esc(at?.name || '')}`;
+  else if (q.stage === 'si_turn') status = `<span style="color:${at?.color}">${esc(at?.name || '')}</span> — SING IT! 🎤${si.typing ? ` <span class="si-typing">“${esc(si.typing)}”</span>` : ''}`;
+  else if (q.stage === 'reveal') status = (si.winner || []).length === 1 ? `<span class="hl">${esc(teamById(s, si.winner[0])?.name || '')}</span> out-sang everybody! +${PARTY.siBonus}` : `Too much talent! Everybody still standing splits the bonus.`;
+  const songs = si.songs.slice(-8).map((x) => `<span style="--tc:${teamById(s, x.team)?.color}">🎵 ${x.title ? esc(x.title) : 'a song'}</span>`).join('');
+  return `<div class="qwrap" style="grid-template-rows:auto"><div class="qcard party sing_it ${q.stage === 'si_turn' ? 'live' : ''}" data-k="q-${q.flipId}" style="min-height:0">${paused}
+    <div class="qmeta">${iconHTML('mic')}<span>Sing It!</span><span class="val">Round ${si.round}</span></div>
+    <div class="si-sing">Sing a song with the word…</div>
+    <div class="si-word" data-k="w-${q.flipId}">${letters}</div>
+    <div class="si-lanes" style="--n:${si.order.length}">${lanes}</div>
+    ${songs ? `<div class="si-songs">${songs}</div>` : ''}
+    <div class="status-banner">${status}</div>${q.stage === 'si_turn' ? timerHTML(q) : ''}</div></div>`;
 }
 
 // ---------- Sankofa Spin wheel (drawn in SVG) ----------
@@ -807,7 +836,8 @@ function awardsHTML(s) {
     card(a.closer, '🎤 The Closer', (n) => `flipped the room ${n}×`) +
     card(a.clown, '😂 Family Comedian', (n) => `${n} Top That! votes`) +
     card(a.liar, '🤥 Smooth Liar', (n) => `fooled ${n} people`) +
-    card(a.legend, '👑 Most Likely Legend', (n) => `picked by the room ${n}×`);
+    card(a.legend, '👑 Most Likely Legend', (n) => `picked by the room ${n}×`) +
+    card(a.singer, '🎤 Songbird', (n) => `${n} songs in Sing It!`);
   return html ? `<div class="awards">${html}</div>` : '';
 }
 
@@ -837,7 +867,7 @@ function renderScores(s) {
 }
 
 function peekText(s) {
-  if (s.phase === 'question' && s.q && ['blitz', 'charades', 'hot_take', 'most_likely', 'top_that'].includes(s.q.type)) return '';
+  if (s.phase === 'question' && s.q && ['blitz', 'charades', 'hot_take', 'most_likely', 'top_that', 'sing_it'].includes(s.q.type)) return '';
   if (s.phase === 'question' && s.q && s.q.type === 'two_truths') return E.cur && E.cur.twLie !== undefined && s.q.tw.statements ? `The lie is #${E.cur.twLie + 1}` : '';
   if (s.phase === 'question' && s.q && s.q.type === 'family_survey' && E.cur && E.cur.board) return E.cur.board.map((e, i) => `${i + 1}. ${e.label} (${e.count})`).join('  ·  ');
   if (s.phase === 'question' && E.cur && E.cur.full) {
@@ -854,10 +884,10 @@ function socialButtons() {
   if (!tvs.call) return '';
   const c = tvs.call;
   const n = c.count();
-  return `<button class="btn navy ${tvs.feed ? 'on' : ''}" data-act="tvfeed" title="Show family chat on screen">💬 Chat ${tvs.feed ? 'ON' : 'OFF'}</button>`
-    + `<button class="btn navy ${tvs.voices ? 'on' : ''}" data-act="tvvoices" title="Play voice notes out loud">🎤 Voice notes ${tvs.voices ? 'ON' : 'OFF'}</button>`
-    + (c.inCall ? `${c.local ? `<button class="btn navy" data-act="tvmute">${c.muted ? '🔇 Unmute' : '🎙️ Mute'}</button>` : ''}<button class="btn red" data-act="tvcallleave">📹 Leave call</button>`
-      : `<button class="btn green" data-act="tvcall">📹 Video call${n ? ` (${n})` : ''}</button>`);
+  return `<button class="btn navy ${tvs.feed ? 'on' : ''}" data-act="tvfeed" title="Family chat on screen: ${tvs.feed ? 'on' : 'off'}" aria-label="Family chat on screen">${tvs.feed ? '💬' : '💬✕'}</button>`
+    + `<button class="btn navy ${tvs.voices ? 'on' : ''}" data-act="tvvoices" title="Play voice notes out loud: ${tvs.voices ? 'on' : 'off'}" aria-label="Voice notes out loud">${tvs.voices ? '🎤' : '🎤✕'}</button>`
+    + (c.inCall ? `${c.local ? `<button class="btn navy" data-act="tvmute" aria-label="Mute">${c.muted ? '🔇' : '🎙️'}</button>` : ''}<button class="btn red" data-act="tvcallleave">📹 Leave</button>`
+      : `<button class="btn green" data-act="tvcall" title="Video call with family">📹${n ? ` ${n}` : ''}</button>`);
 }
 function renderControls(s) {
   if (WATCH) { setHTML(ui.controls, socialButtons() + `<button class="btn navy" data-act="sound">${soundOn() ? '🔊' : '🔇'}</button>`); return; }
@@ -880,6 +910,13 @@ function renderControls(s) {
     if (q.stage === 'ch_act') next('Time!');
     if (q.stage === 'ch_recap') next(q.ch.idx + 1 < q.ch.order.length ? 'Next Team →' : 'Final Tally →');
     const PN = { ht_vote1: 'Lock Votes → Debate', ht_vote2: 'Reveal the Shift', ml_vote: 'Reveal', tt_write: 'Close Writing', tt_vote: 'Reveal Winner', tw_write: 'Skip This Teller', tw_vote: 'Reveal the Lie' };
+    if (q.type === 'sing_it') {
+      if (q.stage === 'si_ready') next(q.si.songs.length || q.si.last ? '▶ Next Team Now' : '🎤 Start the Battle');
+      if (q.stage === 'si_turn') {
+        b.push(`<button class="btn green" data-act="judge" data-v="1">✅ That Counts<span class="kbd">C</span></button>`);
+        b.push(`<button class="btn red" data-act="judge" data-v="0">❌ Nope / Repeat<span class="kbd">X</span></button>`);
+      }
+    }
     if (q.stage === 'ht_argue') next(q.ht.turn === 0 && q.ht.speakers.disagree ? 'Other Side →' : 'Vote Again');
     else if (PN[q.stage]) next(PN[q.stage]);
     if (q.type === 'family_survey' && ['fo_answer', 'play', 'steal'].includes(q.stage)) {
@@ -1009,16 +1046,22 @@ function onFx(type, data) {
     case 'saved': setTimeout(() => { sfx('stamp'); stamp('saved'); confetti(80); }, 350); break;
     case 'reveal': sfx('reveal'); break;
     case 'vote': sfx('vote'); break;
+    case 'singword': sfx('fanfare'); crowdReact('cheer', 1600); setTimeout(() => mascotSay('point', pick(['Warm up those vocal cords!', 'No humming, no mumbling — SING!', 'Church choir, where you at?']), 2800), 900); break;
+    case 'singturn': sfx('buzz'); break;
+    case 'singok': sfx('correct'); crowdReact('cheer', 1400); confetti(40); if (Math.random() < .5) setTimeout(() => mascotSay('cheer', pick(['Sang that!', 'Okay, choir solo!', 'They KNEW that one!', 'Grandma approves!']), 1800), 200); break;
+    case 'singout': sfx(Math.random() < .5 ? 'wrong' : 'scratch'); crowdReact('gasp', 1400); shake(); setTimeout(() => mascotSay('gasp', data.why === 'time' ? pick(['Time! The band stopped playing!', 'Cricket noises…']) : pick(['That ain\'t it!', 'Off key AND off topic!', 'The host said NO!']), 2000), 200); break;
     case 'partyreveal': {
       const who = nm(data.pid);
-      sfx(data.pid ? 'fanfare' : 'reveal'); crowdReact(data.pid ? 'cheer' : 'gasp', 2200); if (data.pid) { confetti(80); setExpr(data.pid, 'cheer', 3500); }
+      const big = !!(data.pid || data.team);
+      sfx(big ? 'fanfare' : 'reveal'); crowdReact(big ? 'cheer' : 'gasp', 2200); if (big) { confetti(data.team ? 140 : 80); if (data.pid) setExpr(data.pid, 'cheer', 3500); }
       const L = {
         ht: data.side ? [`${who} said what needed to be said!`, `${who} could argue with a stop sign!`, `Somebody give ${who} a law degree!`] : ['Y\'all are STUBBORN!', 'Nobody moved an inch!'],
         ml: data.pid ? [`${who}… the family has SPOKEN!`, `Sorry ${who}, the receipts don't lie!`, `${who}, you know it's true!`] : ['Nobody wanted to snitch!'],
         tt: data.pid ? [`${who} is a whole comedian!`, `${who} need a Netflix special!`, `${who} took that one!`] : ['Tough crowd tonight!'],
+        si: [`${tm(data.team)} could sing all night!`, 'Somebody call the record label!', 'Last ones standing on the mic!'],
         tw: data.fooled ? [`${who} lie too smooth!`, `Never trust ${who} again!`, `${who} had y'all FOOLED!`] : [`${who} can't lie to save their life!`, 'This family knows EVERYTHING!'],
       };
-      setTimeout(() => mascotSay(data.pid ? 'cheer' : 'gasp', pick(L[data.kind] || ['Whew!']), 2800), 500);
+      setTimeout(() => mascotSay(big ? 'cheer' : 'gasp', pick(L[data.kind] || ['Whew!']), 2800), 500);
       break;
     }
     case 'fanfare': sfx('fanfare'); confetti(120); break;

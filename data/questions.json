@@ -15641,5 +15641,2059 @@
   "culturalContext": "He won the 100m, 200m, long jump and 4x100m relay.",
   "needsReview": false,
   "finalCategory": "Track Legends"
+ },
+ {
+  "id": "soul-028",
+  "round": 1,
+  "category": "Motown & Soul",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 2,
+  "prompt": "Ray Charles's 1960 hit with a state's name in the title is…",
+  "choices": [
+   "'Georgia on My Mind'",
+   "'Sweet Home Alabama'",
+   "'Carolina in My Mind'",
+   "'Tennessee Waltz'"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Georgia on My Mind"
+  ],
+  "culturalContext": "It became Georgia's official state song in 1979.",
+  "needsReview": false
+ },
+ {
+  "id": "soul-029",
+  "round": 1,
+  "category": "Motown & Soul",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 4,
+  "prompt": "'Midnight Train to Georgia' (1973) was a No. 1 hit for…",
+  "choices": [
+   "Gladys Knight & the Pips",
+   "The Supremes",
+   "Aretha Franklin",
+   "Patti LaBelle"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Gladys Knight"
+  ],
+  "culturalContext": "It won a Grammy in 1974.",
+  "needsReview": false
+ },
+ {
+  "id": "rnb-031",
+  "round": 1,
+  "category": "R&B & Hip-Hop",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 1,
+  "prompt": "Which rapper's real name is Shawn Carter?",
+  "choices": [
+   "Jay-Z",
+   "Nas",
+   "Diddy",
+   "Kanye West"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Jay-Z"
+  ],
+  "culturalContext": "His debut album was 'Reasonable Doubt' (1996).",
+  "needsReview": false
+ },
+ {
+  "id": "rnb-032",
+  "round": 1,
+  "category": "R&B & Hip-Hop",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 1,
+  "prompt": "'Rapper's Delight' (1979) was recorded by…",
+  "choices": [
+   "The Sugarhill Gang",
+   "Run-DMC",
+   "Grandmaster Flash",
+   "Kurtis Blow"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Sugarhill Gang"
+  ],
+  "culturalContext": "It was one of the first rap songs to hit the radio nationwide.",
+  "needsReview": false
+ },
+ {
+  "id": "rnb-033",
+  "round": 1,
+  "category": "R&B & Hip-Hop",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "Aaliyah's 2000 hit from the 'Romeo Must Die' soundtrack was…",
+  "choices": [
+   "'Try Again'",
+   "'One in a Million'",
+   "'Rock the Boat'",
+   "'Are You That Somebody?'"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Try Again"
+  ],
+  "culturalContext": "It was the first song to reach No. 1 on the Hot 100 based on airplay alone.",
+  "needsReview": false
+ },
+ {
+  "id": "rnb-034",
+  "round": 1,
+  "category": "R&B & Hip-Hop",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 3,
+  "prompt": "Which group recorded 'Ready or Not' and 'Killing Me Softly' (1996)?",
+  "choices": [
+   "Fugees",
+   "Digable Planets",
+   "A Tribe Called Quest",
+   "The Roots"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Fugees"
+  ],
+  "culturalContext": "Lauryn Hill, Wyclef Jean and Pras Michel.",
+  "needsReview": false
+ },
+ {
+  "id": "rnb-035",
+  "round": 1,
+  "category": "R&B & Hip-Hop",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "genz",
+  "difficulty": 3,
+  "prompt": "Lizzo plays which instrument on stage?",
+  "choices": [
+   "Flute",
+   "Saxophone",
+   "Violin",
+   "Trumpet"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "flute"
+  ],
+  "culturalContext": "She even played a crystal flute that belonged to President James Madison.",
+  "needsReview": false
+ },
+ {
+  "id": "rnb-036",
+  "round": 1,
+  "category": "R&B & Hip-Hop",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 5,
+  "prompt": "Queen Latifah's 1993 Grammy-winning anthem about respect for women was…",
+  "choices": [
+   "'U.N.I.T.Y.'",
+   "'Ladies First'",
+   "'Fly Girl'",
+   "'Just Another Day'"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "UNITY",
+   "U.N.I.T.Y."
+  ],
+  "culturalContext": "It won Best Rap Solo Performance.",
+  "needsReview": false
+ },
+ {
+  "id": "film-030",
+  "round": 1,
+  "category": "Classic Black Cinema",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 1,
+  "prompt": "In 'Coming to America,' Prince Akeem comes from…",
+  "choices": [
+   "Zamunda",
+   "Wakanda",
+   "Genovia",
+   "Zamora"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Zamunda"
+  ],
+  "culturalContext": "He went to Queens, New York, to find a bride.",
+  "needsReview": false
+ },
+ {
+  "id": "film-031",
+  "round": 1,
+  "category": "Classic Black Cinema",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "'Drumline' (2002) stars Nick Cannon as a drummer at a college modeled after which school's band?",
+  "choices": [
+   "An HBCU like FAMU or Southern",
+   "Ohio State",
+   "Notre Dame",
+   "USC"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "HBCU"
+  ],
+  "culturalContext": "The fictional Atlanta A&T was inspired by HBCU marching bands.",
+  "needsReview": false
+ },
+ {
+  "id": "film-032",
+  "round": 1,
+  "category": "Classic Black Cinema",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 3,
+  "prompt": "In 'Boomerang' (1992), Eddie Murphy's love interests are played by Robin Givens and…",
+  "choices": [
+   "Halle Berry",
+   "Vivica A. Fox",
+   "Nia Long",
+   "Jada Pinkett"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Halle Berry"
+  ],
+  "culturalContext": "Grace Jones and Eartha Kitt also star.",
+  "needsReview": false
+ },
+ {
+  "id": "film-033",
+  "round": 1,
+  "category": "Classic Black Cinema",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 4,
+  "prompt": "Diahann Carroll was nominated for an Oscar for which 1974 film?",
+  "choices": [
+   "Claudine",
+   "Sparkle",
+   "Lady Sings the Blues",
+   "Uptown Saturday Night"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Claudine"
+  ],
+  "culturalContext": "She played a single mother raising six kids in Harlem.",
+  "needsReview": false
+ },
+ {
+  "id": "tv-027",
+  "round": 1,
+  "category": "Black TV Classics",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 1,
+  "prompt": "Steve Urkel's famous catchphrase is…",
+  "choices": [
+   "'Did I do that?'",
+   "'Whatchu talkin' 'bout?'",
+   "'Dy-no-mite!'",
+   "'Hey hey hey!'"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Did I do that"
+  ],
+  "culturalContext": "Jaleel White played him on 'Family Matters.'",
+  "needsReview": false
+ },
+ {
+  "id": "tv-028",
+  "round": 1,
+  "category": "Black TV Classics",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 2,
+  "prompt": "Arnold's catchphrase on 'Diff'rent Strokes' was…",
+  "choices": [
+   "'Whatchu talkin' 'bout, Willis?'",
+   "'Did I do that?'",
+   "'Kiss my grits!'",
+   "'Dy-no-mite!'"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Whatchu talkin bout Willis"
+  ],
+  "culturalContext": "Gary Coleman played Arnold.",
+  "needsReview": false
+ },
+ {
+  "id": "tv-029",
+  "round": 1,
+  "category": "Black TV Classics",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 3,
+  "prompt": "On 'Sister, Sister,' the twins are played by…",
+  "choices": [
+   "Tia and Tamera Mowry",
+   "Tia and Tahj Mowry",
+   "Brandy and Monica",
+   "Raven and Kyla Pratt"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Tia and Tamera"
+  ],
+  "culturalContext": "Their brother Tahj starred on 'Smart Guy.'",
+  "needsReview": false
+ },
+ {
+  "id": "tv-030",
+  "round": 1,
+  "category": "Black TV Classics",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 4,
+  "prompt": "'Living Single' was created by…",
+  "choices": [
+   "Yvette Lee Bowser",
+   "Mara Brock Akil",
+   "Shonda Rhimes",
+   "Debbie Allen"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Yvette Lee Bowser"
+  ],
+  "culturalContext": "She was among the first Black women to create a prime-time series.",
+  "needsReview": false
+ },
+ {
+  "id": "tv-031",
+  "round": 1,
+  "category": "Black TV Classics",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 5,
+  "prompt": "'The Flip Wilson Show' made which character famous?",
+  "choices": [
+   "Geraldine",
+   "Fred Sanford",
+   "Florida Evans",
+   "Madea"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Geraldine"
+  ],
+  "culturalContext": "'The devil made me do it!'",
+  "needsReview": false
+ },
+ {
+  "id": "hist-030",
+  "round": 1,
+  "category": "Black History Deep Cuts",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Which amendment abolished slavery in the U.S. in 1865?",
+  "choices": [
+   "13th",
+   "14th",
+   "15th",
+   "19th"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "13th",
+   "Thirteenth"
+  ],
+  "culturalContext": "The 14th guaranteed citizenship; the 15th protected the right to vote.",
+  "needsReview": false
+ },
+ {
+  "id": "hist-031",
+  "round": 1,
+  "category": "Black History Deep Cuts",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "Sojourner Truth gave her famous 'Ain't I a Woman?' speech in 1851 in which state?",
+  "choices": [
+   "Ohio",
+   "New York",
+   "Massachusetts",
+   "Pennsylvania"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Ohio"
+  ],
+  "culturalContext": "She spoke at a women's rights convention in Akron.",
+  "needsReview": false
+ },
+ {
+  "id": "hist-032",
+  "round": 1,
+  "category": "Black History Deep Cuts",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "In 1872, P.B.S. Pinchback briefly became the first Black governor of which state?",
+  "choices": [
+   "Louisiana",
+   "Mississippi",
+   "South Carolina",
+   "Virginia"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Louisiana"
+  ],
+  "culturalContext": "He served about five weeks.",
+  "needsReview": false
+ },
+ {
+  "id": "star-026",
+  "round": 1,
+  "category": "Trailblazers",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Jackie Joyner-Kersee is famous in which sport?",
+  "choices": [
+   "Track and field",
+   "Tennis",
+   "Gymnastics",
+   "Basketball"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "track"
+  ],
+  "culturalContext": "Sports Illustrated named her the greatest female athlete of the 20th century.",
+  "needsReview": false
+ },
+ {
+  "id": "star-027",
+  "round": 1,
+  "category": "Trailblazers",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "Who was the first African American to win a Nobel Peace Prize?",
+  "choices": [
+   "Ralph Bunche",
+   "Martin Luther King Jr.",
+   "Barack Obama",
+   "Desmond Tutu"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Ralph Bunche"
+  ],
+  "culturalContext": "He won in 1950 for his work as a U.N. mediator in the Middle East.",
+  "needsReview": false
+ },
+ {
+  "id": "star-028",
+  "round": 1,
+  "category": "Trailblazers",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "Constance Baker Motley was the first Black woman to become a…",
+  "choices": [
+   "Federal judge",
+   "Senator",
+   "Astronaut",
+   "Governor"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "federal judge"
+  ],
+  "culturalContext": "She also argued and won nine of the ten civil rights cases she brought before the Supreme Court.",
+  "needsReview": false
+ },
+ {
+  "id": "star-029",
+  "round": 1,
+  "category": "Trailblazers",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "Who was the first Black woman to serve in the U.S. Senate?",
+  "choices": [
+   "Carol Moseley Braun",
+   "Shirley Chisholm",
+   "Barbara Jordan",
+   "Kamala Harris"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Carol Moseley Braun"
+  ],
+  "culturalContext": "She represented Illinois starting in 1993.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-026",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Which boxer was nicknamed 'Iron Mike'?",
+  "choices": [
+   "Mike Tyson",
+   "Muhammad Ali",
+   "Floyd Mayweather",
+   "Joe Frazier"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Mike Tyson"
+  ],
+  "culturalContext": "He became the youngest heavyweight champion at 20.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-027",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "genz",
+  "difficulty": 2,
+  "prompt": "Simone Biles has won how many Olympic gold medals (through 2024)?",
+  "choices": [
+   "4",
+   "7",
+   "10",
+   "12"
+  ],
+  "answer": "B",
+  "acceptAlso": [
+   "7",
+   "seven"
+  ],
+  "culturalContext": "She won three more in Paris 2024.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-028",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 3,
+  "prompt": "Florence Griffith Joyner, 'Flo-Jo,' still holds the world record in which events?",
+  "choices": [
+   "100m and 200m",
+   "400m and 800m",
+   "Long jump",
+   "Hurdles"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "100m and 200m",
+   "100 and 200"
+  ],
+  "culturalContext": "She set them in 1988.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-029",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 4,
+  "prompt": "Jack Johnson was the first Black world heavyweight boxing champion in…",
+  "choices": [
+   "1908",
+   "1928",
+   "1948",
+   "1968"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "1908"
+  ],
+  "culturalContext": "He beat Tommy Burns in Sydney, Australia.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-030",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "Who was the first Black head coach to win a Super Bowl?",
+  "choices": [
+   "Tony Dungy",
+   "Lovie Smith",
+   "Mike Tomlin",
+   "Art Shell"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Tony Dungy"
+  ],
+  "culturalContext": "His Colts beat Lovie Smith's Bears in Super Bowl XLI (Feb. 2007).",
+  "needsReview": false
+ },
+ {
+  "id": "gospel-024",
+  "round": 1,
+  "category": "Church & Gospel",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Which gospel singer was known as the 'First Lady of Gospel' and sang 'Hold My Mule'?",
+  "choices": [
+   "Shirley Caesar",
+   "Mahalia Jackson",
+   "CeCe Winans",
+   "Yolanda Adams"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Shirley Caesar"
+  ],
+  "culturalContext": "Her 'Hold My Mule' became a viral remix in 2016.",
+  "needsReview": false
+ },
+ {
+  "id": "gospel-025",
+  "round": 1,
+  "category": "Church & Gospel",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 3,
+  "prompt": "BeBe and CeCe Winans are brother and sister from which city?",
+  "choices": [
+   "Detroit",
+   "Chicago",
+   "Atlanta",
+   "Memphis"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Detroit"
+  ],
+  "culturalContext": "The Winans family is gospel royalty.",
+  "needsReview": false
+ },
+ {
+  "id": "gospel-026",
+  "round": 1,
+  "category": "Church & Gospel",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "Which spiritual was said to carry secret messages about escaping on the Underground Railroad?",
+  "choices": [
+   "'Wade in the Water'",
+   "'Amazing Grace'",
+   "'This Little Light of Mine'",
+   "'Oh Happy Day'"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Wade in the Water"
+  ],
+  "culturalContext": "The story says it reminded freedom seekers to travel in water so dogs lost their scent.",
+  "needsReview": false
+ },
+ {
+  "id": "gospel-027",
+  "round": 1,
+  "category": "Church & Gospel",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "The Fisk Jubilee Singers first toured in 1871 to raise money for…",
+  "choices": [
+   "Fisk University",
+   "A church",
+   "The Union Army",
+   "A hospital"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Fisk University"
+  ],
+  "culturalContext": "They brought spirituals to audiences across America and Europe.",
+  "needsReview": false
+ },
+ {
+  "id": "kids-027",
+  "round": 1,
+  "category": "Little Ones' Corner",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "In 'The Princess and the Frog,' Tiana dreams of opening a restaurant in which city?",
+  "choices": [
+   "New Orleans",
+   "Atlanta",
+   "Chicago",
+   "Houston"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "New Orleans"
+  ],
+  "culturalContext": "Her restaurant is called Tiana's Palace.",
+  "needsReview": false
+ },
+ {
+  "id": "kids-028",
+  "round": 1,
+  "category": "Little Ones' Corner",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "The picture book 'Hair Love' was written by…",
+  "choices": [
+   "Matthew A. Cherry",
+   "Kadir Nelson",
+   "Vashti Harrison",
+   "Jacqueline Woodson"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Matthew A. Cherry"
+  ],
+  "culturalContext": "He also directed the Oscar-winning short.",
+  "needsReview": false
+ },
+ {
+  "id": "kids-029",
+  "round": 1,
+  "category": "Little Ones' Corner",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "Which author wrote the children's book 'Brown Girl Dreaming'?",
+  "choices": [
+   "Jacqueline Woodson",
+   "Maya Angelou",
+   "Toni Morrison",
+   "Virginia Hamilton"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Jacqueline Woodson"
+  ],
+  "culturalContext": "It won the National Book Award in 2014.",
+  "needsReview": false
+ },
+ {
+  "id": "comedy-024",
+  "round": 1,
+  "category": "Comedy Kings & Queens",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Who starred as a Chicago uncle raising his sister's three kids on 'The Bernie Mac Show'?",
+  "choices": [
+   "Bernie Mac",
+   "Cedric the Entertainer",
+   "Steve Harvey",
+   "D.L. Hughley"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Bernie Mac"
+  ],
+  "culturalContext": "'America, let me tell you something…'",
+  "needsReview": false
+ },
+ {
+  "id": "comedy-025",
+  "round": 1,
+  "category": "Comedy Kings & Queens",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 3,
+  "prompt": "Who created and starred in 'Chappelle's Show' on Comedy Central?",
+  "choices": [
+   "Dave Chappelle",
+   "Neal Brennan only",
+   "Charlie Murphy",
+   "Donnell Rawlings"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Dave Chappelle"
+  ],
+  "culturalContext": "Dave co-created it with Neal Brennan in 2003.",
+  "needsReview": false
+ },
+ {
+  "id": "comedy-026",
+  "round": 1,
+  "category": "Comedy Kings & Queens",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "genz",
+  "difficulty": 4,
+  "prompt": "Which comedian hosted the Oscars in 2005 and 2016?",
+  "choices": [
+   "Chris Rock",
+   "Kevin Hart",
+   "Wanda Sykes",
+   "Steve Harvey"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Chris Rock"
+  ],
+  "culturalContext": "In 2022, Wanda Sykes co-hosted with Amy Schumer and Regina Hall.",
+  "needsReview": false
+ },
+ {
+  "id": "comedy-027",
+  "round": 1,
+  "category": "Comedy Kings & Queens",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 5,
+  "prompt": "Redd Foxx's real first name was…",
+  "choices": [
+   "John",
+   "Fred",
+   "Elroy",
+   "Raymond"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "John"
+  ],
+  "culturalContext": "He was born John Elroy Sanford — 'Fred Sanford' was his brother's name.",
+  "needsReview": false
+ },
+ {
+  "id": "food-020",
+  "round": 1,
+  "category": "Soul Food Kitchen",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "What's the main ingredient in sweet potato pie?",
+  "choices": [
+   "Sweet potatoes",
+   "Pumpkin",
+   "Carrots",
+   "Squash"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "sweet potatoes"
+  ],
+  "culturalContext": "Butter, nutmeg and cinnamon do the rest.",
+  "needsReview": false
+ },
+ {
+  "id": "food-021",
+  "round": 1,
+  "category": "Soul Food Kitchen",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Chicken and waffles became famous at Harlem's Wells Supper Club in which decade?",
+  "choices": [
+   "1930s",
+   "1960s",
+   "1980s",
+   "2000s"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "1930s"
+  ],
+  "culturalContext": "Jazz musicians coming off late gigs wanted dinner AND breakfast.",
+  "needsReview": false
+ },
+ {
+  "id": "food-022",
+  "round": 1,
+  "category": "Soul Food Kitchen",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "'Pot likker' is…",
+  "choices": [
+   "The juice left after cooking greens",
+   "A kind of moonshine",
+   "Gravy for chicken",
+   "Syrup for pancakes"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "greens juice",
+   "juice from greens"
+  ],
+  "culturalContext": "Grandma would have you drink it with cornbread.",
+  "needsReview": false
+ },
+ {
+  "id": "food-023",
+  "round": 1,
+  "category": "Soul Food Kitchen",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "Juneteenth celebrations often feature red foods and drinks, like…",
+  "choices": [
+   "Strawberry soda and red velvet cake",
+   "Blueberry pie",
+   "Green tea",
+   "Lemon bars"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "red drink",
+   "strawberry soda"
+  ],
+  "culturalContext": "Red is said to honor the resilience and sacrifice of the enslaved.",
+  "needsReview": false
+ },
+ {
+  "id": "food-024",
+  "round": 1,
+  "category": "Soul Food Kitchen",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "Jubilee! by Toni Tipton-Martin is a celebrated cookbook about…",
+  "choices": [
+   "Two centuries of African American cooking",
+   "Soul food restaurants in Harlem",
+   "Vegan soul food",
+   "Barbecue"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "African American cooking"
+  ],
+  "culturalContext": "Her earlier book, 'The Jemima Code,' won a James Beard Award.",
+  "needsReview": false
+ },
+ {
+  "id": "dance-023",
+  "round": 1,
+  "category": "Soul Train & Dance",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Which dance has people sliding to 'Electric Boogie'?",
+  "choices": [
+   "The Electric Slide",
+   "The Wobble",
+   "The Twist",
+   "The Robot"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Electric Slide"
+  ],
+  "culturalContext": "The song is by Marcia Griffiths.",
+  "needsReview": false
+ },
+ {
+  "id": "dance-024",
+  "round": 1,
+  "category": "Soul Train & Dance",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 4,
+  "prompt": "The Nicholas Brothers were famous for…",
+  "choices": [
+   "Acrobatic tap dancing",
+   "Ballet",
+   "Breakdancing",
+   "Ballroom"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "tap"
+  ],
+  "culturalContext": "Their split-jumps down a staircase in 'Stormy Weather' (1943) are legendary.",
+  "needsReview": false
+ },
+ {
+  "id": "dance-025",
+  "round": 1,
+  "category": "Soul Train & Dance",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "Alvin Ailey's signature 1960 dance work set to spirituals is…",
+  "choices": [
+   "Revelations",
+   "Cry",
+   "Blues Suite",
+   "Rhythm"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Revelations"
+  ],
+  "culturalContext": "It's one of the most widely seen modern dance works ever.",
+  "needsReview": false
+ },
+ {
+  "id": "hbcu-022",
+  "round": 1,
+  "category": "HBCU Life",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Morehouse College is an HBCU for…",
+  "choices": [
+   "Men",
+   "Women",
+   "Everyone",
+   "Only grad students"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "men"
+  ],
+  "culturalContext": "Dr. King and Spike Lee are both Morehouse men.",
+  "needsReview": false
+ },
+ {
+  "id": "hbcu-023",
+  "round": 1,
+  "category": "HBCU Life",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "The Atlanta University Center includes Spelman, Morehouse and…",
+  "choices": [
+   "Clark Atlanta University",
+   "Howard",
+   "Fisk",
+   "Tuskegee"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Clark Atlanta"
+  ],
+  "culturalContext": "Morehouse School of Medicine is part of it too.",
+  "needsReview": false
+ },
+ {
+  "id": "hbcu-024",
+  "round": 1,
+  "category": "HBCU Life",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "Which HBCU is in Nashville and is home to the Jubilee Singers?",
+  "choices": [
+   "Fisk University",
+   "Tennessee State",
+   "Meharry",
+   "Lane College"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Fisk"
+  ],
+  "culturalContext": "W.E.B. Du Bois graduated from Fisk in 1888.",
+  "needsReview": false
+ },
+ {
+  "id": "hbcu-025",
+  "round": 1,
+  "category": "HBCU Life",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "Hampton University's motto is 'The Standard of…'",
+  "choices": [
+   "Excellence",
+   "Greatness",
+   "Freedom",
+   "Leadership"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Excellence"
+  ],
+  "culturalContext": "Booker T. Washington studied there.",
+  "needsReview": false
+ },
+ {
+  "id": "shop-011",
+  "round": 1,
+  "category": "Barbershop & Beauty Shop",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "The 'Caesar' haircut is…",
+  "choices": [
+   "Short and even all over",
+   "Long and braided",
+   "Shaved on one side",
+   "Curly on top"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "short"
+  ],
+  "culturalContext": "Popular with every generation of Black men.",
+  "needsReview": false
+ },
+ {
+  "id": "shop-012",
+  "round": 1,
+  "category": "Barbershop & Beauty Shop",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "A 'silk press' straightens natural hair using…",
+  "choices": [
+   "Heat, without chemicals",
+   "A relaxer",
+   "Braids",
+   "A wig"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "heat"
+  ],
+  "culturalContext": "It's a modern take on the hot-comb press.",
+  "needsReview": false
+ },
+ {
+  "id": "shop-013",
+  "round": 1,
+  "category": "Barbershop & Beauty Shop",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "Brushing short hair in a circular pattern to create a ripple look is called…",
+  "choices": [
+   "Waves",
+   "Twists",
+   "Locs",
+   "Fades"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "waves"
+  ],
+  "culturalContext": "Durags keep them laid.",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-012",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Which jazz pianist and bandleader was known as 'the Count'?",
+  "choices": [
+   "Count Basie",
+   "Duke Ellington",
+   "Thelonious Monk",
+   "Earl Hines"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Count Basie"
+  ],
+  "culturalContext": "His band came out of Kansas City.",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-013",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "Thelonious Monk played which instrument?",
+  "choices": [
+   "Piano",
+   "Trumpet",
+   "Saxophone",
+   "Bass"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "piano"
+  ],
+  "culturalContext": "'Round Midnight' is one of his famous compositions.",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-014",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "Billie Holiday's haunting 1939 protest song about lynching is…",
+  "choices": [
+   "'Strange Fruit'",
+   "'God Bless the Child'",
+   "'Summertime'",
+   "'Lover Man'"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Strange Fruit"
+  ],
+  "culturalContext": "Time magazine later called it the song of the century.",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-015",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "Who was known as the 'Empress of the Blues'?",
+  "choices": [
+   "Bessie Smith",
+   "Ma Rainey",
+   "Etta James",
+   "Big Mama Thornton"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Bessie Smith"
+  ],
+  "culturalContext": "Ma Rainey was called the 'Mother of the Blues.'",
+  "needsReview": false
+ },
+ {
+  "id": "biz-013",
+  "round": 1,
+  "category": "Black Business & Money",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Which magazine, founded in 1970, focuses on Black business and personal finance?",
+  "choices": [
+   "Black Enterprise",
+   "Ebony",
+   "Essence",
+   "Jet"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Black Enterprise"
+  ],
+  "culturalContext": "Earl G. Graves Sr. founded it.",
+  "needsReview": false
+ },
+ {
+  "id": "biz-014",
+  "round": 1,
+  "category": "Black Business & Money",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "genz",
+  "difficulty": 3,
+  "prompt": "Rihanna's beauty brand with 40 foundation shades at launch is…",
+  "choices": [
+   "Fenty Beauty",
+   "Savage X",
+   "Pattern",
+   "Uoma"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Fenty"
+  ],
+  "culturalContext": "It launched in 2017 and changed the makeup industry.",
+  "needsReview": false
+ },
+ {
+  "id": "biz-015",
+  "round": 1,
+  "category": "Black Business & Money",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 4,
+  "prompt": "Magic Johnson built a business empire after basketball, starting with…",
+  "choices": [
+   "Movie theaters in Black neighborhoods",
+   "A record label",
+   "A shoe company",
+   "A soda brand"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "movie theaters"
+  ],
+  "culturalContext": "Magic Johnson Theatres opened in 1995.",
+  "needsReview": false
+ },
+ {
+  "id": "card-027",
+  "round": 1,
+  "category": "Card Check",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "At a cookout, the person who 'can't cook' should bring…",
+  "choices": [
+   "Ice, cups or paper plates",
+   "The potato salad",
+   "The main dish",
+   "The mac and cheese"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "ice"
+  ],
+  "culturalContext": "Everybody knows the rules.",
+  "needsReview": false
+ },
+ {
+  "id": "card-028",
+  "round": 1,
+  "category": "Card Check",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "What's another name for the 'Black national anthem'?",
+  "choices": [
+   "'Lift Every Voice and Sing'",
+   "'We Shall Overcome'",
+   "'A Change Is Gonna Come'",
+   "'Respect'"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Lift Every Voice and Sing"
+  ],
+  "culturalContext": "James Weldon Johnson wrote the words in 1900.",
+  "needsReview": false
+ },
+ {
+  "id": "card-029",
+  "round": 1,
+  "category": "Card Check",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "In Spades, saying you'll win zero books is called going…",
+  "choices": [
+   "Nil",
+   "Blind",
+   "Boston",
+   "Board"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "nil"
+  ],
+  "culturalContext": "Bid nil and win a book? That's a bag of trouble.",
+  "needsReview": false
+ },
+ {
+  "id": "who-023",
+  "round": 1,
+  "category": "Who Said It?",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Who said, 'I'm the greatest!'?",
+  "choices": [
+   "Muhammad Ali",
+   "Michael Jordan",
+   "Kanye West",
+   "Serena Williams"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Ali",
+   "Muhammad Ali"
+  ],
+  "culturalContext": "He said it often — and backed it up.",
+  "needsReview": false
+ },
+ {
+  "id": "who-024",
+  "round": 1,
+  "category": "Who Said It?",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "Who said, 'If you don't like something, change it. If you can't change it, change your attitude'?",
+  "choices": [
+   "Maya Angelou",
+   "Oprah Winfrey",
+   "Michelle Obama",
+   "Toni Morrison"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Maya Angelou"
+  ],
+  "culturalContext": "The poet wrote and spoke these words of wisdom often.",
+  "needsReview": false
+ },
+ {
+  "id": "who-025",
+  "round": 1,
+  "category": "Who Said It?",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "Who said, 'When they go low, we go high'?",
+  "choices": [
+   "Michelle Obama",
+   "Barack Obama",
+   "Kamala Harris",
+   "Oprah Winfrey"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Michelle Obama"
+  ],
+  "culturalContext": "She said it at the 2016 Democratic National Convention.",
+  "needsReview": false
+ },
+ {
+  "id": "maj-044",
+  "round": 2,
+  "category": "Majority Rules",
+  "value": 50,
+  "questionType": "majority_rules",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Best song to end a family party?",
+  "choices": [
+   "'Before I Let Go'",
+   "'Lovely Day'",
+   "'Golden'",
+   "'Happy Feelings'"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "No right answer. The room decides!",
+  "needsReview": false
+ },
+ {
+  "id": "maj-045",
+  "round": 2,
+  "category": "Majority Rules",
+  "value": 50,
+  "questionType": "majority_rules",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Best karaoke song for this family?",
+  "choices": [
+   "'I Will Always Love You'",
+   "'Ain't No Mountain High Enough'",
+   "'Let's Stay Together'",
+   "'September'"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "No right answer. The room decides!",
+  "needsReview": false
+ },
+ {
+  "id": "maj-046",
+  "round": 2,
+  "category": "Majority Rules",
+  "value": 50,
+  "questionType": "majority_rules",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Best Sunday morning gospel artist?",
+  "choices": [
+   "Kirk Franklin",
+   "Mahalia Jackson",
+   "CeCe Winans",
+   "Tye Tribbett"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "No right answer. The room decides!",
+  "needsReview": false
+ },
+ {
+  "id": "maj-047",
+  "round": 2,
+  "category": "Majority Rules",
+  "value": 50,
+  "questionType": "majority_rules",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Best way to spend a snow day?",
+  "choices": [
+   "Movies and snacks",
+   "Spades marathon",
+   "Sleep all day",
+   "Cooking a big pot of something"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "No right answer. The room decides!",
+  "needsReview": false
+ },
+ {
+  "id": "maj-048",
+  "round": 2,
+  "category": "Majority Rules",
+  "value": 50,
+  "questionType": "majority_rules",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Best Black-owned restaurant order?",
+  "choices": [
+   "Fried fish plate",
+   "Wings",
+   "Oxtails",
+   "Shrimp and grits"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "No right answer. The room decides!",
+  "needsReview": false
+ },
+ {
+  "id": "maj-049",
+  "round": 2,
+  "category": "Majority Rules",
+  "value": 50,
+  "questionType": "majority_rules",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Who's the best singer in this family?",
+  "choices": [
+   "Grandma",
+   "An auntie",
+   "A cousin",
+   "Nobody — let's be honest"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "No right answer. The room decides!",
+  "needsReview": false
+ },
+ {
+  "id": "tag-026",
+  "round": 2,
+  "category": "Hashtag Decode",
+  "value": 200,
+  "questionType": "hashtag",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Decode this hashtag: #BlackLivesMatter",
+  "choices": [
+   "A movement against racism and police violence",
+   "A music festival",
+   "A fitness challenge",
+   "A history book"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Alicia Garza, Patrisse Cullors and Ayọ Tometi started it in 2013.",
+  "needsReview": false
+ },
+ {
+  "id": "tag-027",
+  "round": 2,
+  "category": "Hashtag Decode",
+  "value": 200,
+  "questionType": "hashtag",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Decode this hashtag: #BlackOwned",
+  "choices": [
+   "Supporting Black-owned businesses",
+   "A real estate listing",
+   "A clothing size",
+   "A movie rating"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Buy Black: put money back in the community.",
+  "needsReview": false
+ },
+ {
+  "id": "mama-028",
+  "round": 2,
+  "category": "Mama Said",
+  "value": 200,
+  "questionType": "saying",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Close your mouth when you…",
+  "choices": [
+   "Chew",
+   "Talk",
+   "Sing",
+   "Sleep"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Table manners, enforced.",
+  "needsReview": false
+ },
+ {
+  "id": "mama-029",
+  "round": 2,
+  "category": "Mama Said",
+  "value": 200,
+  "questionType": "saying",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "You better be glad I'm…",
+  "choices": [
+   "Saved",
+   "Tired",
+   "Busy",
+   "Nice"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Thank the Lord for church, that's all I'm saying.",
+  "needsReview": false
+ },
+ {
+  "id": "emoji-030",
+  "round": 2,
+  "category": "Emoji Decode",
+  "value": 200,
+  "questionType": "emoji",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "🎾👨🏾‍👧🏾👧🏾",
+  "choices": [
+   "King Richard",
+   "Venus and Serena",
+   "Love & Basketball",
+   "Coach Carter"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "",
+  "needsReview": false
+ },
+ {
+  "id": "emoji-031",
+  "round": 2,
+  "category": "Emoji Decode",
+  "value": 200,
+  "questionType": "emoji",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "🏀👨🏾‍🏫🏫",
+  "choices": [
+   "Coach Carter",
+   "He Got Game",
+   "Above the Rim",
+   "White Men Can't Jump"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "",
+  "needsReview": false
+ },
+ {
+  "id": "ogg-029",
+  "round": 2,
+  "category": "One's Gotta Go",
+  "value": 200,
+  "questionType": "one_gotta_go",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Gospel legends — one's gotta go!",
+  "choices": [
+   "Mahalia Jackson",
+   "Kirk Franklin",
+   "Shirley Caesar",
+   "CeCe Winans"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "The room has spoken.",
+  "needsReview": false
+ },
+ {
+  "id": "ogg-030",
+  "round": 2,
+  "category": "One's Gotta Go",
+  "value": 200,
+  "questionType": "one_gotta_go",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Comedy movies — one's gotta go!",
+  "choices": [
+   "Friday",
+   "Coming to America",
+   "Bad Boys",
+   "The Nutty Professor"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "The room has spoken.",
+  "needsReview": false
+ },
+ {
+  "id": "ogg-031",
+  "round": 2,
+  "category": "One's Gotta Go",
+  "value": 200,
+  "questionType": "one_gotta_go",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Breakfast sides — one's gotta go!",
+  "choices": [
+   "Grits",
+   "Biscuits",
+   "Hash browns",
+   "Fried apples"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "The room has spoken.",
+  "needsReview": false
+ },
+ {
+  "id": "ogg-032",
+  "round": 2,
+  "category": "One's Gotta Go",
+  "value": 200,
+  "questionType": "one_gotta_go",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Love songs — one's gotta go!",
+  "choices": [
+   "'Let's Stay Together'",
+   "'Adorn'",
+   "'Spend My Life with You'",
+   "'Ribbon in the Sky'"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "The room has spoken.",
+  "needsReview": false
+ },
+ {
+  "id": "era-055",
+  "round": 2,
+  "category": "Name That Era",
+  "value": 200,
+  "questionType": "name_that_era",
+  "generationEra": "elders",
+  "difficulty": 2,
+  "prompt": "In which decade did this come out?\n'Superfly' — Curtis Mayfield",
+  "choices": [
+   "1960s",
+   "1970s",
+   "1980s",
+   "1990s"
+  ],
+  "answer": "B",
+  "acceptAlso": [],
+  "culturalContext": "The 1972 soundtrack outgrossed the movie.",
+  "needsReview": false
+ },
+ {
+  "id": "era-056",
+  "round": 2,
+  "category": "Name That Era",
+  "value": 200,
+  "questionType": "name_that_era",
+  "generationEra": "genx",
+  "difficulty": 2,
+  "prompt": "In which decade did this come out?\n'Rock with You' — Michael Jackson",
+  "choices": [
+   "1960s",
+   "1970s",
+   "1980s",
+   "1990s"
+  ],
+  "answer": "B",
+  "acceptAlso": [],
+  "culturalContext": "Released in late 1979 from 'Off the Wall.'",
+  "needsReview": false
+ },
+ {
+  "id": "era-057",
+  "round": 2,
+  "category": "Name That Era",
+  "value": 200,
+  "questionType": "name_that_era",
+  "generationEra": "genx",
+  "difficulty": 2,
+  "prompt": "In which decade did this come out?\n'Ladies First' — Queen Latifah feat. Monie Love",
+  "choices": [
+   "1970s",
+   "1980s",
+   "1990s",
+   "2000s"
+  ],
+  "answer": "B",
+  "acceptAlso": [],
+  "culturalContext": "Released in 1989 on 'All Hail the Queen.'",
+  "needsReview": false
+ },
+ {
+  "id": "era-058",
+  "round": 2,
+  "category": "Name That Era",
+  "value": 200,
+  "questionType": "name_that_era",
+  "generationEra": "genx",
+  "difficulty": 2,
+  "prompt": "In which decade did this come out?\n'Ain't Nobody' — Rufus & Chaka Khan",
+  "choices": [
+   "1970s",
+   "1980s",
+   "1990s",
+   "2000s"
+  ],
+  "answer": "B",
+  "acceptAlso": [],
+  "culturalContext": "Released in 1983.",
+  "needsReview": false
+ },
+ {
+  "id": "era-059",
+  "round": 2,
+  "category": "Name That Era",
+  "value": 200,
+  "questionType": "name_that_era",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "In which decade did this come out?\n'Say My Name' — Destiny's Child",
+  "choices": [
+   "1980s",
+   "1990s",
+   "2000s",
+   "2010s"
+  ],
+  "answer": "B",
+  "acceptAlso": [],
+  "culturalContext": "Released in late 1999; a No. 1 in 2000.",
+  "needsReview": false
+ },
+ {
+  "id": "era-060",
+  "round": 2,
+  "category": "Name That Era",
+  "value": 200,
+  "questionType": "name_that_era",
+  "generationEra": "genz",
+  "difficulty": 2,
+  "prompt": "In which decade did this come out?\n'Love on Top' — Beyoncé",
+  "choices": [
+   "1990s",
+   "2000s",
+   "2010s",
+   "2020s"
+  ],
+  "answer": "C",
+  "acceptAlso": [],
+  "culturalContext": "Released in 2011.",
+  "needsReview": false
+ },
+ {
+  "id": "era-061",
+  "round": 2,
+  "category": "Name That Era",
+  "value": 200,
+  "questionType": "name_that_era",
+  "generationEra": "genz",
+  "difficulty": 2,
+  "prompt": "In which decade did this come out?\n'Kill Bill' — SZA",
+  "choices": [
+   "1990s",
+   "2000s",
+   "2010s",
+   "2020s"
+  ],
+  "answer": "D",
+  "acceptAlso": [],
+  "culturalContext": "From 'SOS,' released in December 2022.",
+  "needsReview": false
+ },
+ {
+  "id": "final-030",
+  "round": 3,
+  "category": "Final Wager",
+  "value": 0,
+  "questionType": "final",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "This singer from Augusta, Georgia, gave us 'I Got You (I Feel Good)' and 'Say It Loud — I'm Black and I'm Proud.'",
+  "choices": [],
+  "answer": "James Brown",
+  "acceptAlso": [
+   "Brown"
+  ],
+  "culturalContext": "He was among the first artists inducted into the Rock and Roll Hall of Fame in 1986.",
+  "needsReview": false,
+  "finalCategory": "Godfather of Soul"
+ },
+ {
+  "id": "final-031",
+  "round": 3,
+  "category": "Final Wager",
+  "value": 0,
+  "questionType": "final",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "In 1983, he became the first African American astronaut to fly in space.",
+  "choices": [],
+  "answer": "Guion Bluford",
+  "acceptAlso": [
+   "Guion 'Guy' Bluford",
+   "Bluford"
+  ],
+  "culturalContext": "He flew aboard the shuttle Challenger.",
+  "needsReview": false,
+  "finalCategory": "Firsts in Space"
+ },
+ {
+  "id": "final-032",
+  "round": 3,
+  "category": "Final Wager",
+  "value": 0,
+  "questionType": "final",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "This 1952 novel by Ralph Ellison follows a narrator who feels unseen by society.",
+  "choices": [],
+  "answer": "Invisible Man",
+  "acceptAlso": [
+   "The Invisible Man"
+  ],
+  "culturalContext": "It won the National Book Award in 1953.",
+  "needsReview": false,
+  "finalCategory": "The Library"
+ },
+ {
+  "id": "final-033",
+  "round": 3,
+  "category": "Final Wager",
+  "value": 0,
+  "questionType": "final",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "As an NAACP lawyer, he won Brown v. Board of Education before joining the Supreme Court.",
+  "choices": [],
+  "answer": "Thurgood Marshall",
+  "acceptAlso": [
+   "Marshall"
+  ],
+  "culturalContext": "He served on the Court from 1967 to 1991.",
+  "needsReview": false,
+  "finalCategory": "Courtroom Champion"
+ },
+ {
+  "id": "final-034",
+  "round": 3,
+  "category": "Final Wager",
+  "value": 0,
+  "questionType": "final",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Known as the First Lady of Song, she won 13 Grammys and famously scatted 'A-Tisket, A-Tasket.'",
+  "choices": [],
+  "answer": "Ella Fitzgerald",
+  "acceptAlso": [
+   "Ella"
+  ],
+  "culturalContext": "She got her start at an Apollo Amateur Night in 1934.",
+  "needsReview": false,
+  "finalCategory": "Queen of Jazz"
  }
 ]

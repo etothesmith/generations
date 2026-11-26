@@ -767,3 +767,25 @@ button.pb-tile { background: var(--gold); color: var(--ink); cursor: pointer; bo
 body.tv-call .host .main { padding-left: clamp(150px, 14vw, 270px); }
 .away-tag { font-size: .8em; }
 body.watch .main .btn, body.watch .main [data-act="tthide"], body.watch .main .x { display: none !important; }
+
+/* ===== Sing It! ===== */
+.qcard.sing_it { text-align: center; }
+.qcard.sing_it.live { animation: stagePulse 1.2s ease-in-out infinite; }
+@keyframes stagePulse { 50% { box-shadow: 0 0 60px rgba(242,182,50,.55), inset 0 0 40px rgba(200,16,46,.25); } }
+.si-sing { font-weight: 900; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); font-size: clamp(14px, 1.4vw, 26px); }
+.si-word { font-family: var(--display); font-size: clamp(60px, 10vw, 200px); line-height: 1; margin: .5vh 0 1vh; color: var(--cream); text-shadow: 0 6px 0 var(--crimson), 0 12px 0 var(--ink), 0 0 50px rgba(242,182,50,.7); }
+.si-word span { display: inline-block; animation: letterDrop .55s cubic-bezier(.2,1.6,.4,1) both; }
+@keyframes letterDrop { from { transform: translateY(-120%) rotate(-12deg); opacity: 0; } }
+.si-lanes { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 1vw; margin: 1vh 0; }
+.si-lane { border: 4px solid var(--tc); border-radius: 18px; padding: 1vh .8vw; background: rgba(0,0,0,.35); transition: all .3s; }
+.si-lane.now { background: color-mix(in srgb, var(--tc) 40%, #000); transform: scale(1.06); box-shadow: 0 0 40px color-mix(in srgb, var(--tc) 70%, transparent); }
+.si-lane.out { opacity: .35; filter: grayscale(1); transform: scale(.95); }
+.si-lane.win { background: color-mix(in srgb, var(--tc) 55%, #000); animation: wiggle 1s 2; }
+.si-tn { font-weight: 900; font-size: clamp(13px, 1.3vw, 24px); }
+.si-n { font-family: var(--display); color: var(--gold); font-size: clamp(22px, 2.4vw, 46px); }
+.si-st { font-weight: 800; font-size: clamp(11px, 1vw, 18px); letter-spacing: .06em; }
+.si-songs { display: flex; flex-wrap: wrap; gap: .5vw; justify-content: center; margin-bottom: 1vh; }
+.si-songs span { border: 2px solid var(--tc); border-radius: 999px; padding: .3vh .8vw; font-weight: 700; font-size: clamp(11px, 1vw, 18px); background: rgba(0,0,0,.3); }
+.si-typing { color: var(--gold); font-style: italic; }
+.ph-word { font-family: var(--display); font-size: 54px; color: var(--gold); text-align: center; line-height: 1; margin: 8px 0; text-shadow: 0 4px 0 var(--crimson); word-break: break-word; }
+.ph-mic { font-size: 90px; text-align: center; animation: float 1s ease-in-out infinite alternate; }

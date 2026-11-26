@@ -332,7 +332,7 @@ function body() {
       const won = t && (s.winners || []).includes(t.id);
       const st = (s.stats || {})[pid];
       const aw = s.awards || {};
-      const mine = [aw.mvp && aw.mvp.pid === pid ? '⭐ MVP' : '', aw.crossover && aw.crossover.pid === pid ? '🌉 Bridge Builder' : '', aw.thief && aw.thief.pid === pid ? '🦹🏾 Master Thief' : '', aw.closer && aw.closer.pid === pid ? '🎤 The Closer' : '', aw.clown && aw.clown.pid === pid ? '😂 Family Comedian' : '', aw.liar && aw.liar.pid === pid ? '🤥 Smooth Liar' : '', aw.legend && aw.legend.pid === pid ? '👑 Most Likely Legend' : ''].filter(Boolean);
+      const mine = [aw.mvp && aw.mvp.pid === pid ? '⭐ MVP' : '', aw.crossover && aw.crossover.pid === pid ? '🌉 Bridge Builder' : '', aw.thief && aw.thief.pid === pid ? '🦹🏾 Master Thief' : '', aw.closer && aw.closer.pid === pid ? '🎤 The Closer' : '', aw.clown && aw.clown.pid === pid ? '😂 Family Comedian' : '', aw.liar && aw.liar.pid === pid ? '🤥 Smooth Liar' : '', aw.legend && aw.legend.pid === pid ? '👑 Most Likely Legend' : '', aw.singer && aw.singer.pid === pid ? '🎤 Songbird' : ''].filter(Boolean);
       return `<div class="big-emoji">${won ? '🏆' : '👏🏾'}</div><h2>${won ? 'CHAMPIONS!' : 'Good Game!'}</h2><div class="msg">${won ? 'Your team won it all!' : 'Run it back?'}</div>
         ${mine.length ? `<div class="team-banner" style="background:var(--violet)">You won: ${mine.join(' · ')}</div>` : ''}
         ${st ? `<div class="sub">Your game: ${st.correct || 0} correct · ${st.crossovers || 0} crossover · ${money(st.points || 0)} earned</div>` : ''}`;
@@ -400,7 +400,7 @@ function questionBody() {
   if (q.type === 'blitz') return blitzBody(q, t, onPodium, now);
   if (q.type === 'family_survey') return surveyBody(q, t, onPodium);
   if (q.type === 'charades') return charadesBody(q, t);
-  if (['hot_take', 'most_likely', 'top_that', 'two_truths'].includes(q.type)) return partyBody(q, t);
+  if (['hot_take', 'most_likely', 'top_that', 'two_truths', 'sing_it'].includes(q.type)) return partyBody(q, t);
 
   // trivia / hashtag / era
   if (q.stage === 'wager') {
@@ -489,6 +489,23 @@ function partyBody(q, t) {
     const won = mine && tt.topIds.includes(mine.id);
     return `<div class="result ${won ? 'good' : 'bad'}">${won ? 'ROOM FAVORITE! 🏆' : mine ? `${mine.votes} vote${mine.votes === 1 ? '' : 's'}` : "That's a wrap!"}</div>${teamPts(q, t)}${box}`;
   }
+  if (q.type === 'sing_it') {
+    const si = q.si, active = si.alive.length ? si.alive[si.turn % si.alive.length] : null;
+    const mineUp = t && active === t.id, out = t && !si.alive.includes(t.id);
+    const word = `<div class="sub" style="text-align:center">Sing a song with the word…</div><div class="ph-word">${esc(si.word)}</div>`;
+    const scores = `<div class="ph-scores">${si.order.map((id) => `<div style="--tc:${teamById(id)?.color}${si.alive.includes(id) ? '' : ';opacity:.4'}"><span>${esc(teamById(id)?.name || '')}</span><b>${si.counts[id] || 0}🎵</b></div>`).join('')}</div>`;
+    if (q.stage === 'reveal') {
+      const won = t && (si.winner || []).includes(t.id);
+      return `<div class="result ${won ? 'good' : 'bad'}">${won ? 'LAST ONES SINGING! 👑' : 'Good singing!'}</div>${word}${teamPts(q, t)}${scores}`;
+    }
+    if (out) return `${word}<div class="big-emoji">😭</div><h2>Your team is out!</h2><div class="msg">Cheer on the rest — and judge them HARD.</div>${scores}`;
+    if (mineUp && q.stage === 'si_turn') {
+      return `${word}<div class="ph-mic">🎤</div><h2 style="text-align:center">SING IT NOW!</h2><div class="msg">Sing at least a line out loud — the host decides if it counts. No repeats!</div>
+        <input id="si-in" class="ph-text" maxlength="60" autocomplete="off" placeholder="Song title (optional, shows on TV)"><button class="btn navy" data-act="sisong">Show the title on TV</button>${timerBar(q.timerEnd, q.timerTotal)}${scores}`;
+    }
+    if (mineUp) return `${word}<div class="big-emoji">⏳</div><h2>YOU'RE UP NEXT!</h2><div class="msg">Huddle up — find a song with <b>${esc(si.word)}</b> in it!</div>${scores}`;
+    return `${word}<div class="big-emoji">👂🏾</div><div class="msg"><b>${esc(teamById(active)?.name || '')}</b> ${q.stage === 'si_turn' ? 'is singing…' : 'is up next…'}</div><div class="sub">Get your next song ready!</div>${scores}`;
+  }
   if (q.type === 'two_truths') {
     const tw = q.tw, teller = tw.teller === pid;
     if (q.stage === 'tw_write') {
@@ -534,9 +551,11 @@ function charadesBody(q, t) {
   const ch = q.ch, tid = ch.order[ch.idx];
   const actor = ch.actor === pid;
   if (q.stage === 'reveal') { const won = t && q.top && q.top.includes(t.id); return `<div class="result ${won ? 'good' : 'bad'}">${won ? 'BEST ACTORS!' : "That's a wrap!"}</div>${t ? `<div class="msg">Your team got ${ch.counts[t.id] || 0}</div>` : ''}`; }
+  const hum = q.mode === 'hum';
+  if (q.stage === 'ch_ready' && hum) return actor ? `<div class="big-emoji">🎵</div><h2>You're humming!</h2><div class="msg">HUM ONLY — no words, no lyrics, no "la la la" with the words in it. When the host starts the clock, your song appears here.</div>` : `<div class="big-emoji">🎵</div><div class="msg"><b>${esc(pname(ch.actor))}</b> is about to hum${t && t.id === tid ? ' for YOUR team — shout the song title!' : '.'}</div>`;
   if (q.stage === 'ch_ready') return actor ? `<div class="big-emoji">🎭</div><h2>You're acting!</h2><div class="msg">No talking, no spelling, no pointing at stuff in the room. When the host starts the clock, your clue appears here.</div>` : `<div class="big-emoji">🎭</div><div class="msg"><b>${esc(pname(ch.actor))}</b> is about to act${t && t.id === tid ? ' for YOUR team — get ready to shout!' : '.'}</div>`;
   if (q.stage === 'ch_act') {
-    if (actor) return `<div class="sub">Act it out!</div><div class="ch-word">${esc(ch.word || '')}</div>
+    if (actor) return `<div class="sub">${hum ? 'HUM it! 🎶 No words!' : 'Act it out!'}</div><div class="ch-word">${esc(ch.word || '')}</div>
       <div style="display:flex;gap:10px"><button class="btn navy" data-act="chskip">↷ Skip</button><button class="btn big green" data-act="chgot">✓ Got it!</button></div>
       <div class="blitz-ph"><div class="count">${ch.counts[tid]} correct</div></div>${timerBar(q.timerEnd, q.timerTotal)}`;
     return `<div class="big-emoji">🗣️</div><h2>${t && t.id === tid ? 'GUESS OUT LOUD!' : 'Watch & laugh'}</h2><div class="msg">${esc(pname(ch.actor))} is acting · ${ch.counts[tid]} correct</div>`;
@@ -692,6 +711,7 @@ async function onClick(e) {
     case 'callleave': call.leave(); drawCallBar(); break;
     case 'callmute': call.toggleMute(); break;
     case 'callcam': call.toggleCam(); break;
+    case 'sisong': { const txt = ($('#si-in').value || '').trim(); if (!txt) return toast('Type the song title first'); vib(20); send({ type: 'party', text: txt }); toast('🎵 On the big screen!'); break; }
     case 'pickboard': vib(30); send({ type: 'tile', ci: +el.dataset.ci, ti: +el.dataset.ti }); break;
     case 'chgot': vib(40); send({ type: 'charades', action: 'got' }); break;
     case 'chskip': vib(15); send({ type: 'charades', action: 'skip' }); break;

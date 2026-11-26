@@ -26,15 +26,15 @@ export const CAT_ICONS = {
 const GEN_GROUP = { elders: 'elders', genx: 'genx', millennial: 'millennial', genz: 'genz', alpha: 'genz' };
 export const ANSWER_TIMES = { quick: 10000, relaxed: 15000, family: 20000 };
 export const REMIX_LENGTHS = {
-  short: { majority_rules: 1, hot_take: 1, hashtag: 0, most_likely: 1, saying: 1, top_that: 0, emoji: 1, family_survey: 1, two_truths: 0, charades: 0, one_gotta_go: 0, name_that_era: 1, blitz: 1 },
-  normal: { majority_rules: 1, hot_take: 1, hashtag: 1, most_likely: 2, saying: 1, top_that: 1, emoji: 1, family_survey: 1, two_truths: 1, charades: 1, one_gotta_go: 1, name_that_era: 1, blitz: 1 },
-  long: { majority_rules: 2, hot_take: 2, hashtag: 2, most_likely: 3, saying: 2, top_that: 2, emoji: 2, family_survey: 2, two_truths: 2, charades: 1, one_gotta_go: 1, name_that_era: 2, blitz: 1 },
+  short: { majority_rules: 1, hot_take: 1, hashtag: 0, most_likely: 1, saying: 1, top_that: 0, emoji: 1, family_survey: 1, two_truths: 0, sing_it: 1, hum_it: 0, charades: 0, one_gotta_go: 0, name_that_era: 1, blitz: 1 },
+  normal: { majority_rules: 1, hot_take: 1, hashtag: 1, most_likely: 2, saying: 1, top_that: 1, emoji: 1, family_survey: 1, two_truths: 1, sing_it: 2, hum_it: 1, charades: 1, one_gotta_go: 1, name_that_era: 1, blitz: 1 },
+  long: { majority_rules: 2, hot_take: 2, hashtag: 2, most_likely: 3, saying: 2, top_that: 2, emoji: 2, family_survey: 2, two_truths: 2, sing_it: 3, hum_it: 1, charades: 1, one_gotta_go: 1, name_that_era: 2, blitz: 1 },
 };
 // "Party Night" show format: no board, the whole night is the fun stuff
 export const PARTY_LENGTHS = {
-  short: { majority_rules: 1, hot_take: 2, most_likely: 2, saying: 1, top_that: 1, family_survey: 1, two_truths: 1, charades: 1, one_gotta_go: 1 },
-  normal: { majority_rules: 1, hot_take: 2, most_likely: 3, saying: 1, top_that: 2, emoji: 1, family_survey: 1, two_truths: 2, charades: 1, one_gotta_go: 1, blitz: 1 },
-  long: { majority_rules: 2, hot_take: 3, hashtag: 1, most_likely: 4, saying: 1, top_that: 3, emoji: 1, family_survey: 2, two_truths: 3, charades: 2, one_gotta_go: 2, name_that_era: 1, blitz: 1 },
+  short: { majority_rules: 1, hot_take: 2, most_likely: 2, saying: 1, top_that: 1, family_survey: 1, two_truths: 1, sing_it: 2, hum_it: 1, charades: 1, one_gotta_go: 1 },
+  normal: { majority_rules: 1, hot_take: 2, most_likely: 3, saying: 1, top_that: 2, emoji: 1, family_survey: 1, two_truths: 2, sing_it: 3, hum_it: 1, charades: 1, one_gotta_go: 1, blitz: 1 },
+  long: { majority_rules: 2, hot_take: 3, hashtag: 1, most_likely: 4, saying: 1, top_that: 3, emoji: 1, family_survey: 2, two_truths: 3, sing_it: 4, hum_it: 2, charades: 2, one_gotta_go: 2, name_that_era: 1, blitz: 1 },
 };
 export const SHOW_FORMATS = {
   classic: { label: 'Classic Show', blurb: 'Board → Remix → Final Wager' },
@@ -52,6 +52,8 @@ export const REMIX_PLAN = [
   { type: 'family_survey', label: 'The Family Survey', count: 1, icon: 'stamp', blurb: "Remember those survey questions on your phone? We asked YOUR family. Find the top answers — three strikes and the other team can steal!" },
   { type: 'two_truths', label: 'Two Truths & a Lie', count: 1, icon: 'masks', party: true, blurb: "One family member secretly types two true stories and one lie about themselves. Everybody else hunts the lie. Catch it: +50. Fool 'em: the teller's team gets +50 per fooled voter!" },
   { type: 'charades', label: 'Culture Charades', count: 1, icon: 'masks', blurb: "One player per team acts it out — no talking! The team shouts guesses. 45 seconds, +100 for every one you get." },
+  { type: 'sing_it', label: 'Sing It!', count: 2, icon: 'mic', party: true, blurb: "A word drops on the screen. Teams take turns SINGING a song with that word in it — 15 seconds on the clock. No repeats! Miss, stall or get ruled out by the host and your team is done. Last team singing wins! +100 a song, +200 to the champs." },
+  { type: 'hum_it', label: 'Hum That Tune', count: 1, icon: 'vinyl', party: true, blurb: "One player per team gets a classic song on their phone and HUMS it — no words, no lyrics, no dancing the moves. The team shouts the title. 45 seconds, +100 every one you get!" },
   { type: 'one_gotta_go', label: "One's Gotta Go", count: 1, icon: 'pie', blurb: 'Pick one to kick out, then make your case in 10 seconds. The room votes on the best defense!' },
   { type: 'name_that_era', label: 'Name That Era', count: 3, icon: 'cassette', blurb: 'Buzz in and name the decade. 200 points!' },
   { type: 'blitz', label: '60-Second Blitz', count: 1, icon: 'bolt', blurb: 'Podium players answer as many as they can on their phones in 60 seconds. +100 every time you get one right. GO GO GO!' },
@@ -502,6 +504,7 @@ export class Engine {
     this.publish();
   }
   judge(correct) {
+    if (this.s.q && this.s.q.type === 'sing_it') return this.singJudge(!!correct);
     const q = this.s.q;
     if (!q || q.stage !== 'answering') return;
     const team = this.teamOf(q.answerer);
@@ -836,17 +839,18 @@ export class Engine {
   }
 
   // ---------- Culture Charades ----------
-  startCharades() {
+  startCharades(kind = 'act') {
+    const hum = kind === 'hum';
     const podium = {};
     for (const t of this.s.teams) { const p = this.podiumFor(t); if (p) podium[t.id] = p; }
     const order = Object.keys(podium);
-    const all = this.extras.charades || [];
-    const pool = this.deck('charades', all, Math.min(all.length, 40));
+    const all = (hum ? this.extras.humSongs : this.extras.charades) || [];
+    const pool = this.deck(hum ? 'humSongs' : 'charades', all, Math.min(all.length, 40));
     const per = {};
     order.forEach((tid, i) => { per[tid] = pool.filter((_, k) => k % order.length === i); });
     this.cur = { full: { id: '__charades__', answer: null, culturalContext: '' }, per, presses: [], lockUntil: {} };
     this.s.q = {
-      id: '__charades__', type: 'charades', category: 'Culture Charades', prompt: 'Culture Charades', choices: null, value: CHARADES.points,
+      id: '__charades__', type: 'charades', category: hum ? 'Hum That Tune' : 'Culture Charades', prompt: hum ? 'Hum That Tune' : 'Culture Charades', choices: null, value: CHARADES.points, mode: hum ? 'hum' : 'act',
       isDD: false, stage: 'ch_ready', podium, attempted: [], eligible: order, timerEnd: 0, timerTotal: 0, result: null, lockouts: {},
       flipId: uid(5), era: 'all', huddleUntil: 0, huddleUsed: true, awards: null,
       ch: { order, idx: 0, actor: podium[order[0]], word: null, wi: 0, counts: {}, log: [] },
@@ -1144,6 +1148,7 @@ export class Engine {
         if (plan.type === 'blitz') { qids.push('__blitz__'); continue; }
         if (PARTY_TYPES.includes(plan.type)) { if (this.partyAvailable(plan.type)) qids.push(`__${plan.type}__${i}`); continue; }
         if (plan.type === 'charades') { if ((this.extras.charades || []).length) qids.push('__charades__'); continue; }
+        if (plan.type === 'hum_it') { if ((this.extras.humSongs || []).length) qids.push('__hum__' + i); continue; }
         if (plan.type === 'family_survey') {
           const ready = this.surveyReadyPrompts().filter((k) => !qids.includes('__survey__' + k));
           if (ready.length) qids.push('__survey__' + ready[0]);
@@ -1168,6 +1173,7 @@ export class Engine {
     const seg = this.s.remix.segments[this.s.remix.segIdx];
     if (seg.type === 'blitz') return this.startBlitz();
     if (seg.type === 'charades') return this.startCharades();
+    if (seg.type === 'hum_it') return this.startCharades('hum');
     if (PARTY_TYPES.includes(seg.type)) return this.startParty(seg.type);
     if (seg.type === 'family_survey') return this.startSurvey(+seg.qids[seg.idx].replace('__survey__', ''));
     this.startQuestion(this.byId[seg.qids[seg.idx]], { value: this.byId[seg.qids[seg.idx]].value });
@@ -1297,6 +1303,7 @@ export class Engine {
       clown: best('laughs', 2),
       liar: best('fooled', 2),
       legend: best('crowned', 2),
+      singer: best('songs', 3),
     };
   }
   newGame() {
