@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GENERATIONS — The Family Game Show</title>
+<meta name="theme-color" content="#151515">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+</head>
+<body>
+<div class="stage-bg"><div class="floor"></div></div>
+<div class="landing">
+  <div class="logo huge" id="logo">GENERATIONS</div>
+  <div class="tagline">The Family Game Show · Culture · History · Generations</div>
+  <div class="choices-2">
+    <a href="host.html" class="btn big">📺 Host on the Big Screen</a>
+    <a href="play.html" class="btn big red">📱 Join on My Phone</a>
+  </div>
+  <p class="note">Open <b>Host</b> on a TV or laptop everyone can see. Everybody else scans the QR code on that screen (or taps <b>Join</b>) and plays on their own phone.</p>
+</div>
+<script type="module">
+  import { loadArt, ART } from './js/assets.js';
+  loadArt().then(() => { if (ART.logo) document.getElementById('logo').innerHTML = `<img src="${ART.logo}" alt="GENERATIONS" style="max-height:30vh;max-width:90vw">`; });
+</script>
+</body>
+</html>

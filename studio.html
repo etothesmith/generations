@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GENERATIONS — Art & Animation Studio</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  body { overflow-y: auto; }
+  .studio { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 24px 24px 40vh; }
+  .studio h1 { font-family: var(--display); font-weight: 400; color: var(--gold); margin: 0; text-shadow: 0 3px 0 var(--crimson), 0 6px 0 var(--ink); }
+  .studio h2 { font-family: var(--display); font-weight: 400; color: var(--cream); margin: 34px 0 10px; font-size: 22px; }
+  .studio p { color: var(--dim); font-weight: 600; max-width: 900px; }
+  .slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .slot { background: rgba(0,0,0,.45); border: 3px solid rgba(242,182,50,.35); border-radius: 16px; padding: 12px; }
+  .slot.ok { border-color: var(--emerald); }
+  .slot .nm { font-weight: 900; } .slot code { color: var(--gold); font-size: 13px; }
+  .slot .st { font-size: 12px; font-weight: 800; margin: 4px 0 8px; }
+  .slot .pv { height: 130px; display: grid; place-items: center; background: repeating-conic-gradient(#222 0 25%, #2c2c2c 0 50%) 0 0 / 20px 20px; border-radius: 10px; overflow: hidden; }
+  .slot .pv img { max-width: 100%; max-height: 100%; }
+  .slot .pv .badge-img { height: 54px; }
+  .icons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+  .ic { text-align: center; background: rgba(0,0,0,.4); border-radius: 12px; padding: 8px; border: 2px solid transparent; }
+  .ic.ok { border-color: var(--emerald); }
+  .ic .icon { height: 54px; width: auto; font-size: 42px; display: inline-block; }
+  .ic div { font-size: 11px; font-weight: 800; color: var(--dim); }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btns .btn { font-size: 13px; padding: .5em .9em; }
+  .avlab { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; background: rgba(0,0,0,.35); border-radius: 16px; padding: 10px; }
+  .avlab .cell { text-align: center; } .avlab svg { width: 100%; height: auto; max-height: 150px; }
+  .avlab .hd { font-weight: 900; color: var(--gold); text-transform: uppercase; font-size: 12px; text-align: center; }
+  .demo-pod { display: flex; gap: 24px; align-items: flex-end; min-height: 260px; }
+</style>
+</head>
+<body>
+<div class="stage-bg" id="bg"><div class="floor"></div></div>
+<div class="studio" id="studio"></div>
+<script type="module" src="js/studio.js"></script>
+</body>
+</html>
