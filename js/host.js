@@ -166,6 +166,7 @@ function wireTvSocial(myPid, myName) {
     const fresh = !old && (m.at || 0) > startAt - 15000;
     if (fresh) showChatBubble(m);
   });
+  if (S) renderControls(S);
 }
 function showChatBubble(m) {
   const feed = $('#tvchat'); if (!feed) return;
