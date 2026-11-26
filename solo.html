@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GENERATIONS — Try It Solo</title>
+<meta property="og:title" content="Try GENERATIONS solo 🎮">
+<meta property="og:description" content="Play the real GENERATIONS family game show by yourself, with Grandma Pearl, Uncle Ray and the family bots. No room code needed.">
+<meta property="og:image" content="https://etothesmith.github.io/generations/assets/share_card.jpg">
+<meta name="theme-color" content="#1A1B3A">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+<style>
+html, body { height: 100%; margin: 0; overflow: hidden; }
+#setup { position: fixed; inset: 0; overflow: auto; display: flex; align-items: flex-start; justify-content: center; padding: 18px; z-index: 5; }
+.sc { margin: auto; width: min(520px, 100%); background: rgba(16,18,48,.92); border: 3px solid var(--gold); border-radius: 22px; padding: 20px 18px; text-align: center; color: var(--cream); box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+.sc h1 { font-family: var(--display); font-weight: 400; color: var(--gold); font-size: clamp(30px, 8vw, 46px); line-height: .95; margin: 6px 0; }
+.sc .k { font-weight: 900; letter-spacing: .2em; font-size: 12px; color: var(--teal); }
+.sc p { margin: 8px 0; opacity: .9; }
+.sc .field { text-align: left; margin: 10px 0; }
+.sc label { font-weight: 800; font-size: 13px; color: var(--gold); display: block; margin-bottom: 4px; }
+.sc input, .sc select { width: 100%; font-size: 17px; padding: 11px 12px; border-radius: 12px; border: 2px solid rgba(255,255,255,.25); background: #0b0c1f; color: var(--cream); }
+.sc .seg { display: flex; gap: 6px; flex-wrap: wrap; }
+.sc .seg button { flex: 1 1 30%; padding: 10px 6px; border-radius: 12px; border: 2px solid rgba(255,255,255,.22); background: rgba(255,255,255,.06); color: var(--cream); font-weight: 800; font-size: 14px; }
+.sc .seg button.on { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.sc .bots { display: flex; justify-content: center; gap: 4px; margin: 8px 0; }
+.sc .bots img { height: 66px; }
+.sc .row2 { display: flex; gap: 8px; margin-top: 10px; }
+.sc .row2 a { flex: 1; text-decoration: none; display: flex; align-items: center; justify-content: center; }
+#stage { position: fixed; inset: 0; display: none; }
+#stage.on { display: flex; }
+#tv { flex: 1 1 auto; border: 0; height: 100%; background: #000; }
+#ph { flex: 0 0 400px; border: 0; height: 100%; border-left: 3px solid var(--gold); background: #101230; }
+#bar { position: fixed; bottom: 64px; left: 10px; z-index: 6; display: none; gap: 6px; opacity: .85; }
+#bar.on { display: flex; }
+#bar button, #bar a { background: rgba(10,10,30,.85); color: var(--cream); border: 2px solid var(--gold); border-radius: 999px; padding: 6px 12px; font-weight: 900; font-size: 13px; text-decoration: none; cursor: pointer; }
+/* narrow screens: the phone is the main view, the TV slides over it */
+@media (max-width: 900px) {
+  #stage { flex-direction: column; }
+  #ph { flex: 1 1 auto; width: 100%; border-left: 0; }
+  #tv { position: fixed; inset: 0; z-index: 4; display: none; }
+  body.showtv #tv { display: block; }
+  #bar { top: auto; bottom: 10px; left: 50%; transform: translateX(-50%); }
+}
+@media (min-width: 901px) { .tvbtn { display: none; } }
+</style>
+</head>
+<body>
+<div class="stage-bg"><div class="floor"></div></div>
+<div id="setup">
+  <div class="sc">
+    <div class="k">GENERATIONS · SOLO</div>
+    <h1>TRY THE SHOW<br>ON YOUR OWN</h1>
+    <p>The real game, your own pace. You'll team up with a practice bot against the family bots, and <b>Auto-Host</b> runs the show.</p>
+    <div class="bots"><img src="assets/cookout/guest_grandma.webp" alt=""><img src="assets/cookout/guest_dj.webp" alt=""><img src="assets/cookout/guest_auntie.webp" alt=""><img src="assets/cookout/guest_cousin.webp" alt=""></div>
+    <div class="field"><label for="nm">Your name</label><input id="nm" maxlength="16" placeholder="Big Mama, Uncle Ray…" autocomplete="off"></div>
+    <div class="field"><label for="yr">Birth year (sets your generation)</label><select id="yr"></select></div>
+    <div class="field"><label>Show</label><div class="seg" id="fmt">
+      <button data-v="classic" class="on">Classic Show</button><button data-v="party">Party Night</button><button data-v="trivia">Trivia Only</button></div></div>
+    <div class="field"><label>Answer time</label><div class="seg" id="tm">
+      <button data-v="quick">Quick</button><button data-v="relaxed" class="on">Relaxed</button><button data-v="family">Grandma-Friendly</button></div></div>
+    <button class="btn big" id="go" style="width:100%;margin-top:8px">🎬 Start My Show</button>
+    <p style="font-size:13px;opacity:.7">Works best on a laptop (TV + phone side by side). On a phone, tap 📺 to peek at the TV.</p>
+    <div class="row2"><a class="btn navy" href="learn.html">🎓 Learn the games first</a><a class="btn navy" href="index.html">🏠 Home</a></div>
+  </div>
+</div>
+<div id="stage"><iframe id="tv" title="The TV" allow="autoplay; fullscreen"></iframe><iframe id="ph" title="Your phone" allow="autoplay; microphone; camera"></iframe></div>
+<div id="bar"><button class="tvbtn" id="tvbtn">📺 Show the TV</button><button id="restart">↺ New game</button><a href="index.html">🏠</a></div>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const yr = $('yr'), now = new Date().getFullYear();
+  yr.innerHTML = '<option value="">Pick a year…</option>' + Array.from({ length: 90 }, (_, i) => now - 6 - i).map((y) => `<option>${y}</option>`).join('');
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem('gen-solo') || '{}'); } catch (e) { saved = {}; }
+  if (saved.name) $('nm').value = saved.name;
+  if (saved.year) yr.value = saved.year;
+  const pick = (box) => box.querySelector('.on').dataset.v;
+  for (const box of [$('fmt'), $('tm')]) box.addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; box.querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b)); });
+  if (saved.format) $('fmt').querySelectorAll('button').forEach((x) => x.classList.toggle('on', x.dataset.v === saved.format));
+  let name = '', year = '';
+  $('go').onclick = () => {
+    name = ($('nm').value || '').trim() || 'You'; year = yr.value;
+    const format = pick($('fmt')), time = pick($('tm'));
+    try { localStorage.setItem('gen-solo', JSON.stringify({ name, year, format })); } catch (e) { /* */ }
+    $('setup').style.display = 'none'; $('stage').classList.add('on'); $('bar').classList.add('on');
+    $('tv').src = `host.html?demo&solo=1&bots=3&format=${format}&time=${time}`;
+  };
+  window.addEventListener('message', (e) => {
+    if (e.origin !== location.origin || !e.data || e.data.type !== 'gen-solo-room') return;
+    $('ph').src = `play.html?demo&solo=1&room=${encodeURIComponent(e.data.code)}&name=${encodeURIComponent(name)}&year=${encodeURIComponent(year)}`;
+  });
+  $('tvbtn').onclick = () => { const on = document.body.classList.toggle('showtv'); $('tvbtn').textContent = on ? '📱 Back to my phone' : '📺 Show the TV'; };
+  $('restart').onclick = () => { if (confirm('Start a brand-new solo game?')) location.reload(); };
+})();
+</script>
+</body>
+</html>

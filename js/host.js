@@ -68,6 +68,7 @@ async function boot() {
   // Refreshed the host tab mid-game? Pick up right where we left off.
   let saved = null;
   try { saved = JSON.parse(sessionStorage.getItem('gen-host-save') || 'null'); } catch (e) { saved = null; }
+  if (SOLO) saved = null;
   if (saved && (Date.now() - saved.at > 6 * 3600e3 || !saved.s || !saved.s.code)) saved = null;
   let code = null;
   if (saved) {
@@ -93,6 +94,7 @@ async function boot() {
   E.publish();
   wireTvSocial('tv-' + code, '📺 The House');
   window.GEN = { engine: E, transport: T }; // handy for debugging in the browser console
+  if (SOLO) startSolo(code);
 
   document.addEventListener('click', delegate);
   document.addEventListener('focusout', onRename);
@@ -100,6 +102,30 @@ async function boot() {
   document.addEventListener('keydown', onKey);
   document.addEventListener('pointerdown', unlockAudio, { once: true });
   requestAnimationFrame(frame);
+}
+
+// ---------------- solo.html: one person + practice bots, Auto-Host on ----------------
+const SOLO_Q = new URLSearchParams(location.search);
+const SOLO = SOLO_Q.get('solo');
+function startSolo(code) {
+  document.body.classList.add('solo');
+  E.soloMode = true;
+  E.setSetting('autoHost', true);
+  E.setSetting('format', ['classic', 'party', 'trivia'].includes(SOLO_Q.get('format')) ? SOLO_Q.get('format') : 'classic');
+  E.setSetting('remixLength', 'short');
+  E.setSetting('answerTime', ['quick', 'relaxed', 'family'].includes(SOLO_Q.get('time')) ? SOLO_Q.get('time') : 'relaxed');
+  E.addBots(Math.max(1, Math.min(5, +SOLO_Q.get('bots') || 3)));
+  try { parent.postMessage({ type: 'gen-solo-room', code }, location.origin); } catch (e) { /* not framed */ }
+  const iv = setInterval(() => {
+    const humans = Object.values(E.s.players).filter((p) => !p.bot && p.connected);
+    if (E.s.phase !== 'lobby' || !humans.length) return;
+    clearInterval(iv);
+    setTimeout(() => {
+      E.setTeamMode('random', 2); E.formTeams();
+      // keep the human on a team with at least one bot (and never alone vs. everybody)
+      setTimeout(() => E.startGame(), 2500);
+    }, 1200);
+  }, 400);
 }
 
 let EXTRAS = { survey: [], charades: [] };
@@ -299,6 +325,7 @@ function viewLobby(s) {
       <div class="settings ${lobbyOpen ? 'open' : ''}">
         <div class="grp always set-summary"><span>Show</span>
           ${Object.entries(SHOW_FORMATS).map(([k, f]) => `<button data-act="set" data-k="format" data-v="${k}" title="${esc(f.blurb)}" class="seg-btn ${(s.settings.format || 'classic') === k ? 'on' : ''}">${f.label}</button>`).join('')}
+          <button class="seg-btn ${s.settings.autoHost ? 'on' : ''}" data-act="set" data-k="autoHost" data-v="${s.settings.autoHost ? '' : '1'}" title="The show moves itself along, so the host can play on a phone too">🎮 Auto-Host ${s.settings.autoHost ? 'ON' : 'OFF'}</button>
           <button class="cat-toggle cust" data-act="lobbyopen">${lobbyOpen ? '✓ Done' : '⚙️ Customize the show'}</button>
         </div>
         <div class="grp" style="flex-basis:100%"><span>Teams</span>${splitChips(s, 'mode')}</div>
@@ -308,6 +335,7 @@ function viewLobby(s) {
         ${Object.keys(ART.themes).length ? `<div class="grp"><span>Theme</span><div class="seg">
             ${[['classic', 'Classic'], ['juneteenth', 'Juneteenth'], ['christmas', 'Christmas'], ['reunion', 'Family Reunion']].filter(([k]) => k === 'classic' || ART.themes[k]).map(([k, l]) => `<button data-act="set" data-k="theme" data-v="${k}" class="${(s.settings.theme || 'classic') === k ? 'on' : ''}">${l}</button>`).join('')}
           </div></div>` : ''}
+        <div class="grp"><span>Practice bots</span><div class="seg"><button data-act="addbot">🤖 Add a bot</button>${players.some((p) => p.bot) ? '<button data-act="rmbots">Remove bots</button>' : ''}</div></div>
         <div class="grp"><span>Bench</span><div class="seg"><button data-act="set" data-k="playAlong" data-v="${s.settings.playAlong ? '' : '1'}" class="${s.settings.playAlong ? 'on' : ''}">📱 Play-Along ${s.settings.playAlong ? 'ON' : 'OFF'}</button></div></div>
         <div class="grp"><span>Remix</span><div class="seg">
             ${[['short', 'Short'], ['normal', 'Normal'], ['long', 'Long']].map(([k, l]) => `<button data-act="set" data-k="remixLength" data-v="${k}" class="${s.settings.remixLength === k ? 'on' : ''}">${l}</button>`).join('')}
@@ -950,10 +978,11 @@ function renderControls(s) {
     } else next('Next →');
   }
   const peek = peekText(s);
-  if (peek) b.push(`<span class="peek"><button class="btn navy" data-act="peek">👁 Peek</button><span class="peek-pop">${esc(peek)}</span></span>`);
+  if (peek && !s.settings.autoHost) b.push(`<span class="peek"><button class="btn navy" data-act="peek">👁 Peek</button><span class="peek-pop">${esc(peek)}</span></span>`);
   if (!['lobby', 'teams'].includes(s.phase)) {
     b.push('<span class="sep"></span>');
     b.push(`<button class="btn navy" data-act="pause">${s.paused ? '▶ Resume' : '⏸ Pause'}<span class="kbd">P</span></button>`);
+    b.push(`<button class="btn navy ${s.settings.autoHost ? 'on' : ''}" data-act="set" data-k="autoHost" data-v="${s.settings.autoHost ? '' : '1'}" title="Auto-Host moves the show along by itself">🎮 Auto ${s.settings.autoHost ? 'ON' : 'OFF'}</button>`);
     b.push(`<button class="btn navy ${scoreEdit ? 'on' : ''}" data-act="scores">± Scores</button>`);
     b.push(`<button class="btn navy" data-act="undo">↶ Undo Last Points</button>`);
   }
@@ -1147,7 +1176,9 @@ function delegate(e) {
     }
     case 'kick': e.stopPropagation(); E.kick(d.pid); break;
     case 'remote': showRemote(); break;
-    case 'set': E.setSetting(d.k, d.k === 'playAlong' ? !!d.v : d.v); break;
+    case 'set': E.setSetting(d.k, d.k === 'playAlong' || d.k === 'autoHost' ? !!d.v : d.v); break;
+    case 'addbot': E.addBots(1); break;
+    case 'rmbots': E.removeBots(); break;
     case 'sreveal': E.hostSurveyReveal(+d.i); break;
     case 'sstrike': E.hostSurveyStrike(); break;
     case 'shufflecats': E.shuffleCategories(); break;

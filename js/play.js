@@ -58,8 +58,13 @@ async function boot() {
   document.addEventListener('click', onClick);
   document.addEventListener('input', onInput);
   document.addEventListener('change', onInput);
-  // auto-rejoin after a refresh/sleep
-  if (room && sessionStorage.getItem('gen-joined') === room && profile.name) { await connect(room); sendJoin(); }
+  // solo.html: join instantly with the name from the setup card
+  const QS = new URLSearchParams(location.search);
+  if (QS.get('solo') && room) {
+    document.body.classList.add('solo');
+    profile = { ...profile, name: (QS.get('name') || 'You').slice(0, 16), year: QS.get('year') || '', gen: QS.get('year') ? '' : 'millennial', audience: false, remote: false, avatar: profile.avatar || randomAvatar() };
+    await connect(room); sendJoin();
+  } else if (room && sessionStorage.getItem('gen-joined') === room && profile.name) { await connect(room); sendJoin(); } // auto-rejoin after a refresh/sleep
   draw();
   requestAnimationFrame(frame);
 }
@@ -513,6 +518,8 @@ function partyBody(q, t) {
     }
     if (out) return `${word}<div class="big-emoji">😭</div><h2>Your team is out!</h2><div class="msg">Cheer on the rest — and judge them HARD.</div>${scores}`;
     if (mineUp && q.stage === 'si_turn') {
+      if (S.settings.autoHost) return `${word}<div class="ph-mic">🎤</div><h2 style="text-align:center">SING IT NOW!</h2><div class="msg">Sing a line out loud, then type the song title. Auto-Host counts it if it's not a repeat. (Honor system!)</div>
+        <input id="si-in" class="ph-text" maxlength="60" autocomplete="off" placeholder="Song title"><button class="btn big" data-act="sisong">🎤 We sang it!</button>${timerBar(q.timerEnd, q.timerTotal)}${scores}`;
       return `${word}<div class="ph-mic">🎤</div><h2 style="text-align:center">SING IT NOW!</h2><div class="msg">Sing at least a line out loud — the host decides if it counts. No repeats!</div>
         <input id="si-in" class="ph-text" maxlength="60" autocomplete="off" placeholder="Song title (optional, shows on TV)"><button class="btn navy" data-act="sisong">Show the title on TV</button>${timerBar(q.timerEnd, q.timerTotal)}${scores}`;
     }

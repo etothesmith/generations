@@ -828,3 +828,5 @@ body.bigtext .phone .btn { font-size: 1.15em; }
 body.bigtext .phone .buzzer { transform: scale(1.08); }
 .ph-body.ping { animation: phping .9s ease-out; }
 @keyframes phping { 0% { box-shadow: 0 0 0 0 rgba(255,210,63,.9); } 100% { box-shadow: 0 0 0 26px rgba(255,210,63,0); } }
+/* ---- solo.html framing ---- */
+body.solo .demo-flag, body.solo #social { display: none !important; }

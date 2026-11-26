@@ -5,6 +5,7 @@
 // ============================================================
 import { genFromYear, GENERATIONS, GEN_ORDER, TEAM_COLORS, TEAM_NAMES, shuffle, uid } from './util.js';
 import { installParty, PARTY_TYPES, PARTY_STAGES } from './party.js';
+import { AutoHostMixin } from './autohost.js';
 export { PARTY, PARTY_TYPES } from './party.js';
 
 export const TIMES = {
@@ -134,7 +135,7 @@ export class Engine {
       players: {}, teams: [], teamMode: 'gen', teamCount: 2, canMerge: false,
       round: 0, controlTeam: null, board: null, remix: null, final: null,
       q: null, fx: null, categories: DEFAULT_CATS.slice(),
-      settings: { answerTime: 'relaxed', remixLength: 'normal', theme: 'classic', playAlong: true, format: 'classic', remixOff: {} },
+      settings: { answerTime: 'relaxed', remixLength: 'normal', theme: 'classic', playAlong: true, format: 'classic', remixOff: {}, autoHost: false },
       season: null,
       stats: {},
       survey: null,
@@ -180,6 +181,7 @@ export class Engine {
   setPresence(map) {
     let changed = false;
     for (const p of Object.values(this.s.players)) {
+      if (p.bot) continue;
       const c = !!map[p.pid];
       if (p.connected !== c) { p.connected = c; changed = true; }
     }
@@ -1432,6 +1434,7 @@ export class Engine {
   tick() {
     const s = this.s;
     if (s.paused) return;
+    try { this.botTick(); this.botRun(); this.autoHostTick(); } catch (e) { console.warn('auto', e); }
     const now = this.now();
     const q = s.q;
     if (s.phase === 'question' && q && this.cur) {
@@ -1599,3 +1602,4 @@ export class Engine {
 }
 
 installParty(Engine);
+Object.assign(Engine.prototype, AutoHostMixin);

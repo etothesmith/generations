@@ -135,6 +135,8 @@ Everything is bundled locally: the Firebase SDK, fonts and the QR code generator
 
 **Host Remote.** Opens in **Simple** mode: one big button at the bottom for whatever's next, ✅/❌ when you judge, a 4-button sound pad (Applause, Ooooh, Drumroll, Airhorn), **⏱ +10s**, Pause and Skip. **⚙️ Full** adds score ± buttons, Undo and 4 more sounds. The TV keyboard has **T** (+10 s) and **Alt+1…8** (sound pad).
 
+**🎮 Auto-Host.** Turn it on in the lobby (or 🎮 Auto on the TV mid-game) and the show runs itself: segment cards, reveals, rounds and Final Wager reveals advance on their own, a random tile is picked if the team in control waits 14 s, Sing It! titles count unless they repeat, and typed Final Wager answers are checked against the answer list. Peek is hidden. **🤖 Add a bot** (Customize) fills empty seats with practice bots that play every game.
+
 **Phones.** **Aa** turns on big text and buttons. Phones buzz and flash when an action is waiting for you, and stay awake during the show. Right answers tapped within 3 seconds earn a **⚡ Lightning** +$25.
 
 ## 5. Family Questions
@@ -184,6 +186,8 @@ js/fx.js              confetti, stamp slam, shockwave, banners
 js/editor.js          Family Questions editor
 data/questions.json   question bank (917 questions)
 data/practice.json    Practice Run questions and decks (kept out of real games)
+solo.html             🎮 Try the real show solo: TV + phone side by side, practice bots, Auto-Host on
+js/autohost.js        Auto-Host (show runs itself so the host can play) + practice bots
 learn.html            🎓 Practice Academy: solo, self-paced lessons for every game (js/learn.js)
 UNIVERSAL_BLUEPRINT.md  build script for a culture-agnostic GENERATIONS engine (Culture Packs)
 cookout.html          Invited to the Cookout side game (lane runner, art in assets/cookout/)
