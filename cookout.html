@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Invited to the Cookout — a GENERATIONS side game</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Invited to the Cookout 🍗">
+<meta property="og:description" content="Run the backyard, catch the plates, greet the family, and keep the raisins OUT. A GENERATIONS side game.">
+<meta property="og:image" content="https://etothesmith.github.io/generations/assets/share_card.jpg">
+<meta name="theme-color" content="#2b1446">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍗</text></svg>">
+<style>
+@font-face{font-family:Bungee;src:url(fonts/bungee.woff2) format('woff2');font-display:swap}
+@font-face{font-family:Outfit;src:url(fonts/outfit-600.woff2) format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:Outfit;src:url(fonts/outfit-900.woff2) format('woff2');font-weight:900;font-display:swap}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#1a0d2b;color:#fff;font-family:Outfit,system-ui,sans-serif;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+canvas{position:fixed;inset:0;width:100vw;height:100vh;display:block}
+#hud{position:fixed;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:flex-start;padding:max(10px,env(safe-area-inset-top)) 14px 0;pointer-events:none;gap:10px}
+.pill{background:rgba(20,8,35,.72);border:2px solid rgba(255,255,255,.18);border-radius:999px;padding:6px 14px;font-weight:900;font-size:clamp(15px,2.4vw,22px);backdrop-filter:blur(4px);white-space:nowrap}
+#score{font-family:Bungee;font-size:clamp(18px,3.2vw,30px);color:#FFD23F}
+#mult{color:#7CF29A}
+#hearts{letter-spacing:2px}
+#mats{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));pointer-events:auto;border:0;cursor:pointer;color:#2b1446;background:linear-gradient(#FFE27A,#F4A622);border-radius:18px;padding:10px 14px;font:900 16px Outfit;box-shadow:0 6px 0 #9c5a00,0 10px 24px rgba(0,0,0,.4);display:none}
+#mats:active{transform:translateY(4px);box-shadow:0 2px 0 #9c5a00}
+#mats small{display:block;font-size:11px;opacity:.8}
+#jumpBtn{position:fixed;left:max(14px,env(safe-area-inset-left));bottom:max(16px,env(safe-area-inset-bottom));pointer-events:auto;border:0;color:#fff;background:linear-gradient(#5FD3FF,#2378d1);border-radius:18px;padding:10px 16px;font:900 16px Outfit;box-shadow:0 6px 0 #124a87,0 10px 24px rgba(0,0,0,.4);display:none}
+#jumpBtn:active{transform:translateY(4px);box-shadow:0 2px 0 #124a87}
+.touch.playing #mats,.touch.playing #jumpBtn{display:block}
+#hud[hidden]{display:none}
+#banner{position:fixed;left:50%;top:22%;transform:translate(-50%,-50%) scale(.6);opacity:0;pointer-events:none;text-align:center;transition:transform .35s cubic-bezier(.2,1.6,.4,1),opacity .3s;width:92vw}
+#banner.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+#banner .w{font:900 clamp(13px,2vw,18px) Outfit;letter-spacing:4px;color:#FFD23F;text-shadow:0 2px 0 #000}
+#banner .t{font-family:Bungee;font-size:clamp(26px,5.5vw,60px);line-height:1.05;color:#fff;text-shadow:0 4px 0 #c0392b,0 8px 18px rgba(0,0,0,.6)}
+.screen{position:fixed;inset:0;display:none;align-items:flex-start;justify-content:center;padding:18px;background:radial-gradient(ellipse at center,rgba(43,20,70,.55),rgba(15,5,25,.88));overflow:auto}
+.screen.on{display:flex}
+.card{margin:auto;width:min(560px,100%);background:linear-gradient(#fff8ec,#ffe9c7);color:#2b1446;border-radius:26px;padding:22px 22px 18px;text-align:center;box-shadow:0 0 0 6px #c0392b,0 0 0 12px #fff,0 24px 60px rgba(0,0,0,.6);position:relative;background-image:linear-gradient(rgba(255,248,236,.94),rgba(255,233,199,.94)),repeating-linear-gradient(0deg,transparent 0 22px,rgba(192,57,43,.25) 22px 44px),repeating-linear-gradient(90deg,transparent 0 22px,rgba(192,57,43,.25) 22px 44px)}
+.kicker{font:900 13px Outfit;letter-spacing:4px;color:#c0392b}
+h1{font-family:Bungee;font-weight:400;font-size:clamp(30px,7vw,52px);line-height:.95;margin:6px 0 4px;color:#2b1446;text-shadow:0 3px 0 #FFD23F}
+.sub{font-weight:600;margin:0 0 10px;opacity:.85}
+.lineup{display:flex;justify-content:center;align-items:flex-end;gap:2px;margin:6px 0 4px;min-height:70px;flex-wrap:wrap}
+.lineup img{height:clamp(54px,11vw,86px)}
+.pick button{border:3px solid transparent;background:transparent;border-radius:16px;padding:2px;cursor:pointer;transition:transform .15s}
+.pick button[aria-checked=true]{border-color:#c0392b;background:rgba(255,210,63,.55);transform:translateY(-4px)}
+.pick button img{display:block;height:clamp(40px,9vw,80px)}
+.how{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left;margin:10px 0 12px}
+.how div{background:rgba(255,255,255,.75);border-radius:14px;padding:8px 10px;font-weight:600;font-size:14px;line-height:1.25;display:flex;gap:8px;align-items:center}
+.how img{width:34px;height:34px;object-fit:contain;flex:none}
+.how b{color:#c0392b}
+.go{border:0;cursor:pointer;font-family:Bungee;font-size:24px;color:#fff;background:linear-gradient(#ff6b4a,#c0392b);border-radius:999px;padding:14px 34px;box-shadow:0 7px 0 #7c1d12,0 12px 24px rgba(0,0,0,.35);margin:6px 4px}
+.go:active{transform:translateY(5px);box-shadow:0 2px 0 #7c1d12}
+.ghost{display:inline-block;margin:8px 6px 0;color:#2b1446;font-weight:900;text-decoration:none;border:2px solid #2b1446;border-radius:999px;padding:8px 16px;background:transparent;cursor:pointer;font-size:15px;font-family:Outfit}
+.keys{font-size:13px;opacity:.75;margin-top:8px;font-weight:600}
+.big{font-family:Bungee;font-size:clamp(40px,9vw,64px);color:#c0392b;line-height:1;margin:4px 0}
+.rank{font:900 20px Outfit;margin:2px 0 8px}
+.stats{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:8px 0}
+.stats span{background:#2b1446;color:#FFD23F;border-radius:12px;padding:6px 10px;font-weight:900;font-size:14px}
+.newbest{display:inline-block;background:#FFD23F;color:#2b1446;border-radius:999px;padding:4px 12px;font-weight:900;animation:pop .6s infinite alternate}
+@keyframes pop{to{transform:scale(1.08)}}
+#pauseBtn{position:fixed;right:max(14px,env(safe-area-inset-right));top:calc(max(10px,env(safe-area-inset-top)) + 48px);pointer-events:auto;background:rgba(20,8,35,.72);color:#fff;border:2px solid rgba(255,255,255,.18);border-radius:999px;width:40px;height:40px;font-size:16px;cursor:pointer;display:none}
+@media (max-width:520px){.card{padding:16px 12px 14px}.how{gap:6px}.how div{font-size:12.5px;padding:6px 8px;gap:6px}.how img{width:26px;height:26px}.how span[style]{font-size:22px!important}.sub{font-size:14px}.go{font-size:20px;padding:12px 26px}.lineup img{height:48px}}
+@media (max-height:700px){#title .lineup{display:none}}
+@media (prefers-reduced-motion: reduce){#banner{transition:none}}
+</style>
+</head>
+<body>
+<canvas id="c" aria-label="Invited to the Cookout game"></canvas>
+<div id="hud" hidden>
+  <div class="pill"><span id="hearts">❤️❤️❤️</span></div>
+  <div class="pill"><span id="score">0</span> <span id="mult"></span></div>
+  <div class="pill" id="timePill">🧾 <span id="matCount">3</span></div>
+</div>
+<button id="pauseBtn" aria-label="Pause">⏸</button>
+<button id="jumpBtn">⬆️ HOP</button>
+<button id="mats">🧾 RSVP MAT<small><span id="matCount2">3</span> left</small></button>
+<div id="banner"><div class="w" id="bw">WAVE 1</div><div class="t" id="bt">Pull Up!</div></div>
+
+<div class="screen on" id="title">
+  <div class="card">
+    <div class="kicker">A GENERATIONS SIDE GAME</div>
+    <h1>INVITED TO<br>THE COOKOUT</h1>
+    <p class="sub">Run the backyard. Fill your plate. Greet the family. Keep the uninvited <i>out</i>.</p>
+    <div class="kicker" style="margin-top:4px">WHO YOU ROLLING UP AS?</div>
+    <div class="lineup pick" id="titleLineup" role="radiogroup" aria-label="Pick your character"></div>
+    <div class="how">
+      <div><img src="assets/cookout/dish_mac.webp" alt=""><span><b>Catch food</b> on your plate. Streaks = multiplier.</span></div>
+      <div><img src="assets/cookout/guest_grandma.webp" alt=""><span><b>Greet guests.</b> Grandma's blessing = +1 heart.</span></div>
+      <div><img src="assets/cookout/bad_raisins.webp" alt=""><span><b>Dodge the uninvited.</b> Hop ground stuff. Wasps &amp; rain? Move!</span></div>
+      <div><span style="font-size:30px">🧾</span><span><b>RSVP Mat</b> guards your lane 4s. Uninvited stuff gets <b>bounced</b>.</span></div>
+      <div><img src="assets/cookout/pow_card.webp" alt=""><span><b>Spades card</b> = shield. No reneging.</span></div>
+      <div><img src="assets/cookout/pow_drink.webp" alt=""><span><b>Red drink</b> = slow-mo. Hits different.</span></div>
+    </div>
+    <button class="go" id="startBtn">PULL UP 🍗</button>
+    <div class="keys" id="keysTip">← → move · ↑ / Space hop · ↓ drop RSVP mat · P pause</div>
+    <div class="keys" id="bestLine"></div>
+    <a class="ghost" href="index.html">← GENERATIONS</a>
+    <a class="ghost" href="how-to-play.html">📖 How to Play</a>
+  </div>
+</div>
+
+<div class="screen" id="paused">
+  <div class="card">
+    <div class="kicker">HOLD UP</div>
+    <h1>PAUSED</h1>
+    <p class="sub">Go fix you another plate. We'll wait.</p>
+    <button class="go" id="resumeBtn">BACK TO IT</button><br>
+    <button class="ghost" id="quitBtn">End run</button>
+  </div>
+</div>
+
+<div class="screen" id="over">
+  <div class="card">
+    <div class="kicker" id="overKick">THE COOKOUT IS OVER</div>
+    <div class="big" id="finalScore">0</div>
+    <div id="bestBadge"></div>
+    <div class="rank" id="rank"></div>
+    <div class="stats" id="stats"></div>
+    <div class="kicker" style="margin-top:6px">WHO YOU GREETED</div>
+    <div class="lineup" id="overLineup"></div>
+    <button class="go" id="againBtn">RUN IT BACK</button><br>
+    <a class="ghost" href="index.html">← GENERATIONS</a>
+    <button class="ghost" id="shareBtn">📣 Share score</button>
+  </div>
+</div>
+
+<script>
+(() => {
+'use strict';
+const A = 'assets/cookout/';
+const DISHES = [
+  ['mac', 'Mac & Cheese'], ['potato', 'Potato Salad (the RIGHT one)'], ['chicken', 'Fried Chicken'], ['ribs', 'Ribs'],
+  ['salad', 'Cucumber Salad'], ['brisket', 'Brisket'], ['cornbread', 'Cornbread'], ['pie', 'Sweet Potato Pie'],
+  ['bakedpie', 'Apple Pie'], ['peach', 'Peach Cobbler'], ['watermelon', 'Watermelon'], ['punch', 'Red Punch'],
+];
+const GUESTS = [
+  ['grandma', 'Grandma', "Grandma's blessing! +1 ❤️"], ['dj', 'Uncle DJ', 'Uncle brought the speaker!'],
+  ['grill', 'Pops on the Grill', 'Pops got the grill going!'], ['auntie', 'Auntie', 'Auntie came with a foil pan!'],
+  ['cousin', 'Cousin Ray', 'Spades table is open!'], ['lilsis', 'Lil Sis', 'Lil Sis brought the water gun!'],
+  ['grandpa', 'Granddaddy', 'Granddaddy got his lawn chair!'], ['teen', 'Lil Cuz', 'Lil Cuz on the aux!'],
+];
+// air:true = can't be hopped over (switch lanes or bounce it)
+const BADS = [
+  ['ants', 'Ants', false, 'ANTS got on your plate!'], ['wasp', 'Wasp', true, 'A WASP! Everybody stand up and flail!'],
+  ['rain', 'Rain Cloud', true, 'Rain on the cookout?!'], ['raisins', 'Raisin Potato Salad', false, 'Who put RAISINS in this?!'],
+  ['cake', 'Store-Bought Cake', false, 'Store-bought?! In THIS family?'], ['burnt', 'Burnt Hot Dog', false, 'That hot dog is charcoal!'],
+];
+const BOUNCE_LINES = ['Not on the list!', "You weren't invited!", 'Bounced at the gate!', 'Check the RSVP!', 'Next year, maybe.', 'Wrong backyard!'];
+const WAVES = [
+  'Pull Up!', 'The Cousins Pulled Up', 'Uncle Brought the Speaker', 'Spades Table Is Open', 'Grandma Blessed the Food',
+  'Electric Slide Time', 'The Second Plate', 'String Lights On', 'Somebody Called the Cops… JK', 'Last Call for To-Go Plates',
+];
+const RANKS = [
+  [0, 'Paper Plate Rookie'], [2500, 'Got a Seat at the Table'], [6000, 'Fam Approved ✅'], [11000, 'Running the Spades Table'],
+  [18000, 'Head of the Grill 🔥'], [28000, 'Auntie Said You Can Bring Something Next Year 👑'],
+];
+
+const IMG = {};
+const want = [...DISHES.map(d => 'dish_' + d[0]), ...GUESTS.map(g => 'guest_' + g[0]), ...BADS.map(b => 'bad_' + b[0]),
+  'pow_card', 'pow_drink', 'player_run1', 'player_run2'];
+want.forEach(n => { const im = new Image(); im.onload = () => { IMG[n] = im; }; im.src = A + n + '.webp'; });
+
+// ---------- setup ----------
+const cv = document.getElementById('c'), g = cv.getContext('2d');
+let W = 0, H = 0, DPR = 1;
+function resize() {
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  W = innerWidth; H = innerHeight; cv.width = W * DPR; cv.height = H * DPR; g.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+addEventListener('resize', resize); resize();
+const touchy = matchMedia('(pointer:coarse)').matches || 'ontouchstart' in window;
+if (touchy) document.body.classList.add('touch');
+document.getElementById('keysTip').textContent = touchy
+  ? 'Swipe ← → to move · swipe ↑ or HOP to jump · swipe ↓ or RSVP MAT to bounce'
+  : document.getElementById('keysTip').textContent;
+const $ = id => document.getElementById(id);
+const store = { get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+let best = store.get('cookout-best', 0);
+const showBest = () => { $('bestLine').textContent = best ? `🏆 Your best: ${best.toLocaleString()}` : ''; };
+showBest();
+let me = store.get('cookout-char', 'host');
+const CHARS = [['host', 'The Host'], ...GUESTS.map(gu => [gu[0], gu[1]])];
+function drawPick() {
+  $('titleLineup').innerHTML = CHARS.map(c => `<button role="radio" aria-checked="${c[0] === me}" data-c="${c[0]}" title="${c[1]}"><img src="${A}${c[0] === 'host' ? 'player_run1' : 'guest_' + c[0]}.webp" alt="${c[1]}"></button>`).join('');
+}
+$('titleLineup').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; me = b.dataset.c; store.set('cookout-char', me); drawPick(); });
+drawPick();
+
+// ---------- audio ----------
+let ac = null;
+function beep(f, d = .09, type = 'square', vol = .07, slide = 0) {
+  if (!ac) return;
+  const t = ac.currentTime, o = ac.createOscillator(), v = ac.createGain();
+  o.type = type; o.frequency.setValueAtTime(f, t); if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(40, f + slide), t + d);
+  v.gain.setValueAtTime(vol, t); v.gain.exponentialRampToValueAtTime(.0001, t + d);
+  o.connect(v).connect(ac.destination); o.start(t); o.stop(t + d + .02);
+}
+const sfx = {
+  catch(m) { beep(520 + m * 70, .08, 'square', .05); setTimeout(() => beep(780 + m * 70, .08, 'square', .05), 60); },
+  guest() { [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, .1, 'triangle', .08), i * 70)); },
+  hit() { beep(180, .25, 'sawtooth', .09, -120); },
+  hop() { beep(300, .12, 'sine', .07, 300); },
+  mat() { beep(440, .06, 'square', .05); setTimeout(() => beep(330, .06, 'square', .05), 50); },
+  bounce() { beep(900, .14, 'triangle', .08, -500); },
+  power() { [660, 880, 990, 1320].forEach((f, i) => setTimeout(() => beep(f, .08, 'triangle', .07), i * 50)); },
+  wave() { [392, 523, 659].forEach((f, i) => setTimeout(() => beep(f, .16, 'triangle', .08), i * 120)); },
+  over() { [523, 440, 349, 262].forEach((f, i) => setTimeout(() => beep(f, .22, 'triangle', .09), i * 160)); },
+};
+
+// ---------- game state ----------
+const LANES = [-1, 0, 1];
+const FAR = 34;          // spawn depth
+let S = null;
+function newGame() {
+  S = {
+    t: 0, speed: 10, score: 0, hearts: 3, combo: 0, lane: 1, px: 0, jumpT: -1, hit: 0, shield: 0, slow: 0,
+    mats: 3, matProg: 0, items: [], matsOnField: [], pops: [], parts: [], spawnIn: 1.2, wave: 0, waveT: 0,
+    caught: 0, bounced: 0, guests: [], shake: 0, stride: 0, over: false, paused: false, lastRow: [], dodged: 0,
+  };
+  updHud(); showWave();
+}
+function mult() { return 1 + Math.min(4, Math.floor(S.combo / 5)); }
+function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
+
+function spawnRow() {
+  const r = Math.random();
+  const lanes = [0, 1, 2].sort(() => Math.random() - .5);
+  const pressure = Math.min(1, S.t / 150);
+  const badCount = r < .25 + pressure * .35 ? (Math.random() < .25 + pressure * .4 ? 2 : 1) : 0;
+  const row = [];
+  for (let i = 0; i < badCount; i++) row.push({ lane: lanes[i], kind: 'bad', ref: rnd(BADS) });
+  const freeLanes = lanes.slice(badCount);
+  // goodies in the free lanes
+  const goodRoll = Math.random();
+  if (freeLanes.length) {
+    const L = freeLanes[0];
+    if (goodRoll < .1 && !S.shield && !S.slow && !S.items.some(i => i.kind === 'pow')) row.push({ lane: L, kind: 'pow', ref: Math.random() < .5 ? 'card' : 'drink' });
+    else if (goodRoll < .26) {
+      const unmet = GUESTS.filter(gu => !S.guests.includes(gu[0]) && gu[0] !== me);
+      const pool = unmet.length ? unmet : GUESTS.filter(gu => gu[0] !== me);
+      row.push({ lane: L, kind: 'guest', ref: rnd(pool) });
+    } else row.push({ lane: L, kind: 'dish', ref: rnd(DISHES) });
+    if (freeLanes.length > 1 && Math.random() < .3) row.push({ lane: freeLanes[1], kind: 'dish', ref: rnd(DISHES) });
+  }
+  for (const it of row) S.items.push({ ...it, d: FAR + Math.random() * .6, wob: Math.random() * 6, dead: false, fly: null });
+}
+
+function showWave() {
+  const n = S.wave;
+  $('bw').textContent = 'WAVE ' + (n + 1);
+  $('bt').textContent = WAVES[n % WAVES.length];
+  const b = $('banner'); b.classList.add('on'); sfx.wave();
+  clearTimeout(showWave.t); showWave.t = setTimeout(() => b.classList.remove('on'), 2200);
+}
+
+function pop(text, color, d, lane, big) { S.pops.push({ text, color, d, lane, t: 0, big }); }
+function burst(x, y, color, n = 14) {
+  for (let i = 0; i < n; i++) S.parts.push({ x, y, vx: (Math.random() - .5) * 420, vy: -Math.random() * 380 - 60, t: 0, color, r: 3 + Math.random() * 4 });
+}
+
+// ---------- input ----------
+function move(dir) { if (!S || S.over || S.paused) return; S.lane = Math.max(0, Math.min(2, S.lane + dir)); }
+function hop() { if (!S || S.over || S.paused) return; if (S.jumpT < 0) { S.jumpT = 0; sfx.hop(); } }
+function dropMat() {
+  if (!S || S.over || S.paused) return;
+  if (S.mats <= 0) { pop('No mats left!', '#ff9a9a', 3, S.lane); return; }
+  if (S.matsOnField.some(m => m.lane === S.lane)) return;
+  S.mats--; S.matsOnField.push({ lane: S.lane, d: 6, t: 0 }); sfx.mat(); updHud();
+}
+addEventListener('keydown', e => {
+  const k = e.key;
+  if (k === 'ArrowLeft' || k === 'a' || k === 'A') move(-1);
+  else if (k === 'ArrowRight' || k === 'd' || k === 'D') move(1);
+  else if (k === 'ArrowUp' || k === 'w' || k === 'W' || k === ' ') { hop(); e.preventDefault(); }
+  else if (k === 'ArrowDown' || k === 's' || k === 'S' || k === 'e' || k === 'E') dropMat();
+  else if (k === 'p' || k === 'P' || k === 'Escape') togglePause();
+  else if (k === 'Enter' && !S?.paused && $('title').classList.contains('on')) start();
+  else if (k === 'Enter' && S?.over) start();
+});
+let tStart = null;
+cv.addEventListener('pointerdown', e => { tStart = { x: e.clientX, y: e.clientY, t: performance.now() }; });
+cv.addEventListener('pointerup', e => {
+  if (!tStart) return;
+  const dx = e.clientX - tStart.x, dy = e.clientY - tStart.y, adx = Math.abs(dx), ady = Math.abs(dy);
+  if (Math.max(adx, ady) > 28) {
+    if (adx > ady) move(dx > 0 ? 1 : -1); else if (dy < 0) hop(); else dropMat();
+  } else {
+    // tap: sides move, middle hops
+    if (e.clientX < W * .33) move(-1); else if (e.clientX > W * .67) move(1); else hop();
+  }
+  tStart = null;
+});
+$('jumpBtn').addEventListener('pointerdown', e => { e.stopPropagation(); hop(); });
+$('mats').addEventListener('pointerdown', e => { e.stopPropagation(); dropMat(); });
+$('pauseBtn').addEventListener('click', () => togglePause());
+function togglePause(force) {
+  if (!S || S.over) return;
+  S.paused = force ?? !S.paused;
+  $('paused').classList.toggle('on', S.paused);
+}
+addEventListener('blur', () => togglePause(true));
+document.addEventListener('visibilitychange', () => { if (document.hidden) togglePause(true); });
+$('resumeBtn').onclick = () => togglePause(false);
+$('quitBtn').onclick = () => { togglePause(false); endGame(); };
+$('startBtn').onclick = start; $('againBtn').onclick = start;
+$('shareBtn').onclick = async () => {
+  const txt = `I scored ${S.score.toLocaleString()} in Invited to the Cookout 🍗 — "${rankFor(S.score)}". Think you can get a plate? ${location.href}`;
+  try { if (navigator.share) await navigator.share({ text: txt }); else { await navigator.clipboard.writeText(txt); $('shareBtn').textContent = '✅ Copied!'; } } catch {}
+};
+function start() {
+  if (!ac) { try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch {} }
+  ac?.resume?.();
+  $('title').classList.remove('on'); $('over').classList.remove('on');
+  $('hud').hidden = false; $('pauseBtn').style.display = 'block'; document.body.classList.add('playing');
+  newGame();
+}
+
+// ---------- update ----------
+function updHud() {
+  $('hearts').textContent = '❤️'.repeat(S.hearts) + '🤍'.repeat(Math.max(0, 3 - S.hearts));
+  $('score').textContent = S.score.toLocaleString();
+  const m = mult(); $('mult').textContent = m > 1 ? '×' + m : '';
+  $('matCount').textContent = S.mats; $('matCount2').textContent = S.mats;
+  $('timePill').style.opacity = S.mats ? 1 : .5;
+}
+function gain(base, label, color, lane, d) {
+  const m = mult(); const pts = base * m; S.score += pts; S.combo++;
+  pop(`+${pts} ${label}`, color, d, lane);
+  S.matProg++; if (S.matProg >= 8) { S.matProg = 0; if (S.mats < 5) { S.mats++; pop('+1 RSVP mat 🧾', '#FFE27A', 4, S.lane); } }
+  if (S.combo % 5 === 0 && m < 5) pop(`STREAK ×${mult()}!`, '#7CF29A', 6, 1, true);
+  updHud();
+}
+function takeHit(it) {
+  if (S.hit > 0) return;
+  if (S.shield > 0) { it.fly = { vx: (Math.random() < .5 ? -1 : 1) * 9, vy: 6 }; pop('Spades shield! ♠️', '#FFD23F', 1.5, it.lane); sfx.bounce(); return; }
+  S.hearts--; S.combo = 0; S.hit = 1.3; S.shake = .35; sfx.hit();
+  pop(it.ref[3], '#ff7a7a', 2, it.lane, true);
+  updHud();
+  if (S.hearts <= 0) setTimeout(endGame, 450);
+}
+function endGame() {
+  if (S.over) return;
+  S.over = true; sfx.over();
+  const isBest = S.score > best; if (isBest) { best = S.score; store.set('cookout-best', best); }
+  $('finalScore').textContent = S.score.toLocaleString();
+  $('bestBadge').innerHTML = isBest && S.score > 0 ? '<span class="newbest">NEW PERSONAL BEST!</span>' : `<span style="font-weight:900;opacity:.7">Best: ${best.toLocaleString()}</span>`;
+  $('rank').textContent = rankFor(S.score);
+  const mins = Math.floor(S.t / 60), secs = Math.floor(S.t % 60);
+  $('stats').innerHTML = `<span>🍽️ ${S.caught} plates</span><span>🧾 ${S.bounced} bounced</span><span>👋 ${S.guests.length}/${GUESTS.filter(gu => gu[0] !== me).length} guests</span><span>⏱️ ${mins}:${String(secs).padStart(2, '0')}</span><span>🌊 Wave ${S.wave + 1}</span>`;
+  $('overLineup').innerHTML = S.guests.length
+    ? S.guests.map(id => `<img src="${A}guest_${id}.webp" alt="">`).join('')
+    : '<span style="font-weight:600;opacity:.7">Nobody yet… go say hi next time!</span>';
+  $('overKick').textContent = S.hearts <= 0 ? 'THE UNINVITED TOOK OVER' : 'THE COOKOUT IS OVER';
+  $('shareBtn').textContent = '📣 Share score';
+  setTimeout(() => { $('over').classList.add('on'); $('hud').hidden = true; $('pauseBtn').style.display = 'none'; document.body.classList.remove('playing'); showBest(); }, 500);
+}
+function rankFor(s) { let r = RANKS[0][1]; for (const [min, name] of RANKS) if (s >= min) r = name; return r; }
+
+function update(dt) {
+  if (!S || S.paused) return;
+  if (S.over) { S.parts.forEach(p => { p.t += dt; }); return; }
+  S.t += dt; S.waveT += dt;
+  if (S.waveT > 25) { S.waveT = 0; S.wave++; showWave(); }
+  S.speed = Math.min(26, 10 + S.t * .12 + S.wave * .6);
+  const v = S.speed * (S.slow > 0 ? .55 : 1);
+  S.stride += dt * v / 1.4;
+  if (S.hit > 0) S.hit -= dt; if (S.shield > 0) S.shield -= dt; if (S.slow > 0) S.slow -= dt; if (S.shake > 0) S.shake -= dt;
+  if (S.jumpT >= 0) { S.jumpT += dt; if (S.jumpT > .62) S.jumpT = -1; }
+  const target = LANES[S.lane]; S.px += (target - S.px) * Math.min(1, dt * 16);
+  const jh = S.jumpT >= 0 ? Math.sin(Math.PI * S.jumpT / .62) : 0;
+
+  S.spawnIn -= dt * (v / 10);
+  if (S.spawnIn <= 0) { spawnRow(); S.spawnIn = Math.max(.55, 1.25 - S.t * .004); }
+
+  for (const m of S.matsOnField) { m.t += dt; }
+  for (const it of S.items) {
+    if (it.fly) { it.fly.vy -= 30 * dt; it.d += it.fly.vy * dt * .4; it.lane += it.fly.vx * dt * .08; it.flyT = (it.flyT || 0) + dt; if (it.flyT > 1.2) it.dead = true; continue; }
+    it.d -= v * dt;
+    // RSVP mat bounce
+    if (it.kind === 'bad') {
+      const m = S.matsOnField.find(m => m.lane === it.lane && Math.abs(m.d - it.d) < .9);
+      if (m) {
+        m.used = true; it.fly = { vx: (it.lane - 1 || (Math.random() < .5 ? -1 : 1)) * 10, vy: 14 };
+        S.bounced++; sfx.bounce(); gain(150, rnd(BOUNCE_LINES), '#FFE27A', it.lane, it.d);
+        const p = project(it.lane - 1, it.d); burst(p.x, p.y, '#FFD23F', 16); continue;
+      }
+    }
+    // reach the player
+    if (!it.done && it.d < .5 && Math.abs((it.lane - 1) - S.px) < .5) {
+      it.done = true;
+      if (it.kind === 'bad') {
+        const air = it.ref[2];
+        if (!air && jh > .45) { S.dodged++; pop('Hopped it!', '#bfe6ff', .5, it.lane); }
+        else { takeHit(it); if (!it.fly) it.dead = true; }
+      } else if (it.kind === 'dish') {
+        if (jh > .75) continue; // sailed over it
+        it.dead = true; S.caught++; sfx.catch(mult()); gain(100, it.ref[1], '#fff', it.lane, .6);
+        const p = project(S.px, 0); burst(p.x, p.y - 60, '#FFD23F', 8);
+      } else if (it.kind === 'guest') {
+        it.dead = true; sfx.guest();
+        if (!S.guests.includes(it.ref[0])) S.guests.push(it.ref[0]);
+        if (it.ref[0] === 'grandma' && S.hearts < 5) S.hearts++;
+        gain(250, it.ref[1] + '!', '#7CF29A', it.lane, 1); pop(it.ref[2], '#7CF29A', 3, 1, true);
+        const p = project(S.px, 0); burst(p.x, p.y - 80, '#7CF29A', 18);
+      } else if (it.kind === 'pow') {
+        it.dead = true; sfx.power();
+        if (it.ref === 'card') { S.shield = 8; pop('SPADES SHIELD ♠️ 8s', '#FFD23F', 2, 1, true); }
+        else { S.slow = 6; pop('RED DRINK SLOW-MO 🥤', '#ff8fa3', 2, 1, true); }
+        updHud();
+      }
+    }
+    if (it.d < -3) it.dead = true;
+  }
+  S.items = S.items.filter(i => !i.dead);
+  S.matsOnField = S.matsOnField.filter(m => !m.used && m.t < 4);
+  for (const p of S.pops) p.t += dt; S.pops = S.pops.filter(p => p.t < 1.3);
+  for (const p of S.parts) { p.t += dt; p.vy += 900 * dt; p.x += p.vx * dt; p.y += p.vy * dt; } S.parts = S.parts.filter(p => p.t < 1);
+}
+
+// ---------- projection & drawing ----------
+let HY = 0, PY = 0, LW = 0;
+function layout() { const portrait = H > W; HY = H * (portrait ? .36 : .34); PY = H * (portrait ? .84 : .86); LW = portrait ? W * .3 : Math.min(W * .28, H * .26); }
+const PK = 4.2;
+function scaleAt(d) { return PK / (PK + Math.max(-2.5, d)); }
+function project(laneX, d) { const s = scaleAt(d); return { x: W / 2 + laneX * LW * s, y: HY + (PY - HY) * s, s }; }
+
+function sky(night) {
+  const gr = g.createLinearGradient(0, 0, 0, HY);
+  const lerp = (a, b) => a.map((v, i) => Math.round(v + (b[i] - v) * night));
+  const top = lerp([255, 140, 80], [24, 12, 52]), mid = lerp([255, 196, 120], [72, 30, 96]), bot = lerp([255, 225, 160], [190, 80, 90]);
+  gr.addColorStop(0, `rgb(${top})`); gr.addColorStop(.6, `rgb(${mid})`); gr.addColorStop(1, `rgb(${bot})`);
+  g.fillStyle = gr; g.fillRect(0, 0, W, HY + 2);
+  // sun / moon
+  g.fillStyle = night < .6 ? `rgba(255,236,170,${1 - night})` : `rgba(250,245,220,${night})`;
+  g.beginPath(); g.arc(W * .78, HY * (.55 + .25 * (1 - night)), Math.min(W, H) * .05, 0, 7); g.fill();
+  if (night > .5) { g.fillStyle = `rgba(255,255,255,${(night - .5) * 1.6})`; for (let i = 0; i < 40; i++) { const x = (i * 977) % W, y = (i * 613) % (HY * .8); g.fillRect(x, y, 2, 2); } }
+}
+function backyard(night, t) {
+  // tree line + fence
+  g.fillStyle = `rgb(${Math.round(40 - 25 * night)},${Math.round(90 - 55 * night)},${Math.round(50 - 25 * night)})`;
+  g.beginPath(); g.moveTo(0, HY);
+  for (let x = 0; x <= W; x += 30) g.lineTo(x, HY - 30 - 22 * Math.abs(Math.sin(x * .013)) - 14 * Math.abs(Math.sin(x * .041)));
+  g.lineTo(W, HY); g.fill();
+  g.fillStyle = `rgb(${Math.round(196 - 110 * night)},${Math.round(150 - 90 * night)},${Math.round(110 - 60 * night)})`;
+  g.fillRect(0, HY - 16, W, 16);
+  g.fillStyle = 'rgba(0,0,0,.15)'; for (let x = 0; x < W; x += 14) g.fillRect(x, HY - 18, 3, 18);
+  // lawn
+  const lg = g.createLinearGradient(0, HY, 0, H);
+  lg.addColorStop(0, `rgb(${Math.round(90 - 60 * night)},${Math.round(170 - 100 * night)},${Math.round(70 - 35 * night)})`);
+  lg.addColorStop(1, `rgb(${Math.round(50 - 30 * night)},${Math.round(130 - 80 * night)},${Math.round(45 - 25 * night)})`);
+  g.fillStyle = lg; g.fillRect(0, HY, W, H - HY);
+  // gingham runway
+  const rows = 26, edge = 1.62;
+  for (let i = 0; i < rows; i++) {
+    const off = (S ? S.stride : t * 3) % 2;
+    const d0 = i * 1.4 - off * 1.4 + 0, d1 = d0 + 1.4;
+    if (d1 < -2.4) continue;
+    const a = project(-edge, Math.max(-2.4, d0)), b = project(edge, Math.max(-2.4, d0)), c = project(edge, d1), dd = project(-edge, d1);
+    g.fillStyle = (i % 2) ? `rgba(255,250,240,${.92 - night * .25})` : `rgba(214,48,49,${.9 - night * .2})`;
+    g.beginPath(); g.moveTo(a.x, a.y); g.lineTo(b.x, b.y); g.lineTo(c.x, c.y); g.lineTo(dd.x, dd.y); g.fill();
+  }
+  // lane checks (vertical stripes)
+  for (const lx of [-1.08, -.54, .54, 1.08]) {
+    const a = project(lx, -2.4), b = project(lx, FAR);
+    g.strokeStyle = `rgba(214,48,49,${.35 - night * .1})`; g.lineWidth = Math.max(2, LW * .12); g.beginPath(); g.moveTo(a.x, a.y); g.lineTo(b.x, b.y); g.stroke();
+  }
+  // runway edges
+  for (const lx of [-edge, edge]) { const a = project(lx, -2.4), b = project(lx, FAR); g.strokeStyle = 'rgba(0,0,0,.25)'; g.lineWidth = 4; g.beginPath(); g.moveTo(a.x, a.y); g.lineTo(b.x, b.y); g.stroke(); }
+  // string lights
+  const bulbs = 18;
+  for (const side of [0, 1]) {
+    g.strokeStyle = 'rgba(30,20,20,.7)'; g.lineWidth = 2; g.beginPath();
+    const y0 = H * .06 + side * H * .1;
+    for (let i = 0; i <= bulbs; i++) { const x = W * i / bulbs, y = y0 + Math.sin(i / bulbs * Math.PI) * H * .07; i ? g.lineTo(x, y) : g.moveTo(x, y); }
+    g.stroke();
+    for (let i = 0; i <= bulbs; i++) {
+      const x = W * i / bulbs, y = y0 + Math.sin(i / bulbs * Math.PI) * H * .07 + 6;
+      const on = .35 + night * .65, flick = .85 + .15 * Math.sin(t * 3 + i * 1.7 + side);
+      const col = ['255,210,63', '255,120,90', '124,242,154', '95,211,255'][(i + side) % 4];
+      if (night > .2) { const rg = g.createRadialGradient(x, y, 0, x, y, 18); rg.addColorStop(0, `rgba(${col},${.45 * on * flick})`); rg.addColorStop(1, `rgba(${col},0)`); g.fillStyle = rg; g.fillRect(x - 18, y - 18, 36, 36); }
+      g.fillStyle = `rgba(${col},${on * flick})`; g.beginPath(); g.arc(x, y, 4, 0, 7); g.fill();
+    }
+  }
+  // greeted guests hang out on the sides of the yard
+  if (S) S.guests.forEach((id, i) => {
+    const im = IMG['guest_' + id]; if (!im) return;
+    const side = i % 2 ? 1 : -1, d = 5 + Math.floor(i / 2) * 5, p = project(side * 2.35, d);
+    const h = LW * 1.5 * p.s, w = h * im.width / im.height;
+    g.save(); g.translate(p.x, p.y); g.scale(side > 0 ? -1 : 1, 1); const bob = Math.abs(Math.sin(t * 4 + i)) * 4 * p.s;
+    g.drawImage(im, -w / 2, -h - bob, w, h); g.restore();
+  });
+}
+function spriteSize(kind) { return kind === 'guest' ? 1.5 : kind === 'pow' ? .9 : kind === 'bad' ? .95 : 1; }
+function drawItem(it, t) {
+  const p = project(it.lane - 1, it.d);
+  const name = it.kind === 'dish' ? 'dish_' + it.ref[0] : it.kind === 'guest' ? 'guest_' + it.ref[0] : it.kind === 'bad' ? 'bad_' + it.ref[0] : 'pow_' + it.ref;
+  const im = IMG[name];
+  const base = LW * .78 * spriteSize(it.kind) * p.s;
+  let lift = 0;
+  if (it.kind === 'bad' && it.ref[2]) lift = base * (it.ref[0] === 'rain' ? .9 : .55) + Math.sin(t * 6 + it.wob) * base * .08;
+  if (it.kind === 'pow') lift = base * .25 + Math.sin(t * 5 + it.wob) * base * .1;
+  if (it.kind === 'dish') lift = Math.abs(Math.sin(t * 5 + it.wob)) * base * .06;
+  // shadow
+  g.fillStyle = 'rgba(0,0,0,.22)'; g.beginPath(); g.ellipse(p.x, p.y, base * .42, base * .12, 0, 0, 7); g.fill();
+  if (it.kind === 'pow' || it.kind === 'guest') {
+    const rg = g.createRadialGradient(p.x, p.y - lift - base * .4, 0, p.x, p.y - lift - base * .4, base * .8);
+    rg.addColorStop(0, it.kind === 'pow' ? 'rgba(255,230,120,.55)' : 'rgba(124,242,154,.35)'); rg.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = rg; g.fillRect(p.x - base, p.y - lift - base * 1.4, base * 2, base * 2);
+  }
+  g.save(); g.translate(p.x, p.y - lift);
+  if (it.fly) g.rotate((it.flyT || 0) * 9);
+  if (it.kind === 'guest') { const sw = Math.sin(t * 8 + it.wob) * .06; g.rotate(sw); }
+  if (im) { const h = base * (it.kind === 'guest' ? 1 : im.height / Math.max(im.width, im.height)), w = h * im.width / im.height; g.drawImage(im, -w / 2, -h, w, h); }
+  else { g.font = `${base * .8}px serif`; g.textAlign = 'center'; g.fillText(it.kind === 'bad' ? '🐜' : it.kind === 'guest' ? '🙋🏾' : '🍗', 0, 0); }
+  g.restore();
+  // "air" warning marker so players learn they can't hop it
+  if (it.kind === 'bad' && it.ref[2] && it.d < 16 && !it.fly) {
+    g.fillStyle = 'rgba(255,80,80,.85)'; g.font = `900 ${Math.max(10, 18 * p.s)}px Outfit`; g.textAlign = 'center';
+    g.fillText('⚠ MOVE', p.x, p.y + 18 * p.s);
+  }
+}
+function drawMat(m, t) {
+  const a = project(m.lane - 1 - .42, m.d - .55), b = project(m.lane - 1 + .42, m.d - .55), c = project(m.lane - 1 + .42, m.d + .55), d = project(m.lane - 1 - .42, m.d + .55);
+  const pulse = .6 + .4 * Math.sin(t * 10); g.globalAlpha = m.t > 3 ? (Math.floor(m.t * 10) % 2 ? .4 : 1) : 1;
+  g.fillStyle = `rgba(255,210,63,${.55 + .3 * pulse})`; g.strokeStyle = '#7c4a00'; g.lineWidth = 3;
+  g.beginPath(); g.moveTo(a.x, a.y); g.lineTo(b.x, b.y); g.lineTo(c.x, c.y); g.lineTo(d.x, d.y); g.closePath(); g.fill(); g.stroke();
+  const p = project(m.lane - 1, m.d); g.fillStyle = '#2b1446'; g.font = `900 ${Math.max(9, 22 * p.s)}px Outfit`; g.textAlign = 'center';
+  g.fillText('RSVP', p.x, p.y + 6 * p.s); g.globalAlpha = 1;
+}
+function drawPlayer(t) {
+  if (!S) return;
+  const p = project(S.px, 0);
+  const jh = S.jumpT >= 0 ? Math.sin(Math.PI * S.jumpT / .62) : 0;
+  const h = LW * 1.45, lift = jh * h * .55;
+  g.fillStyle = 'rgba(0,0,0,.28)'; g.beginPath(); g.ellipse(p.x, p.y, h * .3 * (1 - jh * .4), h * .08, 0, 0, 7); g.fill();
+  if (S.hit > 0 && Math.floor(S.hit * 14) % 2) return;
+  const host = me === 'host';
+  let im = host ? (Math.floor(S.stride * 1.3) % 2 ? IMG.player_run1 : IMG.player_run2) : IMG['guest_' + me];
+  const lean = (LANES[S.lane] - S.px) * .35 + (host || jh ? 0 : Math.sin(S.stride * Math.PI) * .07);
+  g.save(); g.translate(p.x, p.y - lift); g.rotate(lean);
+  if (jh) g.scale(1 - jh * .06, 1 + jh * .08);
+  const bob = jh ? 0 : Math.abs(Math.sin(S.stride * Math.PI)) * h * .05;
+  if (im) { const w = h * im.width / im.height; g.drawImage(im, -w / 2, -h - bob, w, h); }
+  else {
+    // fallback: a simple drawn host holding a plate
+    g.fillStyle = '#5a3420'; g.beginPath(); g.arc(0, -h * .78 - bob, h * .14, 0, 7); g.fill();
+    g.fillStyle = '#FFD23F'; g.fillRect(-h * .14, -h * .64 - bob, h * .28, h * .3);
+    g.fillStyle = '#c0392b'; g.fillRect(-h * .1, -h * .58 - bob, h * .2, h * .3);
+    g.fillStyle = '#2b4a8a'; g.fillRect(-h * .12, -h * .3 - bob, h * .09, h * .3); g.fillRect(h * .03, -h * .3 - bob, h * .09, h * .3);
+    g.fillStyle = '#fff'; g.beginPath(); g.ellipse(0, -h * .5 - bob, h * .24, h * .06, 0, 0, 7); g.fill();
+  }
+  g.restore();
+  if (S.shield > 0) {
+    const a = Math.min(1, S.shield) * (.55 + .25 * Math.sin(t * 12));
+    g.strokeStyle = `rgba(255,210,63,${a})`; g.lineWidth = 5; g.beginPath(); g.ellipse(p.x, p.y - lift - h * .5, h * .45, h * .6, 0, 0, 7); g.stroke();
+    g.font = `${h * .22}px serif`; g.textAlign = 'center'; g.fillText('♠️', p.x + h * .42, p.y - lift - h * .9);
+  }
+}
+function drawPops() {
+  for (const p of S.pops) {
+    const q = project(p.lane - 1, p.d);
+    const a = 1 - p.t / 1.3, y = q.y - LW * 1.6 - p.t * 70;
+    g.globalAlpha = Math.max(0, a); g.textAlign = 'center';
+    g.font = `${p.big ? 900 : 900} ${p.big ? Math.min(34, W * .06) : Math.min(22, W * .045)}px Outfit`;
+    g.lineWidth = 5; g.strokeStyle = 'rgba(30,10,40,.85)'; g.strokeText(p.text, p.big ? W / 2 : q.x, p.big ? H * .42 - p.t * 40 : y);
+    g.fillStyle = p.color; g.fillText(p.text, p.big ? W / 2 : q.x, p.big ? H * .42 - p.t * 40 : y);
+  }
+  g.globalAlpha = 1;
+  for (const p of S.parts) { g.globalAlpha = 1 - p.t; g.fillStyle = p.color; g.beginPath(); g.arc(p.x, p.y, p.r, 0, 7); g.fill(); }
+  g.globalAlpha = 1;
+}
+function draw(t) {
+  layout();
+  g.save();
+  if (S && S.shake > 0) g.translate((Math.random() - .5) * 14 * S.shake / .35, (Math.random() - .5) * 10 * S.shake / .35);
+  const night = S ? Math.min(1, S.t / 200) : .55 + .1 * Math.sin(t * .3);
+  sky(night); backyard(night, t);
+  if (S) {
+    S.matsOnField.forEach(m => drawMat(m, t));
+    const sorted = [...S.items].sort((a, b) => b.d - a.d);
+    const front = sorted.filter(i => i.d < 0), back = sorted.filter(i => i.d >= 0);
+    back.forEach(i => drawItem(i, t)); drawPlayer(t); front.forEach(i => drawItem(i, t));
+    drawPops();
+    if (S.slow > 0) { g.fillStyle = `rgba(255,60,110,${Math.min(.14, S.slow * .05)})`; g.fillRect(0, 0, W, H); }
+  } else {
+    // attract mode: a parade of food rolling by
+    const n = 9;
+    for (let i = 0; i < n; i++) {
+      const d = ((i * 3.7 - t * 4) % 30 + 30) % 30, L = i % 3, list = i % 3 === 1 ? GUESTS : DISHES;
+      drawItem({ kind: i % 3 === 1 ? 'guest' : 'dish', ref: list[i % list.length], lane: L, d, wob: i }, t);
+    }
+  }
+  g.restore();
+}
+
+let last = performance.now();
+function loop(now) {
+  const dt = Math.min(.05, (now - last) / 1000); last = now;
+  update(dt); draw(now / 1000);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+window.__cookout = { get S() { return S; }, start, endGame, move, hop, dropMat };
+})();
+</script>
+</body>
+</html>

@@ -280,6 +280,7 @@ function body() {
         <div class="sub">${m.audience ? "You're in the audience 👀 — react, play along, and vote!" : "Watch the big screen. The host will make teams when everybody's here."}</div>
         ${surveyCard()}
         <div class="away-card"><b>📍 Not near the TV?</b> You can play the whole game from this phone. Want the big-screen view too? Open <a href="host.html?watch=${esc(room)}${T.mode === 'demo' ? '&demo' : ''}" target="_blank" rel="noopener">the live show</a> on a laptop or TV. Tap 💬 to chat, send voice notes or hop on video with the family.</div>
+        <a class="away-card" style="display:block;text-decoration:none;color:inherit" href="cookout.html" target="_blank" rel="noopener"><b>🍗 Waiting on everybody?</b> Play <u>Invited to the Cookout</u> in a new tab. You'll stay in the game here.</a>
         <button class="btn navy" data-act="editav">✏️ Change My Avatar</button>`;
     case 'teams':
       return t ? `<div class="team-banner" style="background:${t.color}">You're on<br><span style="font-size:24px">${esc(t.name)}</span></div>

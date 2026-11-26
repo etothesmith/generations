@@ -83,9 +83,10 @@ Everything is bundled locally: the Firebase SDK, fonts and the QR code generator
 
 ## 4. How to host
 
-**Lobby.** Wait for everyone to join. Pick a **Show** format (Classic / Party Night / Trivia Only), then pick **By Generation** or **Random ×2/×3/×4**, set the **Answer time** and **Remix** length, and choose 6 board categories (or tap **🎲 Shuffle**). Then tap **Make Teams →**.
-- *By Generation* sorts players by birth year: Elders (before 1965) · Gen X (1965–80) · Millennials (81–96) · Gen Z (97–2012) · Gen Alpha (2013+, grouped with Gen Z).
-- If a generation only has one player, tap **Old School vs. New School** to merge.
+**Lobby.** Wait for everyone to join. Pick a **Show** format (Classic / Party Night / Trivia Only / 🎓 Practice Run), then under **How should we split?** pick a team split, and (behind **⚙️ Customize the show**) set the **Answer time** and **Remix** length and choose 6 board categories. Then tap **Make Teams →**.
+- Generations come from birth year: Elders (before 1965) · Gen X (1965–80) · Millennials (81–96) · Gen Z (97–2012) · Gen Alpha (2013+, grouped with Gen Z).
+- Split options adapt to who showed up: **each generation its own team**, **Old Heads vs. Young Bucks**, **Grandparents & Grandkids vs. The Parents** (3+ generations), **Older Crew vs. Younger Crew** (by birth year), **Mixed families** (age-balanced draft), or **Random ×2/×3/×4**. You can switch splits again on the Teams screen.
+- **🎓 Practice Run** plays every game once with its own practice questions (data/practice.json). Those never appear in real games, don't mark questions as seen and don't count toward a Season.
 - Tap a player to move them to another team. Tap a team name to rename it.
 
 **Round 1.** Click a tile. The question shows on the TV and on the phones, and buzzers unlock after a short read (or press **Open Buzzers**). Buzzing early gets a 1-second **false start** lockout.
@@ -177,7 +178,9 @@ js/assets.js          Gemini art loader (magenta keying + sheet slicing)
 js/audio.js           synthesized sound effects (no audio files)
 js/fx.js              confetti, stamp slam, shockwave, banners
 js/editor.js          Family Questions editor
-data/questions.json   question bank (739: 504 board questions in 22 categories + 235 Round 2/Final)
+data/questions.json   question bank (835 questions)
+data/practice.json    Practice Run questions and decks (kept out of real games)
+cookout.html          Invited to the Cookout side game (lane runner, art in assets/cookout/)
 data/extras.json      Survey prompts, charades clues, hot takes, "most likely to" + Top That! prompts (edit freely)
 database.rules.json   Firebase security rules
 vendor/               bundled Firebase SDK + QR code generator

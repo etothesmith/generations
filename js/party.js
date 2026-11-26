@@ -438,7 +438,7 @@ const methods = {
   // ---------- Season mode ----------
   recordSeason() {
     const s = this.s;
-    if (!s.gameId) return;
+    if (!s.gameId || this.practice) return;
     s.season = s.season || { ep: 0, teams: {}, recorded: null };
     s.season.teams = s.season.teams || {};
     if (s.season.recorded === s.gameId) return;
@@ -452,6 +452,7 @@ const methods = {
   },
   nextEpisode() {
     const s = this.s;
+    this.exitPractice();
     Object.assign(s, { q: null, final: null, remix: null, winners: null, awards: null, board: null, spin: null, paused: false });
     this.cur = null;
     if (s.settings.format !== 'party') s.categories = this.freshCategories();

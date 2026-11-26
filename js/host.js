@@ -105,6 +105,7 @@ async function boot() {
 let EXTRAS = { survey: [], charades: [] };
 async function loadExtras() {
   try { EXTRAS = await (await fetch('data/extras.json', { cache: 'no-cache' })).json(); } catch (e) { /* optional */ }
+  try { EXTRAS.practice = await (await fetch('data/practice.json', { cache: 'no-cache' })).json(); } catch (e) { /* optional */ }
   return EXTRAS;
 }
 export async function loadBank() {
@@ -241,6 +242,7 @@ function roundName(s) {
   if (s.phase === 'lobby' || s.phase === 'teams') return ['Lobby', 'Grab your phones!'];
   if (s.phase === 'champion') return ['Champions', 'Game over'];
   if (s.round === 1) return ['Round 1', 'The Generations Board'];
+  if (s.settings && s.settings.format === 'practice' && s.round >= 2) return ['🎓 Practice Run', s.round === 3 ? 'Practice Final Wager' : 'Learn every game · no pressure'];
   if (s.round === 2) return s.settings && s.settings.format === 'party' ? ['Party Night', 'Laughs · Arguments · Receipts'] : ['Round 2', 'For the Culture Remix'];
   return ['Round 3', 'The Final Wager'];
 }
@@ -299,14 +301,7 @@ function viewLobby(s) {
           ${Object.entries(SHOW_FORMATS).map(([k, f]) => `<button data-act="set" data-k="format" data-v="${k}" title="${esc(f.blurb)}" class="seg-btn ${(s.settings.format || 'classic') === k ? 'on' : ''}">${f.label}</button>`).join('')}
           <button class="cat-toggle cust" data-act="lobbyopen">${lobbyOpen ? '✓ Done' : '⚙️ Customize the show'}</button>
         </div>
-        <div class="grp"><span>Teams</span>
-          <div class="seg">
-            <button data-act="mode" data-mode="gen" class="${s.teamMode === 'gen' ? 'on' : ''}">By Generation</button>
-            <button data-act="mode" data-mode="random" data-n="2" class="${s.teamMode === 'random' && s.teamCount === 2 ? 'on' : ''}">Random ×2</button>
-            <button data-act="mode" data-mode="random" data-n="3" class="${s.teamMode === 'random' && s.teamCount === 3 ? 'on' : ''}">×3</button>
-            <button data-act="mode" data-mode="random" data-n="4" class="${s.teamMode === 'random' && s.teamCount === 4 ? 'on' : ''}">×4</button>
-          </div>
-        </div>
+        <div class="grp" style="flex-basis:100%"><span>Teams</span>${splitChips(s, 'mode')}</div>
         <div class="grp"><span>Answer time</span><div class="seg">
             ${[['quick', 'Quick 10s'], ['relaxed', 'Relaxed 15s'], ['family', 'Grandma-Friendly 20s']].map(([k, l]) => `<button data-act="set" data-k="answerTime" data-v="${k}" class="${s.settings.answerTime === k ? 'on' : ''}">${l}</button>`).join('')}
           </div></div>
@@ -333,6 +328,14 @@ function viewLobby(s) {
   </div>`;
 }
 
+function splitChips(s, act) {
+  const opts = E.availableSplits ? E.availableSplits() : [];
+  if (!opts.length) return '<span class="hint" style="margin:0">Waiting for players…</span>';
+  return opts.map((o) => {
+    const on = s.teamMode === o.mode && (!o.n || s.teamCount === o.n);
+    return `<button class="split-chip ${on ? 'on' : ''}" data-act="${act}" data-mode="${o.mode}" ${o.n ? `data-n="${o.n}"` : ''} title="${esc(o.hint)}"><b>${esc(o.label)}</b><small>${esc(o.hint)}</small></button>`;
+  }).join('');
+}
 function viewTeams(s) {
   const cols = s.teams.map((t) => `<div class="team-col" data-k="tc-${t.id}" style="--tc:${t.color}">
       <h3 contenteditable="true" spellcheck="false" data-team="${t.id}">${esc(t.name)}</h3>
@@ -342,12 +345,13 @@ function viewTeams(s) {
     <div class="segment" style="margin-bottom:1vh">${ART.family ? `<img class="family-strip" src="${ART.family}" alt="">` : ''}<h1 style="font-size:clamp(26px,4vw,70px)">Meet the Teams</h1></div>
     <div class="teams-wrap" style="--n:${s.teams.length}">${cols}</div>
     <div class="hint">Tap a player to move them to another team · Tap a team name to rename it</div>
+    <div class="split-row"><span>How should we split?</span>${splitChips(s, 'split')}</div>
     <div style="display:flex;gap:1vw;justify-content:center;margin-top:1vh">
       <button class="btn ghost" data-act="back">← Lobby</button>
-      ${s.teamMode === 'gen' ? `<button class="btn navy" data-act="merge">Old School vs. New School</button>` : `<button class="btn navy" data-act="form">🔀 Reshuffle</button>`}
+      ${['random', 'mixed'].includes(s.teamMode) ? `<button class="btn navy" data-act="form">🔀 Reshuffle</button>` : ''}
       <button class="btn big green" data-act="start" ${s.teams.filter((t) => t.members.length).length < 2 ? 'disabled' : ''}>Start the Show! 🎬</button>
     </div>
-    ${s.canMerge ? `<div class="hint" style="color:var(--gold)">Some generations only have one player — tap “Old School vs. New School” to merge.</div>` : ''}
+    ${s.canMerge ? `<div class="hint" style="color:var(--gold)">Some generations only have one player — try “Old School vs. New School” or “Older Half vs. Younger Half” below.</div>` : ''}
   </div>`;
 }
 
@@ -748,7 +752,7 @@ function viewSpin(s) {
 function viewSegment(s) {
   const seg = s.remix.segments[s.remix.segIdx];
   return `<div class="segment ${ART.roundFrame ? 'framed' : ''}" ${ART.roundFrame ? `style="background-image:url(${ART.roundFrame})"` : ''}>
-    <div class="pill">${s.settings.format === 'party' ? 'Party Night' : 'Round 2'} · ${s.remix.segIdx + 1} of ${s.remix.segments.length}</div><br>
+    <div class="pill">${s.settings.format === 'practice' ? '🎓 Practice Run' : s.settings.format === 'party' ? 'Party Night' : 'Round 2'} · ${s.remix.segIdx + 1} of ${s.remix.segments.length}</div><br>
     ${seg.party && ART.party[seg.type] ? `<img class="seg-art" src="${ART.party[seg.type]}" alt="">` : iconHTML(seg.icon)}
     <h1>${esc(seg.label)}</h1>
     <p>${esc(seg.blurb)}</p>
@@ -767,6 +771,7 @@ function standingsHTML(s) {
 function viewRoundEnd(s) {
   const party = s.settings.format === 'party';
   const nextLabel = s.round === 1 ? 'On to Round 2: The Remix →' : party ? 'Crown the Champions 🏆' : 'On to the Final Wager →';
+  if (s.settings.format === 'practice') return `<div class="segment"><div class="pill">🎓 Practice Run</div><h1>Almost done!</h1><p>Last thing to learn: the <b>Final Wager</b>. Each team captain secretly bets on their phone, then answers one last question.</p>${standingsHTML(s)}<button class="btn big" data-act="next">Practice the Final Wager →</button></div>`;
   return `<div class="segment"><div class="pill">${party ? 'Party Night' : `End of Round ${s.round}`}</div><h1>${s.round === 1 ? 'Board Cleared!' : party ? "That's the Party!" : 'Remix Complete!'}</h1>${standingsHTML(s)}<button class="btn big" data-act="next">${nextLabel}</button></div>`;
 }
 
@@ -812,7 +817,7 @@ function viewChampion(s) {
   const trophy = ART.trophy ? `<img class="trophy" src="${ART.trophy}" alt="">` : `<span class="trophy-fallback">🏆</span>`;
   return `<div class="champ ${s.season && s.season.ep ? 'has-season' : ''}">${trophy}
     <h1>${winners.map((t) => esc(t.name)).join(' & ')}</h1>
-    <div class="tagline">Grand Champions of Generations</div>
+    <div class="tagline">${s.settings.format === 'practice' ? '🎓 Practice complete — you\'re ready for game night!' : 'Grand Champions of Generations'}</div>
     <div class="avrow">${winners.flatMap((t) => t.members.map((pid) => renderAvatar(s.players[pid]?.avatar, 'cheer', 150))).join('')}</div>
     ${awardsHTML(s)}
     ${standingsHTML(s)}
@@ -1121,6 +1126,7 @@ function delegate(e) {
     case 'tvmute': tvs.call.toggleMute(); break;
     case 'modalclose': el.closest('.modal')?.remove(); break;
     case 'mode': E.setTeamMode(d.mode, d.n ? +d.n : null); break;
+    case 'split': E.setTeamMode(d.mode, d.n ? +d.n : null); E.formTeams(); break;
     case 'cat': {
       const list = S.categories.slice();
       const i = list.indexOf(d.cat);

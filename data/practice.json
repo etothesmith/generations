@@ -1,0 +1,349 @@
+{
+ "questions": [
+  {
+   "id": "prac-001",
+   "round": 1,
+   "category": "Practice Trivia",
+   "value": 100,
+   "questionType": "trivia",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "PRACTICE: Which of these is NOT a line dance?",
+   "choices": [
+    "The Electric Slide",
+    "The Wobble",
+    "The Cupid Shuffle",
+    "The Potato Salad"
+   ],
+   "answer": "D",
+   "acceptAlso": [],
+   "culturalContext": "The Potato Salad is a side dish, not a dance… but it would be a fun one.",
+   "needsReview": false,
+   "practice": true
+  },
+  {
+   "id": "prac-002",
+   "round": 1,
+   "category": "Practice Trivia",
+   "value": 100,
+   "questionType": "trivia",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "PRACTICE: How many cards are in a standard deck, not counting jokers?",
+   "choices": [
+    "52",
+    "48",
+    "54",
+    "50"
+   ],
+   "answer": "A",
+   "acceptAlso": [],
+   "culturalContext": "Spades players add the two jokers back in.",
+   "needsReview": false,
+   "practice": true
+  },
+  {
+   "id": "prac-003",
+   "round": 1,
+   "category": "Practice Trivia",
+   "value": 100,
+   "questionType": "trivia",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "PRACTICE: How many players are on each team in a game of Spades?",
+   "choices": [
+    "2",
+    "3",
+    "4",
+    "1"
+   ],
+   "answer": "A",
+   "acceptAlso": [],
+   "culturalContext": "You and your partner against the other two.",
+   "needsReview": false,
+   "practice": true
+  },
+  {
+   "id": "prac-004",
+   "round": 1,
+   "category": "Practice Trivia",
+   "value": 100,
+   "questionType": "trivia",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "PRACTICE: How many dots are on the 'double six' domino?",
+   "choices": [
+    "12",
+    "6",
+    "10",
+    "8"
+   ],
+   "answer": "A",
+   "acceptAlso": [],
+   "culturalContext": "Six on each half. Slam it down!",
+   "needsReview": false,
+   "practice": true
+  },
+  {
+   "id": "prac-005",
+   "round": 1,
+   "category": "Practice Trivia",
+   "value": 100,
+   "questionType": "trivia",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "PRACTICE: A hot dog topped with chili is called a…",
+   "choices": [
+    "Chili dog",
+    "Slaw dog",
+    "Corn dog",
+    "Sloppy dog"
+   ],
+   "answer": "A",
+   "acceptAlso": [],
+   "culturalContext": "Add cheese and it's a chili cheese dog.",
+   "needsReview": false,
+   "practice": true
+  },
+  {
+   "id": "prac-006",
+   "round": 1,
+   "category": "Practice Trivia",
+   "value": 100,
+   "questionType": "trivia",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "PRACTICE: What color is the inside of a ripe watermelon?",
+   "choices": [
+    "Red",
+    "Blue",
+    "Purple",
+    "Gray"
+   ],
+   "answer": "A",
+   "acceptAlso": [],
+   "culturalContext": "Green on the outside, red on the inside.",
+   "needsReview": false,
+   "practice": true
+  },
+  {
+   "id": "prac-007",
+   "round": 1,
+   "category": "Practice Trivia",
+   "value": 100,
+   "questionType": "trivia",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "PRACTICE: What do you usually find on a family reunion T-shirt?",
+   "choices": [
+    "The family's last name",
+    "A sports logo",
+    "Nothing at all",
+    "A cartoon dog"
+   ],
+   "answer": "A",
+   "acceptAlso": [],
+   "culturalContext": "Usually with the year — and a matching color for each branch of the family.",
+   "needsReview": false,
+   "practice": true
+  },
+  {
+   "id": "prac-008",
+   "round": 1,
+   "category": "Practice Trivia",
+   "value": 100,
+   "questionType": "trivia",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "PRACTICE: You need what to play Spades?",
+   "choices": [
+    "A deck of cards",
+    "A game board",
+    "Dice",
+    "A ball"
+   ],
+   "answer": "A",
+   "acceptAlso": [],
+   "culturalContext": "And trash talk. Lots of trash talk.",
+   "needsReview": false,
+   "practice": true
+  },
+  {
+   "id": "prac-009",
+   "round": 2,
+   "category": "Majority Rules",
+   "value": 50,
+   "questionType": "majority_rules",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "PRACTICE: Best cookout game?",
+   "choices": [
+    "Spades",
+    "Dominoes",
+    "Cornhole",
+    "Double Dutch"
+   ],
+   "answer": "",
+   "acceptAlso": [],
+   "culturalContext": "No right answer — match the room!",
+   "needsReview": false,
+   "practice": true
+  },
+  {
+   "id": "prac-010",
+   "round": 2,
+   "category": "Hashtag Decode",
+   "value": 200,
+   "questionType": "hashtag",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "Decode this hashtag: #PracticeMakesPerfect",
+   "choices": [
+    "The more you practice, the better you get",
+    "A gym membership",
+    "A piano brand",
+    "A school rule"
+   ],
+   "answer": "A",
+   "acceptAlso": [],
+   "culturalContext": "That's exactly what you're doing right now!",
+   "needsReview": false,
+   "practice": true
+  },
+  {
+   "id": "prac-011",
+   "round": 2,
+   "category": "Mama Said",
+   "value": 200,
+   "questionType": "saying",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "Practice makes…",
+   "choices": [
+    "Perfect",
+    "Money",
+    "Noise",
+    "Trouble"
+   ],
+   "answer": "A",
+   "acceptAlso": [],
+   "culturalContext": "Mama was right again.",
+   "needsReview": false,
+   "practice": true
+  },
+  {
+   "id": "prac-012",
+   "round": 2,
+   "category": "Emoji Decode",
+   "value": 200,
+   "questionType": "emoji",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "🍔🌭🔥🎶",
+   "choices": [
+    "A cookout",
+    "A car wash",
+    "A fire drill",
+    "A field trip"
+   ],
+   "answer": "A",
+   "acceptAlso": [],
+   "culturalContext": "",
+   "needsReview": false,
+   "practice": true
+  },
+  {
+   "id": "prac-013",
+   "round": 2,
+   "category": "Name That Era",
+   "value": 200,
+   "questionType": "name_that_era",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "In which decade did this come out?\nThe first iPhone goes on sale",
+   "choices": [
+    "1990s",
+    "2000s",
+    "2010s",
+    "2020s"
+   ],
+   "answer": "B",
+   "acceptAlso": [],
+   "culturalContext": "It went on sale in June 2007.",
+   "needsReview": false,
+   "practice": true
+  },
+  {
+   "id": "prac-014",
+   "round": 2,
+   "category": "One's Gotta Go",
+   "value": 200,
+   "questionType": "one_gotta_go",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "PRACTICE: Cookout games — one's gotta go!",
+   "choices": [
+    "Spades",
+    "Dominoes",
+    "Cornhole",
+    "Uno"
+   ],
+   "answer": "",
+   "acceptAlso": [],
+   "culturalContext": "The room has spoken.",
+   "needsReview": false,
+   "practice": true
+  },
+  {
+   "id": "prac-015",
+   "round": 3,
+   "category": "Final Wager",
+   "value": 0,
+   "questionType": "final",
+   "generationEra": "all",
+   "difficulty": 1,
+   "prompt": "This family game show you're practicing right now is called…",
+   "choices": [],
+   "answer": "GENERATIONS",
+   "acceptAlso": [
+    "Generations"
+   ],
+   "culturalContext": "Now you know how every game works. See you on game night!",
+   "needsReview": false,
+   "practice": true,
+   "finalCategory": "Practice Final"
+  }
+ ],
+ "hotTakes": [
+  "Breakfast is the best meal of the day.",
+  "Dogs are better than cats."
+ ],
+ "mostLikely": [
+  "finish this practice round still confused?",
+  "laugh at their own joke first?"
+ ],
+ "topThat": [
+  "The best name for our team: ____",
+  "Practice round tip of the day: ____"
+ ],
+ "singWords": [
+  "BIRTHDAY",
+  "SHINE"
+ ],
+ "humSongs": [
+  "'Happy Birthday to You' (the classic)",
+  "'Twinkle, Twinkle, Little Star'",
+  "'Row, Row, Row Your Boat'",
+  "'Old MacDonald Had a Farm'",
+  "'The Wheels on the Bus'",
+  "'Mary Had a Little Lamb'"
+ ],
+ "charades": [
+  "Brushing your teeth",
+  "Driving a car",
+  "Swimming laps",
+  "Eating spaghetti",
+  "Walking a dog",
+  "Reading a book"
+ ]
+}

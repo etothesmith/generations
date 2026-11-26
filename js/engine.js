@@ -36,10 +36,27 @@ export const PARTY_LENGTHS = {
   normal: { majority_rules: 1, hot_take: 2, most_likely: 3, saying: 1, top_that: 2, emoji: 1, family_survey: 1, two_truths: 2, sing_it: 3, hum_it: 1, charades: 1, one_gotta_go: 1, blitz: 1 },
   long: { majority_rules: 2, hot_take: 3, hashtag: 1, most_likely: 4, saying: 1, top_that: 3, emoji: 1, family_survey: 2, two_truths: 3, sing_it: 4, hum_it: 2, charades: 2, one_gotta_go: 2, name_that_era: 1, blitz: 1 },
 };
+// 🎓 Practice Run: every game once, with practice-only content (data/practice.json) that never enters real games
+export const PRACTICE_PLAN = [
+  { type: 'trivia', label: 'Buzz-In Trivia', count: 2, icon: 'mic', blurb: "🎓 PRACTICE · Each team has one player at the podium (it rotates every question). WAIT for BUZZ! on your phone — buzz early and you're locked out for a second. First buzz answers; miss it and the other team can STEAL. Stuck? Tap 📞 Family Huddle for 15 seconds of team help." },
+  { type: 'majority_rules', label: 'Majority Rules', count: 1, icon: 'stamp', blurb: '🎓 PRACTICE · EVERYBODY votes on their phone. No right answer — pick what you think the ROOM will pick. Match the majority and your team scores.' },
+  { type: 'hot_take', label: 'Settle It!', count: 1, icon: 'mic', party: true, blurb: '🎓 PRACTICE · Vote Agree or Disagree on the hot take. One person from each side argues for 20 seconds, then everybody votes again. The side that changes the most minds wins.' },
+  { type: 'most_likely', label: 'Who in the Family…?', count: 1, icon: 'crown', party: true, blurb: '🎓 PRACTICE · Vote for the player MOST likely to do the thing (not yourself!). Pick who the room picks to score.' },
+  { type: 'top_that', label: 'Top That!', count: 1, icon: 'smiley', party: true, blurb: "🎓 PRACTICE · Finish the sentence on your phone — funniest wins. Answers show with no names, and you can't vote for your own." },
+  { type: 'two_truths', label: 'Two Truths & a Lie', count: 1, icon: 'masks', party: true, blurb: '🎓 PRACTICE · One player types two true things and one lie (and taps which one is the lie). Everyone else votes on the lie.' },
+  { type: 'sing_it', label: 'Sing It!', count: 1, icon: 'mic', party: true, blurb: '🎓 PRACTICE · A word drops. Teams take turns singing a song with that word in it before the clock runs out. The host taps ✅ or ❌. No repeats! Last team singing wins.' },
+  { type: 'hum_it', label: 'Hum That Tune', count: 1, icon: 'vinyl', party: true, blurb: '🎓 PRACTICE · The hummer sees a song on their phone. HUM it — no words! Tap ✓ Got it when your team says the title, ↷ Skip to pass.' },
+  { type: 'charades', label: 'Culture Charades', count: 1, icon: 'masks', blurb: '🎓 PRACTICE · The actor sees a clue on their phone. Act it out with NO talking. Tap ✓ Got it or ↷ Skip.' },
+  { type: 'one_gotta_go', label: "One's Gotta Go", count: 1, icon: 'pie', blurb: '🎓 PRACTICE · Podium players pick one to kick out, make a 10-second case, then the room votes on the best defense.' },
+  { type: 'saying', label: 'Mama Said', count: 1, icon: 'slipper', blurb: '🎓 PRACTICE · Buzz in and finish the saying.' },
+  { type: 'emoji', label: 'Emoji Decode', count: 1, icon: 'smiley', blurb: '🎓 PRACTICE · Buzz in and name what the emojis mean.' },
+  { type: 'blitz', label: '60-Second Blitz', count: 1, icon: 'bolt', blurb: '🎓 PRACTICE · Podium players answer as many as they can on their phones before the clock runs out. Tap fast!' },
+];
 export const SHOW_FORMATS = {
   classic: { label: 'Classic Show', blurb: 'Board → Remix → Final Wager' },
   party: { label: 'Party Night', blurb: 'No board — all the laughs & arguments' },
   trivia: { label: 'Trivia Only', blurb: 'Straight culture knowledge, no party games' },
+  practice: { label: '🎓 Practice Run', blurb: 'Learn every game with practice questions (they never show up in real games)' },
 };
 export const REMIX_PLAN = [
   { type: 'majority_rules', label: 'Majority Rules', count: 2, icon: 'stamp', blurb: 'EVERYBODY votes on their phone. Match the room, earn 50 for your team!' },
@@ -151,6 +168,7 @@ export class Engine {
     this.onFx(type, data);
   }
   markSeen(id) {
+    if (this.practice) return;
     this.seen.add(id);
     localStorage.setItem('gen-seen', JSON.stringify([...this.seen]));
   }
@@ -217,27 +235,65 @@ export class Engine {
     if (count) this.s.teamCount = count;
     this.publish();
   }
+  // ---------- team splits ----------
+  // Which ways can this room split up? Depends on the generations that actually showed up.
+  genGroups() {
+    const groups = {};
+    for (const p of Object.values(this.s.players).filter((x) => !x.audience)) {
+      const g = p.gen === 'alpha' ? 'genz' : (p.gen || 'millennial');
+      (groups[g] = groups[g] || []).push(p.pid);
+    }
+    return groups;
+  }
+  availableSplits() {
+    const g = this.genGroups(), keys = GEN_ORDER.filter((k) => g[k]);
+    const n = Object.values(g).reduce((a, b) => a + b.length, 0);
+    const has = (...ks) => ks.some((k) => g[k]);
+    const out = [];
+    if (keys.length >= 2) out.push({ mode: 'gen', label: `Each generation is a team (${keys.length})`, hint: keys.map((k) => `${GENERATIONS[k].label} ${g[k].length}`).join(' · ') });
+    if (has('elders', 'genx') && has('millennial', 'genz')) out.push({ mode: 'oldnew', label: 'Old School vs. New School', hint: 'Elders + Gen X vs. Millennials + Gen Z' });
+    if (has('elders', 'genz') && has('genx', 'millennial') && keys.length >= 3) out.push({ mode: 'bookends', label: 'Grandparents & Grandkids vs. The Parents', hint: 'Elders + Gen Z vs. Gen X + Millennials' });
+    if (n >= 2) out.push({ mode: 'agesplit', label: 'Older Half vs. Younger Half', hint: 'Split right down the middle by birth year — even teams' });
+    for (const c of [2, 3, 4]) if (n >= c * 2 || (c === 2 && n >= 2)) out.push({ mode: 'mixed', n: c, label: `Mixed Generations ×${c}`, hint: 'Every team gets young AND old' });
+    for (const c of [2, 3, 4]) if (n >= c * 2 || (c === 2 && n >= 2)) out.push({ mode: 'random', n: c, label: `Random ×${c}`, hint: 'Pure luck of the draw' });
+    return out;
+  }
   formTeams() {
     const players = Object.values(this.s.players).filter((p) => !p.audience);
+    const groups = this.genGroups();
+    const keys = GEN_ORDER.filter((g) => groups[g]);
+    const birth = (p) => p.year || { elders: 1955, genx: 1972, millennial: 1988, genz: 2004, alpha: 2015 }[p.gen] || 1990;
+    const mode = this.s.teamMode;
     let teams = [];
-    if (this.s.teamMode === 'gen') {
-      const groups = {};
-      for (const p of players) {
-        const g = p.gen === 'alpha' ? 'genz' : p.gen;
-        (groups[g] = groups[g] || []).push(p.pid);
-      }
-      const keys = GEN_ORDER.filter((g) => groups[g]);
-      if (keys.length < 2) return this.mergeOldNew();
+    const pids = (list) => list.map((p) => p.pid);
+    const OLD = ['elders', 'genx'];
+    if (mode === 'gen') {
+      if (keys.length < 2) { this.s.teamMode = 'agesplit'; return this.formTeams(); }
       teams = keys.map((g, i) => this.newTeam(i, GENERATIONS[g].nick, GENERATIONS[g].color, groups[g], [g]));
+    } else if (mode === 'oldnew') {
+      return this.mergeOldNew();
+    } else if (mode === 'bookends') {
+      const a = players.filter((p) => ['elders', 'genz', 'alpha'].includes(p.gen)), b = players.filter((p) => !['elders', 'genz', 'alpha'].includes(p.gen));
+      if (!a.length || !b.length) { this.s.teamMode = 'agesplit'; return this.formTeams(); }
+      teams = [this.newTeam(0, 'Grandparents & Grandkids', '#5B3FA0', pids(a), ['elders', 'genz']), this.newTeam(1, 'The Parents', '#E2711D', pids(b), ['genx', 'millennial'])];
+    } else if (mode === 'agesplit') {
+      const sorted = players.slice().sort((a, b) => birth(a) - birth(b));
+      const half = Math.ceil(sorted.length / 2);
+      teams = [this.newTeam(0, 'The Older Crew', '#F2B632', pids(sorted.slice(0, half)), null), this.newTeam(1, 'The Younger Crew', '#12A4A4', pids(sorted.slice(half)), null)];
     } else {
       const n = Math.max(2, Math.min(4, this.s.teamCount, players.length));
       const names = shuffle(TEAM_NAMES);
-      const order = shuffle(players).sort((a, b) => GEN_ORDER.indexOf(a.gen) - GEN_ORDER.indexOf(b.gen));
       teams = Array.from({ length: n }, (_, i) => this.newTeam(i, names[i], TEAM_COLORS[i], []));
-      order.forEach((p, i) => teams[i % n].members.push(p.pid));
+      if (mode === 'mixed') {
+        // snake draft by age so every team gets a spread of generations
+        const order = shuffle(players).sort((a, b) => birth(a) - birth(b));
+        order.forEach((p, i) => { const r = Math.floor(i / n), k = i % n; teams[r % 2 ? n - 1 - k : k].members.push(p.pid); });
+      } else {
+        shuffle(players).forEach((p, i) => teams[i % n].members.push(p.pid));
+      }
     }
     this.s.teams = teams;
-    this.s.canMerge = this.s.teamMode === 'gen' && teams.some((t) => t.members.length < 2);
+    this.s.canMerge = mode === 'gen' && teams.some((t) => t.members.length < 2);
     this.s.phase = 'teams';
     this.publish();
   }
@@ -247,7 +303,7 @@ export class Engine {
     const neu = players.filter((p) => !['elders', 'genx'].includes(p.gen)).map((p) => p.pid);
     if (!old.length || !neu.length) {
       // everybody's the same generation — fall back to random teams
-      this.s.teamMode = 'random'; this.s.teamCount = 2;
+      this.s.teamMode = 'agesplit';
       return this.formTeams();
     }
     this.s.teams = [
@@ -369,6 +425,13 @@ export class Engine {
     this.s.stats = {};
     this.s.tilesPlayed = 0; this.s.nextMult = 0;
     this.s.controlTeam = this.s.teams[0] ? this.s.teams[0].id : null;
+    if (this.s.settings.format === 'practice') {
+      this.enterPractice();
+      this.s.board = null;
+      this.fx('showopen');
+      return this.startRound2({ quiet: true });
+    }
+    this.exitPractice();
     if (this.s.settings.format === 'party') {
       this.s.board = null;
       this.fx('showopen');
@@ -628,6 +691,7 @@ export class Engine {
   // unseen cards first, so the game keeps feeling new. Resets once everything's been used.
   deckUsed(key) { try { return new Set(JSON.parse(localStorage.getItem('gen-deck-' + key) || '[]')); } catch (e) { return new Set(); } }
   deckMark(key, items) {
+    if (this.practice) return;
     const used = this.deckUsed(key);
     for (const it of items) used.add(it);
     try { localStorage.setItem('gen-deck-' + key, JSON.stringify([...used])); } catch (e) { /* storage full */ }
@@ -1121,6 +1185,21 @@ export class Engine {
   }
 
   // Round 2
+  // swap in the practice-only bank and decks; nothing from them is tracked as "seen"
+  enterPractice() {
+    const P = this.extras.practice || (this._real && this._real.extras.practice);
+    if (!P || this.practice) return;
+    this._real = { bank: this.bank, byId: this.byId, extras: this.extras };
+    this.bank = P.questions || [];
+    this.byId = Object.fromEntries(this.bank.map((q) => [q.id, q]));
+    this.extras = { ...P, survey: [], practice: P };
+    this.practice = true;
+  }
+  exitPractice() {
+    if (!this.practice || !this._real) return;
+    Object.assign(this, { bank: this._real.bank, byId: this._real.byId, extras: this._real.extras });
+    this._real = null; this.practice = false;
+  }
   remixLengths() {
     const st = this.s.settings, fmt = st.format || 'classic';
     const lens = { ...((fmt === 'party' ? PARTY_LENGTHS : REMIX_LENGTHS)[st.remixLength] || (fmt === 'party' ? PARTY_LENGTHS : REMIX_LENGTHS).normal) };
@@ -1140,8 +1219,8 @@ export class Engine {
     s.round = 2;
     const used = new Set();
     const segments = [];
-    const lens = this.remixLengths();
-    for (const plan of REMIX_PLAN) {
+    const lens = this.practice ? Object.fromEntries(PRACTICE_PLAN.map((p) => [p.type, p.count])) : this.remixLengths();
+    for (const plan of (this.practice ? PRACTICE_PLAN : REMIX_PLAN)) {
       const qids = [];
       const n = lens[plan.type] ?? plan.count;
       for (let i = 0; i < n; i++) {
@@ -1308,6 +1387,7 @@ export class Engine {
   }
   newGame() {
     const s = this.s;
+    this.exitPractice();
     Object.assign(s, { phase: 'lobby', teams: [], round: 0, board: null, remix: null, final: null, q: null, winners: null, paused: false });
     this.cur = null; this.undo = [];
     this.setupSurvey();
