@@ -13,6 +13,10 @@ let profile = { name: '', year: '', gen: '', avatar: randomAvatar() };
 let joined = false, editingAvatar = false, step = 1;
 let local = {};
 let lastFx = null;
+let wasAct = false;
+let bigText = localStorage.getItem('gen-bigtext') === '1';
+let wake = null;
+async function keepAwake() { try { if ('wakeLock' in navigator && document.visibilityState === 'visible') wake = await navigator.wakeLock.request('screen'); } catch (e) { /* not allowed */ } }
 // ---- play-from-anywhere: chat, voice notes, video ----
 const chat = { list: [], byId: {}, unread: 0, open: false, wired: false };
 let call = null, wall = null, rec = null;
@@ -36,6 +40,8 @@ async function boot() {
         </div>
       </div>
     </div>`;
+  document.body.classList.toggle('bigtext', bigText);
+  keepAwake(); document.addEventListener('visibilitychange', keepAwake);
   room = (new URLSearchParams(location.search).get('room') || '').toUpperCase();
   T = await createTransport();
   try { await loadArt({ only: ['sprites', 'logo', 'family'] }); } catch (e) { /* art is optional */ }
@@ -154,6 +160,10 @@ function draw() {
   el.querySelectorAll('input[id],textarea[id]').forEach((x) => { if (x.type !== 'checkbox' && x.type !== 'range') keep[x.id] = x.value; });
   const focus = document.activeElement && document.activeElement.id;
   setHTML(el, header() + `<div class="ph-body">${body()}</div>` + reactBar());
+  // "your turn" nudge: buzz the phone + flash when an action shows up for you
+  const act = !!el.querySelector('.ph-body .buzzer.live, .ph-body [data-act=answer]:not([disabled]), .ph-body [data-act=wq], .ph-body [data-act=lifeline], .ph-body [data-act=pickboard], .ph-body [data-act=spin], .ph-body [data-act=chgot], .ph-body [data-act=sisong], .ph-body [data-act=twsend], .ph-body [data-act=ttsend], .ph-body [data-act=fanswer], .ph-body [data-act=blitz], .ph-body [data-act=sguess]');
+  if (act && !wasAct) { vib([70, 40, 70]); const b = el.querySelector('.ph-body'); if (b) { b.classList.remove('ping'); void b.offsetWidth; b.classList.add('ping'); } }
+  wasAct = act;
   for (const [id, v] of Object.entries(keep)) { const x = document.getElementById(id); if (x && !x.value && v) x.value = v; }
   if (focus) { const x = document.getElementById(focus); if (x && document.activeElement !== x) { x.focus(); try { x.setSelectionRange(x.value.length, x.value.length); } catch (e) { /* */ } } }
 }
@@ -177,6 +187,7 @@ function header() {
     <div class="mini">${renderAvatar(m.avatar, 'idle', 46)}</div>
     <div class="me"><div class="n">${esc(m.name)}</div><div class="t" style="color:${t ? t.color : g.color}">${t ? esc(t.name) : m.audience ? '👀 Audience' : g.icon + ' ' + g.label}</div></div>
     ${t ? `<div class="score">${money(t.score)}</div>` : ''}
+    <button class="aa-btn" data-act="bigtext" aria-pressed="${bigText}" aria-label="Bigger text">Aa</button>
   </div><div class="kente-strip" style="border-radius:4px"></div>`;
 }
 
@@ -202,6 +213,7 @@ function joinView() {
       <label class="sub" style="display:flex;gap:8px;align-items:center;justify-content:center"><input type="checkbox" id="j-aud" style="width:auto" ${profile.audience ? 'checked' : ''}> 👀 I'm just watching (Audience — no team)</label>
       <label class="sub" style="display:flex;gap:8px;align-items:center;justify-content:center"><input type="checkbox" id="j-remote" style="width:auto" ${profile.remote ? 'checked' : ''}> 🏠 I'm playing from somewhere else</label>
       <button class="btn big" data-act="step2">Next: My Avatar →</button>
+      <div class="sub" style="margin-top:10px">No game yet? <a href="learn.html" style="color:var(--gold);font-weight:900">🎓 Practice every game on your own</a></div>
     </div>`;
   }
   const a = profile.avatar, O = AVATAR_OPTIONS;
@@ -625,6 +637,7 @@ async function onClick(e) {
   if (!el) return;
   const a = el.dataset.act, v = el.dataset.v;
   switch (a) {
+    case 'bigtext': bigText = !bigText; localStorage.setItem('gen-bigtext', bigText ? '1' : '0'); document.body.classList.toggle('bigtext', bigText); cache.delete(app()); draw(); break;
     case 'pickgen': $('#genpick').classList.toggle('hidden'); break;
     case 'gen': profile.gen = el.dataset.gen; profile.year = ''; cache.delete(app()); draw(); break;
     case 'step2': {

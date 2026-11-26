@@ -1088,6 +1088,18 @@ function onFx(type, data) {
     }
     case 'chgot': sfx('correct'); crowdReact('bob', 600); break;
     case 'chskip': sfx('tock'); break;
+    case 'hype': {
+      const H = { applause: ['👏🏾', 'cheer', 'Give it up!'], ooh: ['😮', 'gasp', 'Ooooooh!'], drumroll: ['🥁', 'bob', 'Drumroll please…'], airhorn: ['📢', 'cheer', 'AYYYYYE!'], crickets: ['🦗', 'gasp', '…crickets.'], laugh: ['😂', 'bob', 'The family is WEAK!'], boo: ['👎🏾', 'gasp', 'Boooo!'], church: ['🙌🏾', 'cheer', 'Can I get an amen?!'] }[data.name];
+      if (!H) break;
+      sfx(data.name);
+      for (let i = 0; i < 8; i++) setTimeout(() => reaction(H[0]), i * 110);
+      crowdReact(H[1], 1600);
+      if (Math.random() < .6) mascotSay(H[1] === 'gasp' ? 'gasp' : 'cheer', H[2], 1800);
+      break;
+    }
+    case 'lightning': banner(`⚡ LIGHTNING! ⚡<div class="banner-sub">${esc(nm(data.pid))} +$25</div>`, false, 1300); sfx('tick'); break;
+    case 'finalteam': sfx('drumroll'); crowdReact('bob', 1600); break;
+    case 'addtime': banner(`+${data.sec} SECONDS`, true, 1000); sfx('tick'); break;
     case 'react': reaction(data.e, data.name); if (Math.random() < .25) crowdReact('bob', 700); break;
     case 'showopen': setTimeout(() => mascotSay('present', 'Welcome to GENERATIONS! Phones out, family!', 3800), 7200); sfx('fanfare'); setTimeout(() => sfx('whoosh'), 500); showOpen(E.s.teams.filter((t) => t.members.length), (pid) => renderAvatar(E.s.players[pid]?.avatar, 'cheer', 90)); setTimeout(() => crowdReact('cheer', 2200), 1800); break;
     case 'roundcard': setTimeout(() => mascotSay('present', data.n === 3 ? "It's FINAL WAGER time. Captains, don't get scared now!" : `Round ${data.n}! Let's get it!`, 3200), 2900); sfx('whoosh'); setTimeout(() => sfx('fanfare'), 500); roundCard(data.n, data.title); setTimeout(() => crowdReact('cheer'), 700); break;
@@ -1200,6 +1212,8 @@ function onKey(e) {
   else if (k === 'x') { if (S.phase === 'final_reveal') E.judgeFinal(false); else if (S.q && S.q.type === 'family_survey') E.hostSurveyStrike(); else E.judge(false); }
   else if (k === 'p') E.togglePause();
   else if (k === 's') E.skip();
+  else if (k === 't') E.addTime(10);
+  else if ('12345678'.includes(k) && k.length === 1 && e.altKey) E.hype(['applause', 'ooh', 'drumroll', 'airhorn', 'crickets', 'laugh', 'boo', 'church'][+k - 1]);
 }
 
 boot();

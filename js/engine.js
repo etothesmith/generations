@@ -551,6 +551,7 @@ export class Engine {
     const q = this.s.q;
     if (!q || q.stage !== 'answering' || pid !== q.answerer || !q.choices || this.s.paused) return;
     q.chosen = choice;
+    q.answerMs = q.timerTotal && !q.huddleUsed ? this.now() - (q.timerEnd - q.timerTotal) : null;
     this.judge(choice === this.cur.full.answer);
   }
   onLifeline(pid) {
@@ -609,6 +610,12 @@ export class Engine {
           q.underdog = bonus; st.points += bonus;
           setTimeout(() => this.fx('underdog', { team: team.id, bonus }), 2100);
         }
+      }
+      // Lightning: tapped the right answer within 3 seconds (no huddle)
+      if (!q.isDD && q.answerMs != null && q.answerMs < 3000) {
+        this.award(team.id, 25, q.id + ':lightning');
+        q.lightning = 25; st.points += 25;
+        setTimeout(() => this.fx('lightning', { pid: q.answerer }), 600);
       }
       if (q.category === 'Card Check') q.stamp = 'saved';
       this.fx('correct', { pid: q.answerer, team: team.id });
@@ -1324,7 +1331,7 @@ export class Engine {
     const s = this.s, id = s.final.order[s.final.revealIdx];
     s.final.results[id] = { answer: this.cur.finalAnswers[id] || '(no answer)', wager: null, correct: null };
     s.final.judged = false;
-    this.fx('reveal');
+    this.fx('finalteam', { team: id });
     this.publish();
   }
   judgeFinal(correct) {
@@ -1396,6 +1403,20 @@ export class Engine {
   }
 
   // ---------------- pause & timers ----------------
+  addTime(sec) {
+    const s = this.s, ms = Math.max(5, Math.min(30, sec)) * 1000;
+    if (s.q && s.q.timerEnd) { s.q.timerEnd += ms; s.q.timerTotal = (s.q.timerTotal || 0) + ms; }
+    else if (s.final && s.final.timerEnd) { s.final.timerEnd += ms; s.final.timerTotal = (s.final.timerTotal || 0) + ms; }
+    else return;
+    this.onFx('addtime', { sec: ms / 1000 });
+  }
+  hype(name) {
+    if (!['applause', 'ooh', 'drumroll', 'airhorn', 'crickets', 'laugh', 'boo', 'church'].includes(name)) return;
+    const now = Date.now();
+    if (now - (this.lastHype || 0) < 900) return;
+    this.lastHype = now;
+    this.onFx('hype', { name });
+  }
   togglePause() {
     const s = this.s;
     if (!s.paused) { s.paused = true; this.pausedAt = this.now(); }
@@ -1529,6 +1550,8 @@ export class Engine {
       case 'judge': return this.s.phase === 'final_reveal' ? this.judgeFinal(!!a) : this.judge(!!a);
       case 'skip': return this.skip();
       case 'pause': return this.togglePause();
+      case 'time': return this.addTime(+a || 10);
+      case 'hype': return this.hype(String(a));
       case 'undo': return this.undoLast();
       case 'tile': return this.pickTile(+a.ci, +a.ti);
       case 'sreveal': return this.hostSurveyReveal(+a);

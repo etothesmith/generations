@@ -797,3 +797,34 @@ body.watch .main .btn, body.watch .main [data-act="tthide"], body.watch .main .x
 .split-chip small { font-size: clamp(9px, .7vw, 13px); opacity: .75; }
 .split-chip.on { background: var(--gold); color: var(--ink); border-color: var(--gold); }
 .settings .split-chip { max-width: 18vw; }
+
+/* ---- Host Remote v2: thumb dock, hype pad, timer bar ---- */
+.remote { padding-bottom: 210px; }
+.remote .rm-top { gap: 8px; }
+.remote .rm-mode { background: rgba(255,255,255,.1); color: var(--cream); border: 2px solid rgba(255,255,255,.25); border-radius: 999px; padding: 5px 10px; font-weight: 900; font-size: 12px; }
+.remote .rm-bar { height: 8px; border-radius: 99px; background: rgba(255,255,255,.12); overflow: hidden; margin: -4px 0 10px; }
+.remote .rm-bar i { display: block; height: 100%; background: var(--gold); transition: width .45s linear; }
+.remote .rm-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.remote .rm-chip { border: 2px solid var(--tc); border-radius: 999px; padding: 4px 10px; font-weight: 800; font-size: 13px; background: rgba(0,0,0,.35); }
+.remote .rm-chip b { color: var(--gold); margin-left: 4px; }
+.remote .rm-hype { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 0; }
+.remote .rm-hype button { background: rgba(255,255,255,.08); color: var(--cream); border: 2px solid rgba(255,255,255,.18); border-radius: 14px; padding: 8px 2px 6px; font-weight: 800; font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.remote .rm-hype button span { font-size: 24px; line-height: 1; }
+.remote .rm-hype button:active { transform: scale(.94); background: rgba(255,210,63,.25); }
+.remote .rm-dock { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 12px max(12px, env(safe-area-inset-bottom)); background: linear-gradient(rgba(10,10,30,0), rgba(10,10,30,.92) 18%, #0a0a1e); z-index: 20; }
+.remote .rm-dock .rm-acts, .remote .rm-dock .rm-row { margin: 6px auto; max-width: 560px; }
+.remote .rm-dock .rm-row .btn { flex: 1 1 22%; padding: 10px 4px; font-size: 14px; }
+.remote .rm-acts .btn.big { padding: 18px 8px; font-size: 22px; }
+
+/* ---- Player phone: big-text mode + your-turn ping ---- */
+.aa-btn { margin-left: auto; background: rgba(255,255,255,.1); color: var(--cream); border: 2px solid rgba(255,255,255,.25); border-radius: 12px; font-weight: 900; font-size: 15px; padding: 6px 9px; flex: none; }
+.aa-btn[aria-pressed=true] { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.ph-top .score + .aa-btn { margin-left: 8px; }
+body.bigtext .phone { font-size: 120%; }
+body.bigtext .phone .msg, body.bigtext .phone .sub { font-size: 1.2em; line-height: 1.35; }
+body.bigtext .phone .qtext { font-size: 1.25em; }
+body.bigtext .phone .opt { font-size: 1.2em; padding-top: 16px; padding-bottom: 16px; }
+body.bigtext .phone .btn { font-size: 1.15em; }
+body.bigtext .phone .buzzer { transform: scale(1.08); }
+.ph-body.ping { animation: phping .9s ease-out; }
+@keyframes phping { 0% { box-shadow: 0 0 0 0 rgba(255,210,63,.9); } 100% { box-shadow: 0 0 0 26px rgba(255,210,63,0); } }

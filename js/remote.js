@@ -9,6 +9,9 @@ const qs = new URLSearchParams(location.search);
 const room = (qs.get('room') || '').toUpperCase();
 const key = qs.get('key') || '';
 let T, S = null, P = {};
+let mode = localStorage.getItem('gen-remote-mode') || 'simple';
+let wake = null;
+async function keepAwake() { try { if ('wakeLock' in navigator && document.visibilityState === 'visible') wake = await navigator.wakeLock.request('screen'); } catch (e) { /* not allowed */ } }
 const cache = { html: '' };
 const vib = (p) => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) { /* no-op */ } };
 
@@ -22,6 +25,7 @@ async function boot() {
   T.onState((s) => { S = s; draw(); });
   T.onPrivate(key, (p) => { P = p || {}; draw(); });
   document.addEventListener('click', onClick);
+  keepAwake(); document.addEventListener('visibilitychange', keepAwake);
   setInterval(() => draw(true), 500);
 }
 
@@ -83,7 +87,6 @@ function body() {
       if (q.stage === 'si_turn') acts += btn('judge', '✅ That Counts', 'green', 1) + btn('judge', '❌ Nope / Repeat', 'red', 0);
       const nextLabel = { reading: 'Open Buzzers', wager: 'Default Wager', vote: 'Reveal Votes', pick: 'Start Pitches', pitch: 'Next Pitch', pitchvote: 'Reveal Winner', blitz: 'End Blitz', ch_ready: '▶ Start Clock', ch_act: 'Time!', ch_recap: 'Next Team', reveal: 'Next →', ht_vote1: 'Lock Votes → Debate', ht_argue: 'Next Speaker / Vote', ht_vote2: 'Reveal the Shift', ml_vote: 'Reveal', tt_write: 'Close Writing', tt_vote: 'Reveal Winner', tw_write: 'Skip Teller', tw_vote: 'Reveal the Lie', si_ready: '🎤 Start / Next Team' }[q.stage];
       if (nextLabel) acts += btn('next', nextLabel, 'big');
-      if (q.stage !== 'reveal') acts += btn('skip', 'Skip', 'navy');
       if (q.voted && ['ht_vote1', 'ht_vote2', 'ml_vote', 'tt_write', 'tt_vote', 'tw_vote'].includes(q.stage)) main += `<div class="sub">${Object.keys(q.voted).length} in so far</div>`;
       if (q.type === 'top_that' && P.entries) main += `<div class="rm-key"><div class="lbl">🔒 Who wrote what (tap to hide/unhide an answer)</div>${P.entries.map((e) => `<button class="rm-sv" data-cmd="tthide" data-arg='${esc(JSON.stringify(e.id))}' style="${e.hidden ? 'opacity:.4;text-decoration:line-through' : ''}">“${esc(e.text)}” — ${esc(e.by)}</button>`).join('')}</div>`;
       if (q.type === 'charades' && q.ch && q.ch.word && q.stage === 'ch_act') main += `<div class="rm-key"><div class="lbl">Current clue</div><div class="ans">${esc(q.ch.word)}</div></div>`;
@@ -102,10 +105,29 @@ function body() {
       if (label) acts = btn('next', label, 'big');
     }
   }
-  return `<div class="rm-top"><b>🎛️ HOST REMOTE</b><span>Room ${esc(room)} ${timeLeft()}</span></div>
-    ${main}<div class="rm-acts">${acts}</div>
-    <div class="rm-row">${btn('pause', s.paused ? '▶ Resume' : '⏸ Pause', 'navy')}${btn('undo', '↶ Undo points', 'navy')}</div>
-    <div class="rm-scores">${scores}</div>`;
+  const simple = mode === 'simple';
+  const hasTimer = (s.q && s.q.timerEnd) || (s.final && s.final.timerEnd);
+  const inPlay = s.phase === 'question' || s.phase.startsWith('final');
+  const hypes = [['applause', '👏🏾', 'Applause'], ['ooh', '😮', 'Ooooh'], ['drumroll', '🥁', 'Drumroll'], ['airhorn', '📢', 'Airhorn'], ['laugh', '😂', 'Laugh'], ['crickets', '🦗', 'Crickets'], ['boo', '👎🏾', 'Boo'], ['church', '🙌🏾', 'Amen']];
+  const scoreStrip = (s.teams || []).map((t) => `<span class="rm-chip" style="--tc:${t.color}">${esc(t.name)} <b>${money(t.score)}</b></span>`).join('');
+  return `<div class="rm-top"><b>🎛️ HOST REMOTE</b><span>Room ${esc(room)} ${timeLeft()}</span>
+      <button class="rm-mode" data-local="mode">${simple ? '⚙️ Full' : '✨ Simple'}</button></div>
+    ${timerBar()}
+    ${simple && s.teams && s.teams.length ? `<div class="rm-strip">${scoreStrip}</div>` : ''}
+    ${main}
+    <div class="rm-hype">${(simple ? hypes.slice(0, 4) : hypes).map(([k, e, l]) => `<button data-cmd="hype" data-arg='"${k}"'><span>${e}</span>${l}</button>`).join('')}</div>
+    ${simple ? '' : `<div class="rm-scores">${scores}</div>`}
+    <div class="rm-dock">
+      <div class="rm-acts">${acts || '<div class="sub" style="text-align:center;width:100%">Nothing to press — enjoy the show 🍿</div>'}</div>
+      <div class="rm-row">${hasTimer ? btn('time', '⏱ +10s', 'navy', 10) : ''}${btn('pause', s.paused ? '▶ Resume' : '⏸ Pause', 'navy')}${inPlay && s.phase === 'question' && s.q && s.q.stage !== 'reveal' ? btn('skip', '⏭ Skip', 'navy') : ''}${simple ? '' : btn('undo', '↶ Undo', 'navy')}</div>
+    </div>`;
+}
+function timerBar() {
+  const o = S.q && S.q.timerEnd ? S.q : S.final && S.final.timerEnd ? S.final : null;
+  if (!o || !o.timerTotal) return '';
+  const left = Math.max(0, o.timerEnd - T.serverNow());
+  const pct = Math.max(0, Math.min(100, left / o.timerTotal * 100));
+  return `<div class="rm-bar"><i style="width:${pct.toFixed(0)}%;${pct < 25 ? 'background:var(--crimson)' : ''}"></i></div>`;
 }
 
 function draw(tick) {
@@ -116,6 +138,8 @@ function draw(tick) {
   $('#app').innerHTML = html;
 }
 function onClick(e) {
+  const l = e.target.closest('[data-local]');
+  if (l) { mode = mode === 'simple' ? 'full' : 'simple'; localStorage.setItem('gen-remote-mode', mode); cache.html = ''; draw(); return; }
   const b = e.target.closest('[data-cmd]');
   if (!b) return;
   let arg;

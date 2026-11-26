@@ -17695,5 +17695,1753 @@
   "culturalContext": "She got her start at an Apollo Amateur Night in 1934.",
   "needsReview": false,
   "finalCategory": "Queen of Jazz"
+ },
+ {
+  "id": "biz-016",
+  "round": 1,
+  "category": "Black Business & Money",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "Which magazine did John H. Johnson launch in 1945?",
+  "choices": [
+   "Ebony",
+   "Essence",
+   "Vibe",
+   "The Source"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Ebony"
+  ],
+  "culturalContext": "Jet followed in 1951.",
+  "needsReview": false
+ },
+ {
+  "id": "biz-017",
+  "round": 1,
+  "category": "Black Business & Money",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 4,
+  "prompt": "Which entertainment mogul built a studio on a former Army base in Atlanta?",
+  "choices": [
+   "Tyler Perry",
+   "Oprah Winfrey",
+   "Spike Lee",
+   "Ice Cube"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Tyler Perry"
+  ],
+  "culturalContext": "Tyler Perry Studios opened on part of old Fort McPherson in 2019.",
+  "needsReview": false
+ },
+ {
+  "id": "biz-018",
+  "round": 1,
+  "category": "Black Business & Money",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "Which company, founded in 1898 in Durham, N.C., became one of the largest Black-owned insurance companies?",
+  "choices": [
+   "North Carolina Mutual Life",
+   "Golden State Mutual",
+   "Atlanta Life",
+   "Supreme Life"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "North Carolina Mutual"
+  ],
+  "culturalContext": "Its home made Durham's Parrish Street known as 'Black Wall Street' too.",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-016",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 2,
+  "prompt": "Charlie Parker played which instrument?",
+  "choices": [
+   "Alto saxophone",
+   "Trumpet",
+   "Piano",
+   "Drums"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "saxophone",
+   "alto sax"
+  ],
+  "culturalContext": "His nickname was 'Bird.'",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-017",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 2,
+  "prompt": "Which jazz singer was nicknamed 'Lady Day'?",
+  "choices": [
+   "Billie Holiday",
+   "Ella Fitzgerald",
+   "Sarah Vaughan",
+   "Nina Simone"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Billie Holiday"
+  ],
+  "culturalContext": "Lester Young gave her the nickname.",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-018",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 3,
+  "prompt": "Ella Fitzgerald was known as the 'First Lady of…'",
+  "choices": [
+   "Song",
+   "Soul",
+   "Jazz Piano",
+   "the Blues"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Song"
+  ],
+  "culturalContext": "She won 13 Grammys.",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-019",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "B.B. King named his guitars…",
+  "choices": [
+   "Lucille",
+   "Betty",
+   "Sweet Sue",
+   "Mabel"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Lucille"
+  ],
+  "culturalContext": "He named the first after a woman two men fought over at a dance hall fire.",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-020",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "Which city is widely called the birthplace of jazz?",
+  "choices": [
+   "New Orleans",
+   "Chicago",
+   "Kansas City",
+   "Memphis"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "New Orleans"
+  ],
+  "culturalContext": "Congo Square was a gathering place for music on Sundays.",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-021",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "Memphis's Beale Street is famous for which music?",
+  "choices": [
+   "The blues",
+   "Bluegrass",
+   "Zydeco",
+   "Bebop"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "blues"
+  ],
+  "culturalContext": "W.C. Handy, 'Father of the Blues,' worked there.",
+  "needsReview": false
+ },
+ {
+  "id": "shop-014",
+  "round": 1,
+  "category": "Barbershop & Beauty Shop",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "What's a 'press and curl'?",
+  "choices": [
+   "Straightening with a hot comb, then curling",
+   "A braid style",
+   "A chemical perm",
+   "A wash and go"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "hot comb"
+  ],
+  "culturalContext": "Sunday morning in the kitchen, ears folded down.",
+  "needsReview": false
+ },
+ {
+  "id": "shop-015",
+  "round": 1,
+  "category": "Barbershop & Beauty Shop",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 2,
+  "prompt": "Which 2002 movie starred Ice Cube as a barbershop owner on Chicago's South Side?",
+  "choices": [
+   "Barbershop",
+   "Friday",
+   "Beauty Shop",
+   "Are We There Yet?"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Barbershop"
+  ],
+  "culturalContext": "Queen Latifah got her own spinoff, 'Beauty Shop' (2005).",
+  "needsReview": false
+ },
+ {
+  "id": "shop-016",
+  "round": 1,
+  "category": "Barbershop & Beauty Shop",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "Bantu knots are named after…",
+  "choices": [
+   "A group of African peoples and languages",
+   "A salon in Paris",
+   "A 1970s singer",
+   "A brand of gel"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Bantu"
+  ],
+  "culturalContext": "Bantu refers to hundreds of ethnic groups across Africa.",
+  "needsReview": false
+ },
+ {
+  "id": "shop-017",
+  "round": 1,
+  "category": "Barbershop & Beauty Shop",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "Garrett Morgan, who invented a traffic signal and a smoke hood, also sold a product for…",
+  "choices": [
+   "Straightening hair",
+   "Shaving",
+   "Growing beards",
+   "Dyeing hair"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "hair straightening"
+  ],
+  "culturalContext": "His G.A. Morgan Hair Refining Cream started his business.",
+  "needsReview": false
+ },
+ {
+  "id": "inv-023",
+  "round": 1,
+  "category": "Inventors & Innovators",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "George Washington Carver came up with hundreds of uses for which crop?",
+  "choices": [
+   "Peanuts",
+   "Corn",
+   "Cotton",
+   "Wheat"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "peanuts"
+  ],
+  "culturalContext": "He also promoted sweet potatoes and soybeans.",
+  "needsReview": false
+ },
+ {
+  "id": "inv-024",
+  "round": 1,
+  "category": "Inventors & Innovators",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "Frederick McKinley Jones's invention made it possible to ship…",
+  "choices": [
+   "Food in refrigerated trucks",
+   "Mail by air",
+   "Oil by pipeline",
+   "Cars by train"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "refrigeration",
+   "refrigerated trucks"
+  ],
+  "culturalContext": "His company became Thermo King.",
+  "needsReview": false
+ },
+ {
+  "id": "road-025",
+  "round": 1,
+  "category": "Black America Road Trip",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Harlem is a neighborhood in which borough of New York City?",
+  "choices": [
+   "Manhattan",
+   "Brooklyn",
+   "The Bronx",
+   "Queens"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Manhattan"
+  ],
+  "culturalContext": "Home of the Apollo Theater.",
+  "needsReview": false
+ },
+ {
+  "id": "road-026",
+  "round": 1,
+  "category": "Black America Road Trip",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "Eatonville, the hometown Zora Neale Hurston wrote about, is in which state?",
+  "choices": [
+   "Florida",
+   "Alabama",
+   "Georgia",
+   "Louisiana"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Florida"
+  ],
+  "culturalContext": "Founded in 1887, it's one of the first all-Black towns to incorporate in the U.S.",
+  "needsReview": false
+ },
+ {
+  "id": "civil-025",
+  "round": 1,
+  "category": "Civil Rights Movement",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "The 1957 integration of Central High School happened in…",
+  "choices": [
+   "Little Rock, Arkansas",
+   "Jackson, Mississippi",
+   "Memphis, Tennessee",
+   "Topeka, Kansas"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Little Rock"
+  ],
+  "culturalContext": "The students are remembered as the Little Rock Nine.",
+  "needsReview": false
+ },
+ {
+  "id": "civil-026",
+  "round": 1,
+  "category": "Civil Rights Movement",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "The Greensboro sit-ins of 1960 started at a lunch counter in a…",
+  "choices": [
+   "Woolworth's store",
+   "Train station",
+   "Movie theater",
+   "Bus depot"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Woolworth"
+  ],
+  "culturalContext": "Four students from North Carolina A&T sat down on Feb. 1, 1960.",
+  "needsReview": false
+ },
+ {
+  "id": "civil-027",
+  "round": 1,
+  "category": "Civil Rights Movement",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "Fannie Lou Hamer famously said she was 'sick and tired of being…'",
+  "choices": [
+   "Sick and tired",
+   "Pushed around",
+   "Left out",
+   "Told to wait"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "sick and tired"
+  ],
+  "culturalContext": "She helped found the Mississippi Freedom Democratic Party.",
+  "needsReview": false
+ },
+ {
+  "id": "civil-028",
+  "round": 1,
+  "category": "Civil Rights Movement",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "SNCC, the student civil rights group, stands for Student Nonviolent ______ Committee.",
+  "choices": [
+   "Coordinating",
+   "Civil",
+   "Citizens",
+   "Community"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Coordinating"
+  ],
+  "culturalContext": "Ella Baker helped students start it in 1960.",
+  "needsReview": false
+ },
+ {
+  "id": "food-025",
+  "round": 1,
+  "category": "Soul Food Kitchen",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "'Red drink' at a cookout most often means…",
+  "choices": [
+   "Fruit punch or red Kool-Aid",
+   "Cranberry juice",
+   "Tomato juice",
+   "Sweet tea"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Kool-Aid",
+   "fruit punch"
+  ],
+  "culturalContext": "Big Red soda counts in Texas.",
+  "needsReview": false
+ },
+ {
+  "id": "food-026",
+  "round": 1,
+  "category": "Soul Food Kitchen",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "Collard greens are traditionally cooked with…",
+  "choices": [
+   "Smoked turkey or ham hocks",
+   "Bacon bits only",
+   "Shrimp",
+   "Cheese"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "ham hocks",
+   "smoked turkey"
+  ],
+  "culturalContext": "And the leftover juice is called pot likker.",
+  "needsReview": false
+ },
+ {
+  "id": "food-027",
+  "round": 1,
+  "category": "Soul Food Kitchen",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "Who wrote the 1970 cookbook 'Vibration Cooking'?",
+  "choices": [
+   "Vertamae Smart-Grosvenor",
+   "Edna Lewis",
+   "Leah Chase",
+   "Sylvia Woods"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Vertamae"
+  ],
+  "culturalContext": "She was also a longtime NPR commentator.",
+  "needsReview": false
+ },
+ {
+  "id": "slang-029",
+  "round": 1,
+  "category": "Slang Across the Generations",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "genz",
+  "difficulty": 1,
+  "prompt": "If someone says your outfit is 'bussin',' they mean…",
+  "choices": [
+   "It's really good",
+   "It's too tight",
+   "It's old",
+   "It's borrowed"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "really good"
+  ],
+  "culturalContext": "Usually said about food, too.",
+  "needsReview": false
+ },
+ {
+  "id": "slang-030",
+  "round": 1,
+  "category": "Slang Across the Generations",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "genz",
+  "difficulty": 2,
+  "prompt": "'No cap' means…",
+  "choices": [
+   "No lie",
+   "No hat",
+   "No limit",
+   "No money"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "no lie"
+  ],
+  "culturalContext": "Capping = lying.",
+  "needsReview": false
+ },
+ {
+  "id": "slang-031",
+  "round": 1,
+  "category": "Slang Across the Generations",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 3,
+  "prompt": "In the '90s, if something was 'all that and a bag of chips,' it was…",
+  "choices": [
+   "Great",
+   "Expensive",
+   "Over",
+   "Boring"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "great"
+  ],
+  "culturalContext": "Sometimes 'with a soda.'",
+  "needsReview": false
+ },
+ {
+  "id": "slang-032",
+  "round": 1,
+  "category": "Slang Across the Generations",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 3,
+  "prompt": "In older slang, someone who is 'jive' is…",
+  "choices": [
+   "Not serious or phony",
+   "Very rich",
+   "A good dancer",
+   "Sleepy"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "phony"
+  ],
+  "culturalContext": "'Don't be jive.'",
+  "needsReview": false
+ },
+ {
+  "id": "slang-033",
+  "round": 1,
+  "category": "Slang Across the Generations",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 4,
+  "prompt": "If your cousin says she's 'finna' go to the store, she's…",
+  "choices": [
+   "About to go",
+   "Already went",
+   "Never going",
+   "Lost"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "about to"
+  ],
+  "culturalContext": "From 'fixing to.'",
+  "needsReview": false
+ },
+ {
+  "id": "slang-034",
+  "round": 1,
+  "category": "Slang Across the Generations",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "genz",
+  "difficulty": 5,
+  "prompt": "What does it mean if someone is 'in their bag'?",
+  "choices": [
+   "Doing really well / locked in",
+   "Hiding",
+   "Broke",
+   "Shopping"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "locked in",
+   "doing well"
+  ],
+  "culturalContext": "Being in your bag = in your zone.",
+  "needsReview": false
+ },
+ {
+  "id": "tv-032",
+  "round": 1,
+  "category": "Black TV Classics",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 2,
+  "prompt": "On 'Good Times,' J.J.'s catchphrase was…",
+  "choices": [
+   "'Dy-no-mite!'",
+   "'Did I do that?'",
+   "'Hey hey hey!'",
+   "'Whatchu talkin' 'bout?'"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Dyno-mite",
+   "Dynomite"
+  ],
+  "culturalContext": "Jimmie Walker played J.J. Evans.",
+  "needsReview": false
+ },
+ {
+  "id": "tv-033",
+  "round": 1,
+  "category": "Black TV Classics",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "genz",
+  "difficulty": 4,
+  "prompt": "Issa Rae created and starred in which HBO series set in Los Angeles?",
+  "choices": [
+   "Insecure",
+   "Atlanta",
+   "Abbott Elementary",
+   "Girlfriends"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Insecure"
+  ],
+  "culturalContext": "It ran five seasons, from 2016 to 2021.",
+  "needsReview": false
+ },
+ {
+  "id": "tv-034",
+  "round": 1,
+  "category": "Black TV Classics",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 5,
+  "prompt": "'Roots' (1977) was based on the book by…",
+  "choices": [
+   "Alex Haley",
+   "James Baldwin",
+   "Ralph Ellison",
+   "Toni Morrison"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Alex Haley"
+  ],
+  "culturalContext": "About 130 million Americans watched part of it.",
+  "needsReview": false
+ },
+ {
+  "id": "soul-030",
+  "round": 1,
+  "category": "Motown & Soul",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 4,
+  "prompt": "Al Green's 1971 hit begins: 'I'm so in love with you…' The song is…",
+  "choices": [
+   "'Let's Stay Together'",
+   "'Tired of Being Alone'",
+   "'Love and Happiness'",
+   "'Take Me to the River'"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Let's Stay Together"
+  ],
+  "culturalContext": "It hit No. 1 in 1972.",
+  "needsReview": false
+ },
+ {
+  "id": "soul-031",
+  "round": 1,
+  "category": "Motown & Soul",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 5,
+  "prompt": "Which Stax star recorded 'Try a Little Tenderness' and co-wrote '(Sittin' On) The Dock of the Bay'?",
+  "choices": [
+   "Otis Redding",
+   "Sam Cooke",
+   "Wilson Pickett",
+   "Solomon Burke"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Otis Redding"
+  ],
+  "culturalContext": "'Dock of the Bay' was released after his 1967 death.",
+  "needsReview": false
+ },
+ {
+  "id": "hbcu-026",
+  "round": 1,
+  "category": "HBCU Life",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "The halftime show band at Southern University is called the…",
+  "choices": [
+   "Human Jukebox",
+   "Marching 100",
+   "Sonic Boom",
+   "Aristocrat of Bands"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Human Jukebox"
+  ],
+  "culturalContext": "Florida A&M's band is the Marching 100.",
+  "needsReview": false
+ },
+ {
+  "id": "hbcu-027",
+  "round": 1,
+  "category": "HBCU Life",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "'Homecoming' at Tennessee State or Jackson State is a big deal. What's the 'yard'?",
+  "choices": [
+   "The main campus quad",
+   "The football field",
+   "The dining hall",
+   "The library"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "quad",
+   "campus"
+  ],
+  "culturalContext": "Where the step shows and plots happen.",
+  "needsReview": false
+ },
+ {
+  "id": "hbcu-028",
+  "round": 1,
+  "category": "HBCU Life",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "The Divine Nine are…",
+  "choices": [
+   "Historically Black fraternities and sororities",
+   "Nine founding HBCUs",
+   "Nine gospel choirs",
+   "Nine civil rights leaders"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "fraternities and sororities",
+   "Greek"
+  ],
+  "culturalContext": "Nine organizations in the National Pan-Hellenic Council.",
+  "needsReview": false
+ },
+ {
+  "id": "maj-050",
+  "round": 2,
+  "category": "Majority Rules",
+  "value": 50,
+  "questionType": "majority_rules",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Best holiday for family food?",
+  "choices": [
+   "Thanksgiving",
+   "Christmas",
+   "Juneteenth",
+   "Fourth of July"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "No right answer. The room decides!",
+  "needsReview": false
+ },
+ {
+  "id": "maj-051",
+  "round": 2,
+  "category": "Majority Rules",
+  "value": 50,
+  "questionType": "majority_rules",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Who's always late to the function?",
+  "choices": [
+   "The uncle",
+   "The cousin",
+   "The auntie",
+   "The one who lives closest"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "No right answer. The room decides!",
+  "needsReview": false
+ },
+ {
+  "id": "maj-052",
+  "round": 2,
+  "category": "Majority Rules",
+  "value": 50,
+  "questionType": "majority_rules",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Best thing about a family reunion?",
+  "choices": [
+   "The food",
+   "The T-shirts",
+   "Seeing elders",
+   "The games"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "No right answer. The room decides!",
+  "needsReview": false
+ },
+ {
+  "id": "maj-053",
+  "round": 2,
+  "category": "Majority Rules",
+  "value": 50,
+  "questionType": "majority_rules",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Best Saturday morning cartoon era?",
+  "choices": [
+   "The '80s",
+   "The '90s",
+   "The 2000s",
+   "Today's"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "No right answer. The room decides!",
+  "needsReview": false
+ },
+ {
+  "id": "maj-054",
+  "round": 2,
+  "category": "Majority Rules",
+  "value": 50,
+  "questionType": "majority_rules",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Most important part of a cookout?",
+  "choices": [
+   "The grill master",
+   "The music",
+   "The sides",
+   "The spades table"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "No right answer. The room decides!",
+  "needsReview": false
+ },
+ {
+  "id": "maj-055",
+  "round": 2,
+  "category": "Majority Rules",
+  "value": 50,
+  "questionType": "majority_rules",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Best place for a family trip?",
+  "choices": [
+   "The beach",
+   "Disney",
+   "A cruise",
+   "Grandma's house"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "No right answer. The room decides!",
+  "needsReview": false
+ },
+ {
+  "id": "maj-056",
+  "round": 2,
+  "category": "Majority Rules",
+  "value": 50,
+  "questionType": "majority_rules",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Best church snack?",
+  "choices": [
+   "Peppermints from a purse",
+   "Butterscotch candy",
+   "Gum",
+   "Nothing — sit still"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "No right answer. The room decides!",
+  "needsReview": false
+ },
+ {
+  "id": "ogg-033",
+  "round": 2,
+  "category": "One's Gotta Go",
+  "value": 200,
+  "questionType": "one_gotta_go",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Holiday desserts — one's gotta go!",
+  "choices": [
+   "Pound Cake",
+   "Sweet Potato Pie",
+   "Banana Pudding",
+   "Caramel Cake"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "The room has spoken.",
+  "needsReview": false
+ },
+ {
+  "id": "ogg-034",
+  "round": 2,
+  "category": "One's Gotta Go",
+  "value": 200,
+  "questionType": "one_gotta_go",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "'90s R&B singers — one's gotta go!",
+  "choices": [
+   "Brandy",
+   "Monica",
+   "Aaliyah",
+   "Toni Braxton"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "The room has spoken.",
+  "needsReview": false
+ },
+ {
+  "id": "ogg-035",
+  "round": 2,
+  "category": "One's Gotta Go",
+  "value": 200,
+  "questionType": "one_gotta_go",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Family cars — one's gotta go!",
+  "choices": [
+   "The minivan",
+   "The church van",
+   "Grandpa's Buick",
+   "The cousin's two-door"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "The room has spoken.",
+  "needsReview": false
+ },
+ {
+  "id": "ogg-036",
+  "round": 2,
+  "category": "One's Gotta Go",
+  "value": 200,
+  "questionType": "one_gotta_go",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Dance moves — one's gotta go!",
+  "choices": [
+   "The Wobble",
+   "The Cha-Cha Slide",
+   "The Cupid Shuffle",
+   "The Electric Slide"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "The room has spoken.",
+  "needsReview": false
+ },
+ {
+  "id": "ogg-037",
+  "round": 2,
+  "category": "One's Gotta Go",
+  "value": 200,
+  "questionType": "one_gotta_go",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Rappers — one's gotta go!",
+  "choices": [
+   "Tupac",
+   "Biggie",
+   "Jay-Z",
+   "Nas"
+  ],
+  "answer": "",
+  "acceptAlso": [],
+  "culturalContext": "The room has spoken.",
+  "needsReview": false
+ },
+ {
+  "id": "mama-030",
+  "round": 2,
+  "category": "Mama Said",
+  "value": 200,
+  "questionType": "saying",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Don't make me come up…",
+  "choices": [
+   "Those stairs",
+   "With a plan",
+   "Short",
+   "Empty-handed"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Footsteps on the stairs = trouble.",
+  "needsReview": false
+ },
+ {
+  "id": "mama-031",
+  "round": 2,
+  "category": "Mama Said",
+  "value": 200,
+  "questionType": "saying",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "We got food at…",
+  "choices": [
+   "Home",
+   "The store",
+   "Church",
+   "Grandma's"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "McDonald's is not in the budget today.",
+  "needsReview": false
+ },
+ {
+  "id": "mama-032",
+  "round": 2,
+  "category": "Mama Said",
+  "value": 200,
+  "questionType": "saying",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Fix your…",
+  "choices": [
+   "Face",
+   "Hair",
+   "Plate",
+   "Shoes"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Usually said at church.",
+  "needsReview": false
+ },
+ {
+  "id": "mama-033",
+  "round": 2,
+  "category": "Mama Said",
+  "value": 200,
+  "questionType": "saying",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "I brought you into this world and…",
+  "choices": [
+   "I can take you out",
+   "I can do it again",
+   "you better act right",
+   "I'll see you out"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "The classic.",
+  "needsReview": false
+ },
+ {
+  "id": "emoji-032",
+  "round": 2,
+  "category": "Emoji Decode",
+  "value": 200,
+  "questionType": "emoji",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "👑🦁🌍",
+  "choices": [
+   "The Lion King",
+   "Black Panther",
+   "Coming to America",
+   "The Woman King"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "",
+  "needsReview": false
+ },
+ {
+  "id": "emoji-033",
+  "round": 2,
+  "category": "Emoji Decode",
+  "value": 200,
+  "questionType": "emoji",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "🎤👩🏾‍🦱🔥🎬",
+  "choices": [
+   "Dreamgirls",
+   "Sparkle",
+   "Respect",
+   "Cadillac Records"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "",
+  "needsReview": false
+ },
+ {
+  "id": "emoji-034",
+  "round": 2,
+  "category": "Emoji Decode",
+  "value": 200,
+  "questionType": "emoji",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "🏫🏀❤️👩🏾",
+  "choices": [
+   "Love & Basketball",
+   "Coach Carter",
+   "Above the Rim",
+   "Hoop Dreams"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "",
+  "needsReview": false
+ },
+ {
+  "id": "emoji-035",
+  "round": 2,
+  "category": "Emoji Decode",
+  "value": 200,
+  "questionType": "emoji",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "🧑🏾‍🚀🔢🚀",
+  "choices": [
+   "Hidden Figures",
+   "Apollo 13",
+   "Space Jam",
+   "Interstellar"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "",
+  "needsReview": false
+ },
+ {
+  "id": "emoji-036",
+  "round": 2,
+  "category": "Emoji Decode",
+  "value": 200,
+  "questionType": "emoji",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "☕🍳🏠👨🏾‍👩🏾‍👧🏾",
+  "choices": [
+   "Soul Food",
+   "Friday",
+   "The Best Man",
+   "Waiting to Exhale"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "",
+  "needsReview": false
+ },
+ {
+  "id": "tag-028",
+  "round": 2,
+  "category": "Hashtag Decode",
+  "value": 200,
+  "questionType": "hashtag",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Decode this hashtag: #HBCUGrad",
+  "choices": [
+   "Proud graduate of a Historically Black College or University",
+   "A job listing",
+   "A sports team",
+   "A TV show"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Homecoming season sees it everywhere.",
+  "needsReview": false
+ },
+ {
+  "id": "tag-029",
+  "round": 2,
+  "category": "Hashtag Decode",
+  "value": 200,
+  "questionType": "hashtag",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Decode this hashtag: #SundayDinner",
+  "choices": [
+   "The big family meal after church",
+   "A cooking contest",
+   "A restaurant chain",
+   "A diet plan"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Macaroni and cheese is not optional.",
+  "needsReview": false
+ },
+ {
+  "id": "era-062",
+  "round": 2,
+  "category": "Name That Era",
+  "value": 200,
+  "questionType": "name_that_era",
+  "generationEra": "elders",
+  "difficulty": 2,
+  "prompt": "In which decade did this come out?\n'Tell Me Something Good' — Rufus & Chaka Khan",
+  "choices": [
+   "1960s",
+   "1970s",
+   "1980s",
+   "1990s"
+  ],
+  "answer": "B",
+  "acceptAlso": [],
+  "culturalContext": "Stevie Wonder wrote this 1974 hit.",
+  "needsReview": false
+ },
+ {
+  "id": "era-063",
+  "round": 2,
+  "category": "Name That Era",
+  "value": 200,
+  "questionType": "name_that_era",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "In which decade did this come out?\n'Back That Azz Up' — Juvenile",
+  "choices": [
+   "1980s",
+   "1990s",
+   "2000s",
+   "2010s"
+  ],
+  "answer": "B",
+  "acceptAlso": [],
+  "culturalContext": "Released in 1999 on Cash Money.",
+  "needsReview": false
+ },
+ {
+  "id": "era-064",
+  "round": 2,
+  "category": "Name That Era",
+  "value": 200,
+  "questionType": "name_that_era",
+  "generationEra": "genz",
+  "difficulty": 2,
+  "prompt": "In which decade did this come out?\n'Hotline Bling' — Drake",
+  "choices": [
+   "1990s",
+   "2000s",
+   "2010s",
+   "2020s"
+  ],
+  "answer": "C",
+  "acceptAlso": [],
+  "culturalContext": "Released in 2015.",
+  "needsReview": false
+ },
+ {
+  "id": "era-065",
+  "round": 2,
+  "category": "Name That Era",
+  "value": 200,
+  "questionType": "name_that_era",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "In which decade did this come out?\n'Golden' — Jill Scott",
+  "choices": [
+   "1990s",
+   "2000s",
+   "2010s",
+   "2020s"
+  ],
+  "answer": "B",
+  "acceptAlso": [],
+  "culturalContext": "From 2004's 'Beautifully Human.'",
+  "needsReview": false
+ },
+ {
+  "id": "era-066",
+  "round": 2,
+  "category": "Name That Era",
+  "value": 200,
+  "questionType": "name_that_era",
+  "generationEra": "genz",
+  "difficulty": 2,
+  "prompt": "In which decade did this come out?\n'Not Like Us' — Kendrick Lamar",
+  "choices": [
+   "1990s",
+   "2000s",
+   "2010s",
+   "2020s"
+  ],
+  "answer": "D",
+  "acceptAlso": [],
+  "culturalContext": "Released in 2024. It won Record of the Year.",
+  "needsReview": false
+ },
+ {
+  "id": "final-035",
+  "round": 3,
+  "category": "Final Wager",
+  "value": 0,
+  "questionType": "final",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "In 1903, she became the first woman in America to charter a bank, in Richmond, Virginia.",
+  "choices": [],
+  "answer": "Maggie L. Walker",
+  "acceptAlso": [
+   "Maggie Walker"
+  ],
+  "culturalContext": "St. Luke Penny Savings Bank later merged into Consolidated Bank & Trust.",
+  "needsReview": false,
+  "finalCategory": "Banking on Us"
+ },
+ {
+  "id": "final-036",
+  "round": 3,
+  "category": "Final Wager",
+  "value": 0,
+  "questionType": "final",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "This trumpeter and singer recorded 'What a Wonderful World' in 1967.",
+  "choices": [],
+  "answer": "Louis Armstrong",
+  "acceptAlso": [
+   "Armstrong",
+   "Satchmo"
+  ],
+  "culturalContext": "It became a hit again after appearing in 'Good Morning, Vietnam' (1987).",
+  "needsReview": false,
+  "finalCategory": "All That Jazz"
+ },
+ {
+  "id": "final-037",
+  "round": 3,
+  "category": "Final Wager",
+  "value": 0,
+  "questionType": "final",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "This chef, called 'the Queen of Creole Cuisine,' ran Dooky Chase's restaurant in New Orleans for over 70 years.",
+  "choices": [],
+  "answer": "Leah Chase",
+  "acceptAlso": [
+   "Chase"
+  ],
+  "culturalContext": "Civil rights leaders met in its upstairs room.",
+  "needsReview": false,
+  "finalCategory": "Kitchen History"
+ },
+ {
+  "id": "final-038",
+  "round": 3,
+  "category": "Final Wager",
+  "value": 0,
+  "questionType": "final",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "This 1961 campaign sent Black and white riders on interstate buses into the South to test desegregation laws.",
+  "choices": [],
+  "answer": "The Freedom Rides",
+  "acceptAlso": [
+   "Freedom Riders",
+   "Freedom Ride"
+  ],
+  "culturalContext": "CORE organized the first ride.",
+  "needsReview": false,
+  "finalCategory": "Freedom Rides"
+ },
+ {
+  "id": "biz-019",
+  "round": 1,
+  "category": "Black Business & Money",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Annie Turnbo Malone built a hair-care empire and a beauty school in St. Louis called…",
+  "choices": [
+   "Poro College",
+   "Walker College",
+   "Spelman",
+   "Lincoln Institute"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Poro College",
+   "Poro"
+  ],
+  "culturalContext": "Madam C.J. Walker once worked as one of her sales agents.",
+  "needsReview": false
+ },
+ {
+  "id": "biz-020",
+  "round": 1,
+  "category": "Black Business & Money",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 3,
+  "prompt": "Earl G. Graves launched which business magazine in 1970?",
+  "choices": [
+   "Black Enterprise",
+   "Ebony",
+   "Essence",
+   "Forbes"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Black Enterprise"
+  ],
+  "culturalContext": "Its yearly list ranks the largest Black-owned businesses.",
+  "needsReview": false
+ },
+ {
+  "id": "biz-021",
+  "round": 1,
+  "category": "Black Business & Money",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "Cathy Hughes founded which media company, starting with one radio station in D.C.?",
+  "choices": [
+   "Radio One (now Urban One)",
+   "iHeartRadio",
+   "Sirius",
+   "BET"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Radio One",
+   "Urban One"
+  ],
+  "culturalContext": "In 1999 she became the first Black woman to head a publicly traded company.",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-022",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 3,
+  "prompt": "Dizzy Gillespie's trumpet was famous for…",
+  "choices": [
+   "Its bell bent upward",
+   "Being made of gold",
+   "Having no valves",
+   "Being tiny"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "bent"
+  ],
+  "culturalContext": "Plus those puffed-out cheeks.",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-023",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 4,
+  "prompt": "Count Basie's big band grew out of which city's jazz scene?",
+  "choices": [
+   "Kansas City",
+   "New Orleans",
+   "St. Louis",
+   "Detroit"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Kansas City"
+  ],
+  "culturalContext": "Kansas City jazz was known for its swinging riffs.",
+  "needsReview": false
+ },
+ {
+  "id": "shop-018",
+  "round": 1,
+  "category": "Barbershop & Beauty Shop",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "genz",
+  "difficulty": 1,
+  "prompt": "What do you wear at night to keep your 360 waves laid?",
+  "choices": [
+   "A durag",
+   "A beanie",
+   "A headband",
+   "A bandana"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "durag",
+   "du-rag",
+   "wave cap"
+  ],
+  "culturalContext": "Brush, brush, brush — then the durag.",
+  "needsReview": false
+ },
+ {
+  "id": "shop-019",
+  "round": 1,
+  "category": "Barbershop & Beauty Shop",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "genz",
+  "difficulty": 4,
+  "prompt": "LeBron James co-created which HBO show where stars talk in a barbershop?",
+  "choices": [
+   "The Shop",
+   "Barbershop Talk",
+   "Clippers",
+   "Fresh Cut"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "The Shop"
+  ],
+  "culturalContext": "He created it with Maverick Carter in 2018.",
+  "needsReview": false
+ },
+ {
+  "id": "inv-025",
+  "round": 1,
+  "category": "Inventors & Innovators",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 4,
+  "prompt": "Chemist Percy Julian made medicines like cortisone more affordable using…",
+  "choices": [
+   "Soybeans",
+   "Peanuts",
+   "Corn",
+   "Cotton"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "soybeans"
+  ],
+  "culturalContext": "He was one of the first Black chemists elected to the National Academy of Sciences.",
+  "needsReview": false
+ },
+ {
+  "id": "inv-026",
+  "round": 1,
+  "category": "Inventors & Innovators",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 5,
+  "prompt": "IBM engineer Mark Dean led the team that built the first computer chip to reach…",
+  "choices": [
+   "1 gigahertz",
+   "1 megabyte",
+   "1 terabyte",
+   "100 watts"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "1 gigahertz",
+   "1 GHz",
+   "gigahertz"
+  ],
+  "culturalContext": "He also co-invented parts that made the IBM PC work with printers and monitors.",
+  "needsReview": false
+ },
+ {
+  "id": "road-027",
+  "round": 1,
+  "category": "Black America Road Trip",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "'Sweet Auburn,' the street where Dr. King was born, is in…",
+  "choices": [
+   "Atlanta",
+   "Montgomery",
+   "Birmingham",
+   "Memphis"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "Atlanta"
+  ],
+  "culturalContext": "John Wesley Dobbs called it the 'richest Negro street in the world.'",
+  "needsReview": false
+ },
+ {
+  "id": "food-028",
+  "round": 1,
+  "category": "Soul Food Kitchen",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Smothered pork chops are cooked in…",
+  "choices": [
+   "Gravy with onions",
+   "Barbecue sauce",
+   "Lemon butter",
+   "Hot sauce only"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "gravy"
+  ],
+  "culturalContext": "Serve over rice. Don't argue.",
+  "needsReview": false
+ },
+ {
+  "id": "food-029",
+  "round": 1,
+  "category": "Soul Food Kitchen",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "Chow-chow is a…",
+  "choices": [
+   "Pickled vegetable relish",
+   "Kind of dumpling",
+   "Sweet bread",
+   "Dog's name"
+  ],
+  "answer": "A",
+  "acceptAlso": [
+   "relish"
+  ],
+  "culturalContext": "Spoon it on your greens and peas.",
+  "needsReview": false
  }
 ]

@@ -133,6 +133,10 @@ Everything is bundled locally: the Firebase SDK, fonts and the QR code generator
 
 ---
 
+**Host Remote.** Opens in **Simple** mode: one big button at the bottom for whatever's next, ✅/❌ when you judge, a 4-button sound pad (Applause, Ooooh, Drumroll, Airhorn), **⏱ +10s**, Pause and Skip. **⚙️ Full** adds score ± buttons, Undo and 4 more sounds. The TV keyboard has **T** (+10 s) and **Alt+1…8** (sound pad).
+
+**Phones.** **Aa** turns on big text and buttons. Phones buzz and flash when an action is waiting for you, and stay awake during the show. Right answers tapped within 3 seconds earn a **⚡ Lightning** +$25.
+
 ## 5. Family Questions
 
 In the lobby, tap **✏️ Family Questions**. You can add questions one by one, or **import JSON/CSV**.
@@ -178,8 +182,10 @@ js/assets.js          Gemini art loader (magenta keying + sheet slicing)
 js/audio.js           synthesized sound effects (no audio files)
 js/fx.js              confetti, stamp slam, shockwave, banners
 js/editor.js          Family Questions editor
-data/questions.json   question bank (835 questions)
+data/questions.json   question bank (917 questions)
 data/practice.json    Practice Run questions and decks (kept out of real games)
+learn.html            🎓 Practice Academy: solo, self-paced lessons for every game (js/learn.js)
+UNIVERSAL_BLUEPRINT.md  build script for a culture-agnostic GENERATIONS engine (Culture Packs)
 cookout.html          Invited to the Cookout side game (lane runner, art in assets/cookout/)
 data/extras.json      Survey prompts, charades clues, hot takes, "most likely to" + Top That! prompts (edit freely)
 database.rules.json   Firebase security rules

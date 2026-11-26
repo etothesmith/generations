@@ -345,5 +345,214 @@
   "Eating spaghetti",
   "Walking a dog",
   "Reading a book"
- ]
+ ],
+ "solo": {
+  "survey": {
+   "prompt": "PRACTICE: Name something you bring to a picnic.",
+   "board": [
+    {
+     "label": "Blanket",
+     "pts": 38,
+     "match": [
+      "blanket",
+      "quilt",
+      "sheet"
+     ]
+    },
+    {
+     "label": "Food / Sandwiches",
+     "pts": 27,
+     "match": [
+      "food",
+      "sandwich",
+      "sandwiches",
+      "chicken",
+      "snacks"
+     ]
+    },
+    {
+     "label": "Cooler / Drinks",
+     "pts": 16,
+     "match": [
+      "cooler",
+      "drinks",
+      "drink",
+      "ice",
+      "soda",
+      "juice",
+      "water"
+     ]
+    },
+    {
+     "label": "Basket",
+     "pts": 11,
+     "match": [
+      "basket"
+     ]
+    },
+    {
+     "label": "Paper Plates",
+     "pts": 8,
+     "match": [
+      "plates",
+      "paper plates",
+      "napkins",
+      "forks",
+      "utensils"
+     ]
+    }
+   ]
+  },
+  "twoTruths": [
+   {
+    "who": "grandma",
+    "items": [
+     "I sang in the church choir for 40 years.",
+     "I once met Muhammad Ali at the airport.",
+     "I've never eaten a hot dog."
+    ],
+    "lie": 2,
+    "tell": "Grandma Pearl eats a hot dog every Fourth of July!"
+   },
+   {
+    "who": "uncle",
+    "items": [
+     "I can play the saxophone.",
+     "I was a DJ at my high school prom.",
+     "I've been to all 50 states."
+    ],
+    "lie": 2,
+    "tell": "Uncle Ray has only been to 31 states (he's working on it)."
+   }
+  ],
+  "topThatBots": {
+   "The best name for our team: ____": [
+    "The Kitchen Table Champs",
+    "Grandma's Favorites",
+    "Team Second Plate"
+   ],
+   "Practice round tip of the day: ____": [
+    "Never trust the potato salad",
+    "Wait for the buzz, baby",
+    "Read the whole question first"
+   ]
+  },
+  "blitz": [
+   {
+    "q": "How many legs does a spider have?",
+    "c": [
+     "8",
+     "6"
+    ],
+    "a": 0
+   },
+   {
+    "q": "What color do you get mixing blue and yellow?",
+    "c": [
+     "Green",
+     "Purple"
+    ],
+    "a": 0
+   },
+   {
+    "q": "How many days are in a week?",
+    "c": [
+     "7",
+     "5"
+    ],
+    "a": 0
+   },
+   {
+    "q": "Which is a fruit?",
+    "c": [
+     "Peach",
+     "Carrot"
+    ],
+    "a": 0
+   },
+   {
+    "q": "What do bees make?",
+    "c": [
+     "Honey",
+     "Milk"
+    ],
+    "a": 0
+   },
+   {
+    "q": "Which is bigger?",
+    "c": [
+     "The sun",
+     "The moon"
+    ],
+    "a": 0
+   },
+   {
+    "q": "Ice is frozen…",
+    "c": [
+     "Water",
+     "Milk"
+    ],
+    "a": 0
+   },
+   {
+    "q": "How many minutes in an hour?",
+    "c": [
+     "60",
+     "100"
+    ],
+    "a": 0
+   },
+   {
+    "q": "Which one barks?",
+    "c": [
+     "A dog",
+     "A cat"
+    ],
+    "a": 0
+   },
+   {
+    "q": "What comes after Tuesday?",
+    "c": [
+     "Wednesday",
+     "Monday"
+    ],
+    "a": 0
+   },
+   {
+    "q": "Which is a card game?",
+    "c": [
+     "Spades",
+     "Hopscotch"
+    ],
+    "a": 0
+   },
+   {
+    "q": "Grits are made from…",
+    "c": [
+     "Corn",
+     "Rice"
+    ],
+    "a": 0
+   }
+  ],
+  "majority": {
+   "votes": [
+    "A",
+    "A",
+    "B"
+   ]
+  },
+  "singBots": {
+   "BIRTHDAY": [
+    "'Happy Birthday' — Stevie Wonder",
+    "'Birthday Cake' — Rihanna",
+    "'Birthday' — Katy Perry"
+   ],
+   "SHINE": [
+    "'This Little Light of Mine (Let It Shine)'",
+    "'Shining Star' — Earth, Wind & Fire",
+    "'Shine' — Luther Vandross"
+   ]
+  }
+ }
 }

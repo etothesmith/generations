@@ -53,6 +53,14 @@ const SFX = {
     n.forEach(([f, s, d]) => { tone(f, t + s, d, 'sawtooth', 0.12); tone(f / 2, t + s, d, 'triangle', 0.15); });
   },
   whoosh(t) { noise(t, 0.4, 0.3, 300, 3000, 0.8); },
+  applause(t) { for (let i = 0; i < 26; i++) noise(t + i * 0.07 + Math.random() * 0.05, 0.09, 0.22, 2500, 1500, 1.2); },
+  ooh(t) { tone(330, t, 1.1, 'sine', 0.18, 220); tone(415, t, 1.1, 'sine', 0.12, 277); tone(262, t + 0.05, 1.1, 'triangle', 0.1, 196); },
+  drumroll(t) { for (let i = 0; i < 28; i++) noise(t + i * 0.055, 0.05, 0.25 + i * 0.012, 900, 300, 0.8); tone(90, t + 1.6, 0.4, 'sine', 0.6, 45); noise(t + 1.6, 0.6, 0.35, 6000, 3000, 0.6); },
+  airhorn(t) { [0, 0.28, 0.56].forEach((d, i) => { tone(466, t + d, i === 2 ? 0.7 : 0.22, 'sawtooth', 0.14); tone(587, t + d, i === 2 ? 0.7 : 0.22, 'sawtooth', 0.1); }); },
+  crickets(t) { for (let i = 0; i < 6; i++) for (let j = 0; j < 3; j++) tone(4200, t + i * 0.35 + j * 0.04, 0.025, 'sine', 0.06); },
+  laugh(t) { [0, .16, .32, .5, .66].forEach((d, i) => tone(520 - i * 30, t + d, 0.12, 'triangle', 0.16, 420 - i * 30)); },
+  boo(t) { tone(180, t, 1.2, 'sawtooth', 0.09, 120); tone(190, t, 1.2, 'triangle', 0.12, 125); },
+  church(t) { [[262, 0], [330, 0], [392, 0], [523, 0.6], [659, 0.6], [784, 0.6]].forEach(([f, d]) => tone(f, t + d, 1.1, 'sine', 0.1)); },
 };
 
 export function sfx(name) {
