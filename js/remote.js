@@ -2,6 +2,7 @@
 // GENERATIONS — Host Remote: run the show from your phone.
 // Shows the answer key privately and sends host commands.
 // ============================================================
+import { applyWorld } from './world.js';
 import { createTransport } from './transport.js';
 import { esc, money, $, LETTERS, uid } from './util.js';
 
@@ -22,7 +23,7 @@ async function boot() {
   if (!room || !key) { $('#app').innerHTML = '<h2>Host Remote</h2><div class="msg">Open this from the 📱 Remote button on the host screen.</div>'; return; }
   T = await createTransport();
   await T.joinRoom(room, 'remote-' + uid(6));
-  T.onState((s) => { S = s; draw(); });
+  T.onState((s) => { S = s; applyWorld(s); draw(); });
   T.onPrivate(key, (p) => { P = p || {}; draw(); });
   document.addEventListener('click', onClick);
   keepAwake(); document.addEventListener('visibilitychange', keepAwake);

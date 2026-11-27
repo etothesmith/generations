@@ -9,14 +9,17 @@
 <meta property="og:description" content="Black culture &amp; history trivia, hot takes, charades and more. TV is the stage, phones are the buzzers. Free.">
 <meta property="og:image" content="https://etothesmith.github.io/generations/assets/share_card.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#151515">
+<meta name="theme-color" content="#FFC23C">
 <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/blockparty.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
 </head>
 <body>
 <div class="stage-bg"><div class="floor"></div></div>
 <div class="landing entry">
-  <div class="logo huge" id="logo">GENERATIONS</div>
+  <div class="s2-ribbon">NEW SEASON</div>
+  <div class="logo huge" id="logo">GENERATIONS <span class="s2">SEASON 2</span></div>
+  <div class="bp-title">☀️ The Block Party Edition</div>
   <div class="tagline">The Family Game Show · Culture · History · Generations</div>
   <div class="entry-cards">
     <form class="entry-card join" id="joinForm" autocomplete="off">
@@ -34,6 +37,9 @@
       <label class="ec-opt"><input type="radio" name="mode" value="0"><span><b>🎙️ I'll host it</b><small>You press the buttons and judge answers (you don't play).</small></span></label>
       <button class="btn big" id="hostBtn">Start a Room →</button>
     </div>
+  </div>
+  <div class="whats-new"><b>NEW THIS SEASON</b>
+    <span>🗳️ Everybody picks the games</span><span>🥊 Settle a Beef</span><span>👑 Captain runs it from a phone</span><span>📋 Warm-Up survey</span><span>🎨 Every game has its own color</span><span>⚙️ Set up your phone your way</span>
   </div>
   <div class="entry-more">
     <a href="how-to-play.html">📖 How to Play <small>1-minute slides</small></a>
@@ -54,9 +60,6 @@
     location.href = 'host.html?auto=' + v;
   };
 </script>
-<script type="module">
-  import { loadArt, ART } from './js/assets.js';
-  loadArt().then(() => { if (ART.logo) document.getElementById('logo').innerHTML = `<img src="${ART.logo}" alt="GENERATIONS" style="max-height:30vh;max-width:90vw">`; });
-</script>
+
 </body>
 </html>

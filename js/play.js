@@ -1,6 +1,7 @@
 // ============================================================
 // GENERATIONS — Phone controller
 // ============================================================
+import { applyWorld } from './world.js';
 import { createTransport } from './transport.js';
 import { GENERATIONS, genFromYear, uid, esc, money, $, LETTERS } from './util.js';
 import { renderAvatar, AVATAR_OPTIONS, randomAvatar } from './avatar.js';
@@ -146,6 +147,7 @@ function saveProfile() {
 function send(msg) { T.sendInput({ ...msg, pid }); }
 
 function onState() {
+  applyWorld(S);
   if (S.fx && S.fx.id !== lastFx) {
     lastFx = S.fx.id;
     const my = myTeam();
@@ -219,7 +221,7 @@ function years() {
 function joinView() {
   if (step === 1 && !editingAvatar) {
     return `<div class="ph-body">
-      ${ART.logo ? `<div style="text-align:center"><img src="${ART.logo}" alt="GENERATIONS" style="max-width:88%;max-height:110px"></div>` : '<div class="logo" style="font-size:44px;text-align:center">GENERATIONS</div>'}
+      <div class="logo" style="font-size:44px;text-align:center">GENERATIONS<br><span class="s2" style="font-size:16px">SEASON 2 · BLOCK PARTY</span></div>
       ${ART.family ? `<img class="ph-family" src="${ART.family}" alt="">` : ''}
       <div class="sub">The family game show</div>
       <div class="field"><label>Room code</label><input class="code" id="j-room" maxlength="4" autocomplete="off" autocapitalize="characters" value="${esc(room)}"></div>

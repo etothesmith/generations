@@ -32,6 +32,14 @@ One screen (TV or laptop) runs the show. Everybody else plays on their own phone
 
 ---
 
+## 🎨 Season 2: the "Block Party" look
+Bright color worlds replace the old dark navy stage. Each part of the show has its own color, so everyone can tell where they are at a glance:
+setup ☀️ yellow · the Board 🟧 tangerine · survey games 🟦 teal · hot takes 🩷 pink · music games 🟪 grape · party games 🔵 sky · charades 🟩 lime · Remix trivia 🟥 coral · Settle a Beef red · Final Wager royal purple · Champions gold.
+Everything sits on cream "sticker" cards with thick ink outlines, in the Lilita One + Nunito fonts.
+- Styles: `css/blockparty.css`, which loads after `css/styles.css`. Delete that one line from an HTML page to bring back the old look.
+- World logic: `js/world.js` (`worldFor(state)`).
+- Holiday themes (Juneteenth, Christmas, Reunion) still use their backdrop art.
+
 ## ✅ Firebase is connected
 
 This copy is already wired to the Firebase project **`generations-game`** (owner: your Google account). It has a Realtime Database (us-central1) with security rules, anonymous sign-in, and a web app. The keys are in `js/config.js`. Phones can join from anywhere as soon as the folder is online (step 3).

@@ -13,6 +13,7 @@ import qrcode from '../vendor/qrcode.mjs';
 import { openEditor, loadCustom } from './editor.js';
 import { CallManager, VideoWall, playVoice } from './social.js';
 import { normalize } from './normalize.js';
+import { applyWorld } from './world.js';
 import { SETUP_STEPS, stepsFor, GAME_PITCH, BEEF_TOPICS } from './setupdata.js';
 
 const WATCH = (new URLSearchParams(location.search).get('watch') || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 4);
@@ -56,7 +57,7 @@ async function boot() {
   if (WATCH) return bootWatch();
 
   const [art, bank] = await Promise.all([loadArt(), loadBank(), loadExtras()]);
-  if (art.stage) { ui.bg.style.backgroundImage = `url(${art.stage})`; ui.bg.classList.add('has-art'); }
+  seasonTwo();
   mountCrowd(ui.bg);
   mountMascot(document.body);
 
@@ -147,7 +148,7 @@ export async function loadBank() {
 async function bootWatch() {
   document.body.classList.add('watch');
   const [art] = await Promise.all([loadArt(), loadExtras()]);
-  if (art.stage) { ui.bg.style.backgroundImage = `url(${art.stage})`; ui.bg.classList.add('has-art'); }
+  seasonTwo();
   mountCrowd(ui.bg);
   mountMascot(document.body);
   T = await createTransport();
@@ -176,7 +177,7 @@ function viewWatchLobby(s) {
   return `<div class="lobby">
     <div class="join-card"><div class="lbl">Join from your phone</div><div class="code">${s.code}</div><div class="qr">${qrSvg(url)}</div><div class="url">${esc(url)}</div></div>
     <div class="lobby-right">
-      ${ART.logo ? `<div class="logo huge"><img src="${ART.logo}" alt="GENERATIONS"></div>` : `<div class="logo huge">GENERATIONS</div>`}
+      ${ART.logo ? `<div class="logo huge"><img src="${ART.logo}" alt="GENERATIONS"></div>` : `<div class="logo huge">GENERATIONS <span class="s2">BLOCK PARTY</span></div>`}
       <div class="tagline">📍 Watching the live show from away</div>
       <div class="player-grid">${players.length ? players.map((p) => playerCard(p)).join('') : `<div class="empty-note">${ART.family ? `<img class="family-hero" src="${ART.family}" alt="">` : ''}Waiting for the family to join…</div>`}</div>
       <div class="hint">Scan the code to play on your phone. Use 📹 below to video chat with the house.</div>
@@ -237,6 +238,9 @@ async function tvCallJoin(mode, el) {
   catch (e) { await tvs.call.join({ send: false }); alert('No camera/microphone allowed — showing family video only.'); }
 }
 
+// Season 2 "Block Party": bright color worlds replace the dark stage art.
+function seasonTwo() { ART.stage = null; ART.podium = null; ART.logo = null; ART.partyStage = null; ART.roundFrame = null; ART.curtain = null; }
+
 // ---------------- render ----------------
 let appliedTheme = null;
 function partyMoment(s) {
@@ -252,13 +256,14 @@ function applyTheme(s) {
   if (key === appliedTheme) return;
   appliedTheme = key;
   document.body.classList.toggle('party-night', party);
-  const url = party ? ART.partyStage : t !== 'classic' && ART.themes[t] ? ART.themes[t] : ART.stage;
+  const url = t !== 'classic' && ART.themes[t] ? ART.themes[t] : null; // holiday themes keep their art
   ui.bg.style.backgroundImage = url ? `url(${url})` : '';
   ui.bg.classList.toggle('has-art', !!url);
   setConfettiTheme(t);
 }
 function render(s) {
   S = s;
+  applyWorld(s);
   applyTheme(s);
   renderTop(s);
   renderMain(s);
@@ -276,7 +281,7 @@ function roundName(s) {
 }
 function renderTop(s) {
   const [a, b] = roundName(s);
-  const logo = ART.logo ? `<div class="logo small" style="height:5vh"><img src="${ART.logo}" alt="GENERATIONS"></div>` : `<div class="logo small">GENERATIONS</div>`;
+  const logo = ART.logo ? `<div class="logo small" style="height:5vh"><img src="${ART.logo}" alt="GENERATIONS"></div>` : `<div class="logo small">GENERATIONS <span class="s2">S2</span></div>`;
   const pr = showProgress(s);
   setHTML(ui.top, `${logo}<div class="round-label">${a}<small>${b}</small></div><div class="top-right">${pr ? `<div class="prog-pill" title="How much show is left"><span class="pp-bar"><i style="width:${pr.pct}%"></i></span>${esc(pr.label)} · ~${pr.mins} min left</div>` : ''}<div class="room-pill">Room <b>${s.code}</b></div></div>`);
 }
@@ -380,7 +385,7 @@ function viewJoinStep(s) {
       <div class="url">${esc(url)}</div>
     </div>
     <div class="lobby-right">
-      ${ART.logo ? `<div class="logo huge"><img src="${ART.logo}" alt="GENERATIONS"></div>` : `<div class="logo huge">GENERATIONS</div>`}
+      ${ART.logo ? `<div class="logo huge"><img src="${ART.logo}" alt="GENERATIONS"></div>` : `<div class="logo huge">GENERATIONS <span class="s2">BLOCK PARTY</span></div>`}
       <div class="tagline">The Family Game Show · Culture · History · Generations</div>
       ${(() => { const f = E.freshness(); const low = f.unseen < f.total * 0.25; return `<div class="hint fresh-meter" style="margin:0">🆕 <b style="color:var(--gold)">${f.unseen}</b> of ${f.total} questions this TV hasn't played yet${low ? ` · <button class="cat-toggle" data-act="resetseen">Start fresh</button>` : ''}</div>`; })()}
       ${s.survey ? `<div class="hint" style="margin:0">📋 Family Survey answered on phones: <b style="color:var(--gold)">${Object.values(s.survey.answered || {}).filter((n) => n >= s.survey.prompts.length).length}/${players.length}</b> done · used in Round 2${players.some((p) => p.audience) ? ` · 👀 Audience: ${players.filter((p) => p.audience).map((p) => esc(p.name)).join(', ')}` : ''}</div>` : ''}

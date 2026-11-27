@@ -13,7 +13,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://etothesmith.github.io/generations/how-to-play.html">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#1A1B3A">
+<meta name="theme-color" content="#FFC23C">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
 <style>
 @font-face { font-family: 'Bungee'; src: url('fonts/bungee.woff2') format('woff2'); font-display: swap; }
@@ -62,13 +62,41 @@ h2 { font-size: clamp(28px, 7vw, 54px); color: var(--gold); }
 .hint a { color: var(--cream); }
 @media (prefers-reduced-motion: reduce) { .deck { scroll-behavior: auto; } }
 </style>
+<style>
+/* Season 2 · Block Party look */
+@font-face { font-family: 'Lilita One'; src: url('fonts/lilita.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'Nunito'; src: url('fonts/nunito-800.woff2') format('woff2'); font-weight: 400 800; font-display: swap; }
+@font-face { font-family: 'Nunito'; src: url('fonts/nunito-900.woff2') format('woff2'); font-weight: 900; font-display: swap; }
+:root { --ink: #1B1B1B; --paper: #FFF6E3; --gold: #FF7A1A; }
+html, body { background: #FFC23C; color: var(--ink); font-family: Nunito, system-ui, sans-serif; font-weight: 800; }
+body { background: #FFC23C; }
+.slide { position: relative; background: var(--w, #FFC23C); background-image: repeating-conic-gradient(from 0deg at 50% 40%, rgba(255,255,255,.14) 0 9deg, transparent 9deg 18deg); }
+.slide:nth-child(10n+1) { --w: #FFC23C; } .slide:nth-child(10n+2) { --w: #FF7A1A; } .slide:nth-child(10n+3) { --w: #14B8A6; }
+.slide:nth-child(10n+4) { --w: #FF7A1A; } .slide:nth-child(10n+5) { --w: #FF5A4E; } .slide:nth-child(10n+6) { --w: #FF3D8B; }
+.slide:nth-child(10n+7) { --w: #7B4DFF; } .slide:nth-child(10n+8) { --w: #2FA8FF; } .slide:nth-child(10n+9) { --w: #7ED321; } .slide:nth-child(10n) { --w: #3B2A8F; }
+h1, h2 { font-family: 'Lilita One', sans-serif; color: #fff; -webkit-text-stroke: .08em var(--ink); paint-order: stroke fill; text-shadow: .05em .08em 0 var(--ink); transform: rotate(-1.5deg); }
+.kick { color: #fff; background: var(--ink); padding: 4px 12px; border-radius: 8px; transform: rotate(-2deg); }
+.lead { color: var(--ink); font-weight: 900; } .lead b { color: var(--ink); background: #fff; padding: 0 .25em; border-radius: 6px; }
+.slide:nth-child(10n) .lead, .slide:nth-child(10n+7) .lead { color: #fff; }
+.step, .game, .chip { background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 5px 0 var(--ink); }
+.step b, .game b, .chip b { color: #D9480F; }
+.step .n { background: var(--ink); color: #fff; font-family: 'Lilita One'; }
+.art { filter: drop-shadow(5px 6px 0 var(--ink)); }
+.btn { border: 3px solid var(--ink); box-shadow: 0 5px 0 var(--ink); color: var(--ink); background: #fff; font-family: 'Lilita One'; font-weight: 400; }
+.btn.red { background: #FF3B5C; color: #fff; box-shadow: 0 5px 0 var(--ink); }
+.btn.ghost { color: var(--ink); border: 3px solid var(--ink); background: rgba(255,255,255,.4); }
+.nav { background: transparent; }
+.nav button { background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 3px 4px 0 var(--ink); }
+.dots i { background: rgba(27,27,27,.3); } .dots i.on { background: var(--ink); }
+.hint a { color: var(--ink); font-weight: 900; } .hint { opacity: 1; }
+</style>
 </head>
 <body>
 <div class="hint"><a href="rules.html">Full rules</a></div>
 <main class="deck" id="deck">
 
   <section class="slide" aria-label="Slide 1">
-    <img class="art" src="assets/logo.png" alt="GENERATIONS" style="max-height:18vh">
+    <h1 style="font-size:clamp(40px,11vw,80px);margin-bottom:0">GENERATIONS</h1><div class="kick" style="margin-bottom:8px">Season 2 · Block Party</div>
     <div class="lead">The family game show about <b>Black culture &amp; history</b>.</div>
     <img class="art" src="assets/family_banner.webp" alt="Four generations of a family cheering">
     <div class="lead"><b>The TV</b> is the stage. <b>Phones</b> are the buzzers.</div>
