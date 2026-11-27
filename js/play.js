@@ -7,6 +7,7 @@ import { renderAvatar, AVATAR_OPTIONS, randomAvatar } from './avatar.js';
 import { loadArt, ART } from './assets.js';
 import { normalize } from './normalize.js';
 import { CallManager, VideoWall, chatItemHTML, startVoiceNote, playVoice, canRecord, CHAT_MAX, VOICE_MAX_SEC } from './social.js';
+import { BEEF_TOPICS, GAME_PITCH, GAME_CARDS } from './setupdata.js';
 
 let T, S = null, pid, room;
 let profile = { name: '', year: '', gen: '', avatar: randomAvatar() };
@@ -15,6 +16,18 @@ let local = {};
 let lastFx = null;
 let wasAct = false;
 let bigText = localStorage.getItem('gen-bigtext') === '1';
+// ⚙️ phone setup — everybody sets their remote up their way
+const PREF_DEFAULT = { size: bigText ? 'big' : 'normal', layout: 'simple', vib: true, contrast: false, tips: true, hand: 'right' };
+let prefs = (() => { try { return { ...PREF_DEFAULT, ...JSON.parse(localStorage.getItem('gen-phone-prefs') || '{}') }; } catch (e) { return { ...PREF_DEFAULT }; } })();
+function applyPrefs() {
+  const b = document.body;
+  b.classList.toggle('bigtext', prefs.size !== 'normal');
+  b.classList.toggle('hugetext', prefs.size === 'huge');
+  b.classList.toggle('contrast', !!prefs.contrast);
+  b.classList.toggle('simple', prefs.layout === 'simple');
+  b.classList.toggle('lefty', prefs.hand === 'left');
+}
+function savePrefs() { try { localStorage.setItem('gen-phone-prefs', JSON.stringify(prefs)); } catch (e) { /* */ } applyPrefs(); }
 let wake = null;
 async function keepAwake() { try { if ('wakeLock' in navigator && document.visibilityState === 'visible') wake = await navigator.wakeLock.request('screen'); } catch (e) { /* not allowed */ } }
 // ---- play-from-anywhere: chat, voice notes, video ----
@@ -23,7 +36,7 @@ let call = null, wall = null, rec = null;
 const app = () => $('#app');
 const cache = new WeakMap();
 function setHTML(el, html) { if (cache.get(el) === html) return; cache.set(el, html); el.innerHTML = html; }
-const vib = (p) => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) { /* no-op */ } };
+const vib = (p) => { try { if (prefs.vib !== false) navigator.vibrate && navigator.vibrate(p); } catch (e) { /* no-op */ } };
 
 async function boot() {
   document.body.innerHTML = `<div class="stage-bg"><div class="floor"></div></div><div class="vw phone-vw" id="vw"></div><div class="phone" id="app"></div>
@@ -40,7 +53,7 @@ async function boot() {
         </div>
       </div>
     </div>`;
-  document.body.classList.toggle('bigtext', bigText);
+  applyPrefs();
   keepAwake(); document.addEventListener('visibilitychange', keepAwake);
   room = (new URLSearchParams(location.search).get('room') || '').toUpperCase();
   T = await createTransport();
@@ -164,7 +177,7 @@ function draw() {
   const keep = {};
   el.querySelectorAll('input[id],textarea[id]').forEach((x) => { if (x.type !== 'checkbox' && x.type !== 'range') keep[x.id] = x.value; });
   const focus = document.activeElement && document.activeElement.id;
-  setHTML(el, header() + `<div class="ph-body">${body()}</div>` + reactBar());
+  setHTML(el, header() + coachStrip() + `<div class="ph-body">${body()}</div>` + captainBar() + reactBar() + (local.prefsOpen ? prefsSheet() : ''));
   // "your turn" nudge: buzz the phone + flash when an action shows up for you
   const act = !!el.querySelector('.ph-body .buzzer.live, .ph-body [data-act=answer]:not([disabled]), .ph-body [data-act=wq], .ph-body [data-act=lifeline], .ph-body [data-act=pickboard], .ph-body [data-act=spin], .ph-body [data-act=chgot], .ph-body [data-act=sisong], .ph-body [data-act=twsend], .ph-body [data-act=ttsend], .ph-body [data-act=fanswer], .ph-body [data-act=blitz], .ph-body [data-act=sguess]');
   if (act && !wasAct) { vib([70, 40, 70]); const b = el.querySelector('.ph-body'); if (b) { b.classList.remove('ping'); void b.offsetWidth; b.classList.add('ping'); } }
@@ -175,7 +188,7 @@ function draw() {
 
 const REACTS = ['👏🏾', '🔥', '😂', '🙌🏾', '😱', '🤦🏾', '💯', '🃏'];
 function reactBar() {
-  if (!S || !me() || S.phase === 'lobby') return '';
+  if (!S || !me() || S.phase === 'lobby' || prefs.layout === 'simple') return '';
   const q = S.q, t = myTeam();
   // keep the screen clean for whoever is on the clock
   if (q && t && q.podium && q.podium[t.id] === pid && ['open', 'answering', 'blitz', 'wager', 'pick'].includes(q.stage)) return '';
@@ -192,7 +205,7 @@ function header() {
     <div class="mini">${renderAvatar(m.avatar, 'idle', 46)}</div>
     <div class="me"><div class="n">${esc(m.name)}</div><div class="t" style="color:${t ? t.color : g.color}">${t ? esc(t.name) : m.audience ? '👀 Audience' : g.icon + ' ' + g.label}</div></div>
     ${t ? `<div class="score">${money(t.score)}</div>` : ''}
-    <button class="aa-btn" data-act="bigtext" aria-pressed="${bigText}" aria-label="Bigger text">Aa</button>
+    <button class="aa-btn" data-act="prefs" aria-label="Set up my phone">⚙️</button>
   </div><div class="kente-strip" style="border-radius:4px"></div>`;
 }
 
@@ -287,21 +300,166 @@ function surveyCard() {
     <button class="btn green" data-act="svsend" data-i="${n}">Send</button></div>`;
 }
 
+
+// ---------- ⚙️ phone setup sheet ----------
+function prefsSheet() {
+  const opt = (k, v, l) => `<button class="pf-opt ${prefs[k] === v ? 'on' : ''}" data-act="pref" data-k="${k}" data-v="${v}">${l}</button>`;
+  const tog = (k, l) => `<button class="pf-opt ${prefs[k] ? 'on' : ''}" data-act="pref" data-k="${k}" data-v="${prefs[k] ? '' : '1'}">${prefs[k] ? '✓ ' : ''}${l}</button>`;
+  return `<div class="pf-wrap" data-act="prefsclose"><div class="pf-sheet" data-act="none">
+    <h3>⚙️ Set up my phone</h3>
+    <div class="pf-row"><span>Text size</span><div>${opt('size', 'normal', 'Normal')}${opt('size', 'big', 'Big')}${opt('size', 'huge', 'Huge')}</div></div>
+    <div class="pf-row"><span>Layout</span><div>${opt('layout', 'simple', '✨ Simple')}${opt('layout', 'full', '🎛️ Everything')}</div><small>Simple shows only what you need. Everything adds reactions & extras.</small></div>
+    <div class="pf-row"><span>Buttons on</span><div>${opt('hand', 'right', '👉 Right')}${opt('hand', 'left', '👈 Left')}</div></div>
+    <div class="pf-row"><span>Extras</span><div>${tog('tips', '“What\'s next” tips')}${tog('vib', 'Buzz my phone')}${tog('contrast', 'High contrast')}</div></div>
+    <button class="btn big" data-act="prefsclose">Done</button>
+    <button class="btn navy" data-act="editav" style="margin-top:8px">✏️ Change my avatar</button>
+  </div></div>`;
+}
+
+// ---------- NOW / NEXT: always tell people what's happening and what's coming ----------
+function coachStrip() {
+  if (!prefs.tips || !S || !me()) return '';
+  const c = nowNext();
+  if (!c) return '';
+  return `<div class="coach-strip"><div><span class="cs-k">NOW</span>${c.now}</div>${c.next ? `<div class="cs-n"><span class="cs-k nx">NEXT</span>${c.next}</div>` : ''}</div>`;
+}
+function myPodiumIn(t) {
+  // how many questions until I'm at the podium for my team
+  if (!t || !t.members.includes(pid)) return null;
+  const live = t.members.filter((id) => S.players[id] && S.players[id].connected !== false);
+  const cur = upNext(t);
+  const i = live.indexOf(cur), mine = live.indexOf(pid);
+  if (i < 0 || mine < 0) return null;
+  return (mine - i + live.length) % live.length;
+}
+function nowNext() {
+  const s = S, q = s.q, t = myTeam(), m = me();
+  const cap = s.setup && s.setup.captain === pid;
+  const st = s.setup ? s.setup.step : 'join';
+  const steps = { join: 'Join', warmup: 'Warm-up questions', games: 'Vote on the games', beef: 'Settle a beef (optional)', teams: 'Meet your team' };
+  const order = ['join', 'warmup', 'games', 'beef', 'teams'].filter((x) => x !== 'warmup' || s.survey);
+  if (s.phase === 'lobby') {
+    const nx = order[order.indexOf(st) + 1];
+    const now = st === 'join' ? (cap ? "You're the <b>Captain</b> 👑 Tap <b>Everybody's In</b> when the family's here" : "You're in! Waiting for everybody to join")
+      : st === 'warmup' ? 'Answer <b>3 quick questions</b> below'
+      : st === 'games' ? 'Tap your <b>top 3 games</b> in order'
+      : st === 'beef' ? 'Call somebody out — or tap <b>🤝 We good</b>' : '';
+    return { now, next: nx ? steps[nx] : 'Round 1 starts' };
+  }
+  if (s.phase === 'teams') return { now: t ? `You're on <b style="color:${t.color}">${esc(t.name)}</b>` : 'Teams are being made', next: s.settings.format === 'party' ? 'The first game' : 'Round 1: The Board' };
+  if (m.audience) return { now: "You're in the audience — vote and react!", next: null };
+  const pin = t ? myPodiumIn(t) : null;
+  const podTxt = pin === 0 ? "<b>You're at the podium</b> for the next question" : pin === 1 ? "You're at the podium <b>after this one</b>" : pin != null ? `You're at the podium in <b>${pin}</b> questions` : null;
+  if (s.phase === 'board') {
+    const ctrl = teamById(s.controlTeam);
+    return { now: s.picker === pid ? '<b>Your pick!</b> Tap a dollar amount' : `${ctrl ? `<b style="color:${ctrl.color}">${esc(ctrl.name)}</b>` : 'A team'} is picking a question`, next: podTxt };
+  }
+  if (s.phase === 'segment') {
+    const seg = s.remix.segments[s.remix.segIdx], nx = s.remix.segments[s.remix.segIdx + 1];
+    return { now: `Next game: <b>${esc(seg.label)}</b> — read the TV`, next: nx ? `Then: ${esc(nx.label)}` : 'Then: the final round' };
+  }
+  if (s.phase === 'question' && q) {
+    const onPod = t && q.podium && q.podium[t.id] === pid;
+    const N = {
+      ready: onPod ? "Tap <b>I'M READY</b>" : `${t && q.podium[t.id] ? esc(pname(q.podium[t.id])) : 'Your teammate'} is at the podium`,
+      reading: "Read the question — <b>don't buzz yet</b>", open: onPod ? '<b>BUZZ NOW!</b>' : 'Buzzers are open',
+      answering: q.answerer === pid ? '<b>Tap your answer!</b>' : `${esc(pname(q.answerer))} is answering`,
+      reveal: 'Answer time — look at the TV', vote: '<b>Vote</b> on your phone', wager: q.answerer === pid ? '<b>Place your wager</b>' : 'Family Wager!',
+    };
+    const nxt = q.stage === 'reveal' && s.phase === 'question' ? podTxt : podTxt;
+    return { now: N[q.stage] || 'Play along on your phone', next: s.round === 1 || q.beef ? nxt : null };
+  }
+  if (s.phase === 'spin') return { now: 'Sankofa Spin!', next: null };
+  if (s.phase === 'round_end') return { now: 'Round over — check the scores', next: s.round === 1 ? 'Round 2: the games you voted for' : 'Final Wager' };
+  if (s.phase.startsWith('final')) return { now: 'Final Wager — bet, answer, win', next: 'The winner is crowned' };
+  return null;
+}
+
+// 👑 Captain controls: the first player in can run the pre-show (and nudge the show on Auto-Host)
+function captainBar() {
+  if (!S || !S.setup || S.setup.captain !== pid) return '';
+  const s = S;
+  if (s.phase === 'lobby') {
+    const st = s.setup.step;
+    const n = Object.values(s.players).filter((p) => !p.audience).length;
+    const lbl = { join: "Everybody's In →", warmup: 'Next: Pick Games →', games: 'Next: Settle a Beef →', beef: 'Next: Make Teams →' }[st] || 'Next →';
+    return `<div class="cap-bar"><div class="cap-k">👑 CAPTAIN</div><div class="cap-b">${st !== 'join' ? '<button class="btn navy" data-act="cap" data-v="back">←</button>' : ''}<button class="btn big" data-act="cap" data-v="next" ${st === 'join' && n < 2 ? 'disabled' : ''}>${lbl}</button></div>
+      ${st === 'join' ? `<div class="cap-set"><span>Show:</span>${[['classic', 'Classic'], ['party', 'Party'], ['trivia', 'Trivia']].map(([k, l]) => `<button class="${(s.settings.format || 'classic') === k ? 'on' : ''}" data-act="capset" data-k="format" data-v="${k}">${l}</button>`).join('')}
+        ${s.settings.format === 'party' ? '' : `<span>Length:</span>${[['quick', 'Quick'], ['standard', 'Std'], ['full', 'Full']].map(([k, l]) => `<button class="${(s.settings.boardSize || 'standard') === k ? 'on' : ''}" data-act="capset" data-k="boardSize" data-v="${k}">${l}</button>`).join('')}`}</div>` : ''}</div>`;
+  }
+  if (s.phase === 'teams') return `<div class="cap-bar"><div class="cap-k">👑 CAPTAIN</div><div class="cap-b"><button class="btn navy" data-act="cap" data-v="back">←</button><button class="btn big green" data-act="cap" data-v="next">🎬 Start the Show</button></div></div>`;
+  if (s.settings.autoHost && ['segment', 'round_end', 'final_intro'].includes(s.phase) || (s.settings.autoHost && s.q && s.q.stage === 'reveal')) {
+    return `<div class="cap-bar mini"><span class="cap-k">👑</span><button class="btn navy" data-act="cap" data-v="next">⏭ Keep it moving</button></div>`;
+  }
+  return '';
+}
+
+// ---------- the pre-show on the phone: one job per screen ----------
+function lobbyBody() {
+  const s = S, m = me(), g = GENERATIONS[m.gen] || GENERATIONS.millennial;
+  const st = s.setup ? s.setup.step : 'join';
+  if (m.audience) return `<div class="av-preview">${renderAvatar(m.avatar, 'cheer', 140)}</div><h2>You're in the audience 👀</h2><div class="msg">React, play along and vote. Watch the TV!</div>`;
+  if (st === 'warmup' && s.survey) {
+    const sv = s.survey, n = sv.answered[pid] || 0;
+    if (n >= sv.prompts.length) return `<div class="big-emoji">✅</div><h2>Warm-up done!</h2><div class="msg">Your answers are secret. They'll show up later in <b>The Family Survey</b> game.</div><div class="sub">Waiting for everybody else…</div>`;
+    return `<div class="step-pill">WARM-UP · QUESTION ${n + 1} OF ${sv.prompts.length}</div>
+      <div class="warm-q">${esc(sv.prompts[n])}</div>
+      <input id="sv-in" class="ph-text big" maxlength="40" autocomplete="off" placeholder="First thing that comes to mind">
+      <button class="btn big green" data-act="svsend" data-i="${n}">${n + 1 < sv.prompts.length ? 'Next →' : 'Done ✓'}</button>
+      <div class="sub">No wrong answers. These become a game later — so be honest!</div>`;
+  }
+  if (st === 'games') {
+    const opts = (s.vote && s.vote.options) || Object.keys(GAME_CARDS);
+    const mine = local.gv || (s.vote && s.vote.picks && s.vote.picks[pid]) || [];
+    return `<div class="step-pill">PICK THE GAMES · ${mine.length}/3</div>
+      <div class="msg">Tap your <b>top 3</b> in order.<br><small>1st tap = your #1. Tap again to undo.</small></div>
+      <div class="gv-list">${opts.map((k) => { const c = GAME_CARDS[k] || [k, '🎲']; const r = mine.indexOf(k); return `<button class="gv-card ${r >= 0 ? 'on' : ''}" data-act="gvpick" data-v="${k}"><span class="gv-e">${c[1]}</span><span class="gv-tx"><b>${esc(c[0])}</b><small>${esc(GAME_PITCH[k] || '')}</small></span><span class="gv-rank">${r >= 0 ? r + 1 : ''}</span></button>`; }).join('')}</div>
+      ${mine.length >= 3 ? '<div class="result good">Votes in! ✅ Watch the TV.</div>' : ''}`;
+  }
+  if (st === 'beef') {
+    const B = s.beefs || [];
+    const incoming = B.filter((b) => b.to === pid && b.status === 'pending');
+    if (incoming.length) {
+      const b = incoming[0];
+      return `<div class="big-emoji">🥊</div><h2>${esc(pname(b.from))} called you out!</h2><div class="warm-q">“${esc(b.topic)}”</div>
+        <div class="msg">Accept and you'll go head-to-head on stage — on opposite teams.</div>
+        <div class="pt-row"><button class="opt pt-big pt-agree" data-act="beefreply" data-v="1">🥊 It's on!</button><button class="opt pt-big" data-act="beefreply" data-v="">🙅🏾 Not today</button></div>`;
+    }
+    const sent = B.find((b) => b.from === pid && b.status !== 'no');
+    const mineIn = B.filter((b) => (b.from === pid || b.to === pid) && b.status === 'on');
+    if (sent || (s.setup.beefDone || {})[pid]) {
+      return `<div class="big-emoji">${mineIn.length ? '🥊' : '🤝'}</div><h2>${mineIn.length ? "It's ON!" : sent ? 'Beef sent!' : 'We good!'}</h2>
+        ${mineIn.map((b) => `<div class="msg">You vs <b>${esc(pname(b.from === pid ? b.to : b.from))}</b><br><small>“${esc(b.topic)}”</small></div>`).join('')}
+        ${sent && sent.status === 'pending' ? `<div class="msg">Waiting for <b>${esc(pname(sent.to))}</b> to answer…</div>` : ''}<div class="sub">Watch the TV.</div>`;
+    }
+    const others = Object.values(s.players).filter((p) => p.pid !== pid && !p.audience);
+    return `<div class="step-pill">SETTLE A BEEF · OPTIONAL</div>
+      <div class="msg">Got beef with somebody? <b>Call them out.</b> If they accept, y'all go head-to-head during the show.</div>
+      <div class="sub">1. Who?</div>
+      <div class="bf-pick">${others.map((p) => `<button class="${local.beefTo === p.pid ? 'on' : ''}" data-act="beefto" data-v="${p.pid}">${renderAvatar(p.avatar, 'idle', 48)}<span>${esc(p.name)}</span></button>`).join('')}</div>
+      <div class="sub">2. What's the beef?</div>
+      <div class="bf-topics">${BEEF_TOPICS.map((tp) => `<button class="${local.beefTopic === tp ? 'on' : ''}" data-act="beeftopic" data-v="${esc(tp)}">${esc(tp)}</button>`).join('')}</div>
+      <button class="btn big red" data-act="beefsend" ${local.beefTo && local.beefTopic ? '' : 'disabled'}>🥊 Call them out!</button>
+      <button class="btn big green" data-act="nobeef">🤝 No beef — we good</button>`;
+  }
+  // join
+  return `<div class="av-preview">${renderAvatar(m.avatar, 'cheer', 140)}</div>
+    <h2>You're in!</h2><div class="msg">${g.icon} ${g.label} <span class="sub">(${g.nick})</span></div>
+    <div class="how-box"><b>Here's what happens:</b><ol><li>3 quick warm-up questions</li><li>Vote on the games</li><li>Settle a beef (optional)</li><li>Teams → showtime!</li></ol></div>
+    ${prefs.layout === 'full' ? `<div class="away-card"><b>📍 Not near the TV?</b> You can play the whole game from this phone. <a href="host.html?watch=${esc(room)}${T.mode === 'demo' ? '&demo' : ''}" target="_blank" rel="noopener">Watch the big screen here</a>.</div>
+    <a class="away-card" style="display:block;text-decoration:none;color:inherit" href="cookout.html" target="_blank" rel="noopener"><b>🍗 Waiting?</b> Play <u>Invited to the Cookout</u> in a new tab.</a>` : ''}
+    <button class="btn navy" data-act="prefs">⚙️ Set up my phone</button>`;
+}
+
 function body() {
   const s = S, t = myTeam(), m = me();
   const g = GENERATIONS[m.gen] || GENERATIONS.millennial;
   switch (s.phase) {
-    case 'lobby':
-      return `<div class="av-preview">${renderAvatar(m.avatar, 'cheer', 150)}</div>
-        <h2>You're in!</h2><div class="msg">${g.icon} ${g.label} <span class="sub">(${g.nick})</span></div>
-        <div class="sub">${m.audience ? "You're in the audience 👀 — react, play along, and vote!" : "Watch the big screen. The host will make teams when everybody's here."}</div>
-        ${surveyCard()}
-        <div class="away-card"><b>📍 Not near the TV?</b> You can play the whole game from this phone. Want the big-screen view too? Open <a href="host.html?watch=${esc(room)}${T.mode === 'demo' ? '&demo' : ''}" target="_blank" rel="noopener">the live show</a> on a laptop or TV. Tap 💬 to chat, send voice notes or hop on video with the family.</div>
-        <a class="away-card" style="display:block;text-decoration:none;color:inherit" href="cookout.html" target="_blank" rel="noopener"><b>🍗 Waiting on everybody?</b> Play <u>Invited to the Cookout</u> in a new tab. You'll stay in the game here.</a>
-        <button class="btn navy" data-act="editav">✏️ Change My Avatar</button>`;
+    case 'lobby': return lobbyBody();
     case 'teams':
       return t ? `<div class="team-banner" style="background:${t.color}">You're on<br><span style="font-size:24px">${esc(t.name)}</span></div>
-        <div class="sub">Teammates: ${t.members.map((id) => esc(pname(id))).join(', ')}</div>${surveyCard()}` : `<div class="msg">${m.audience ? '👀 Audience seat secured!' : 'Waiting for teams…'}</div>${surveyCard()}`;
+        <div class="sub">Teammates: ${t.members.map((id) => esc(pname(id))).join(', ')}</div>
+        ${(s.settings.lineup || []).length ? `<div class="how-box"><b>Tonight's lineup</b><ol>${s.settings.format === 'party' ? '' : '<li>The Board</li>'}${s.settings.lineup.map((k) => `<li>${esc((GAME_CARDS[k] || [k])[0])}</li>`).join('')}${s.settings.format === 'party' ? '' : '<li>Final Wager</li>'}</ol></div>` : ''}` : `<div class="msg">${m.audience ? '👀 Audience seat secured!' : 'Waiting for teams…'}</div>`;
     case 'board': {
       const ctrl = teamById(s.controlTeam);
       const up = t ? upNext(t) : null;
@@ -326,7 +484,7 @@ function body() {
     }
     case 'segment': {
       const seg = s.remix.segments[s.remix.segIdx];
-      return `<h2>${esc(seg.label)}</h2><div class="msg">${esc(seg.blurb)}</div>`;
+      return `<div class="step-pill">NEXT GAME · ${s.remix.segIdx + 1} OF ${s.remix.segments.length}</div><h2>${seg.type === 'beef' ? '🥊 ' : ''}${esc(seg.label)}</h2><div class="how-box">${esc(seg.blurb)}</div><div class="sub">👀 Watch the TV — it starts in a moment.</div>`;
     }
     case 'round_end':
       return `<h2>End of Round ${s.round}</h2>${s.teams.map((x) => `<div class="team-banner" style="background:${x.color}">${esc(x.name)} — ${money(x.score)}</div>`).join('')}`;
@@ -370,7 +528,7 @@ function miniBoard(canPick) {
   const b = S.board; if (!b || !b.cats) return '';
   const cats = b.cats;
   return `<div class="ph-board" style="--n:${cats.length}">${cats.map((c) => `<div class="pb-cat">${esc(c.name)}</div>`).join('')}
-    ${[0, 1, 2, 3, 4].map((r) => cats.map((c, ci) => { const tl = (c.tiles || [])[r]; return !tl || tl.used ? '<span class="pb-used"></span>' : canPick ? `<button class="pb-tile" data-act="pickboard" data-ci="${ci}" data-ti="${r}">${tl.value}</button>` : `<span class="pb-tile">${tl.value}</span>`; }).join('')).join('')}</div>`;
+    ${[...Array(Math.max(...cats.map((c) => (c.tiles || []).length))).keys()].map((r) => cats.map((c, ci) => { const tl = (c.tiles || [])[r]; return !tl || tl.used ? '<span class="pb-used"></span>' : canPick ? `<button class="pb-tile" data-act="pickboard" data-ci="${ci}" data-ti="${r}">${tl.value}</button>` : `<span class="pb-tile">${tl.value}</span>`; }).join('')).join('')}</div>`;
 }
 function upNext(team) {
   const mbr = team.members;
@@ -676,7 +834,7 @@ async function onClick(e) {
     case 'av': profile.avatar = { ...profile.avatar, [el.dataset.k]: v }; draw(); break;
     case 'randomav': profile.avatar = randomAvatar(); draw(); break;
     case 'sprite': profile.avatar = { ...profile.avatar, sprite: v || undefined }; if (!v) delete profile.avatar.sprite; draw(); break;
-    case 'editav': editingAvatar = true; draw(); break;
+    case 'editav': local.prefsOpen = false; editingAvatar = true; draw(); break;
     case 'join':
       if (editingAvatar) {
         editingAvatar = false;
@@ -695,10 +853,26 @@ async function onClick(e) {
     case 'answer': if (local.answer) return; local.answer = v; vib(40); send({ type: 'answer', choice: v }); draw(); break;
     case 'lifeline': send({ type: 'lifeline' }); break;
     case 'spin': vib([40, 30, 80]); send({ type: 'spin' }); break;
+    case 'prefs': local.prefsOpen = true; draw(); break;
+    case 'prefsclose': if (e.target.closest('.pf-sheet') && el.dataset.act !== 'prefsclose') break; local.prefsOpen = false; draw(); break;
+    case 'pref': prefs[el.dataset.k] = el.dataset.v === '' ? false : el.dataset.v === '1' ? true : el.dataset.v; savePrefs(); cache.delete(app()); draw(); break;
+    case 'cap': send({ type: 'captain', action: el.dataset.v }); vib(30); break;
+    case 'capset': send({ type: 'captain', action: 'set', k: el.dataset.k, v: el.dataset.v }); break;
+    case 'gvpick': {
+      const cur = (local.gv || (S.vote && S.vote.picks && S.vote.picks[pid]) || []).slice();
+      const k = el.dataset.v, i = cur.indexOf(k);
+      if (i >= 0) cur.splice(i, 1); else if (cur.length < 3) cur.push(k); else return toast('You already picked 3 — tap one to undo');
+      local.gv = cur; send({ type: 'gamevote', list: cur }); vib(20); draw(); break;
+    }
+    case 'beefto': local.beefTo = el.dataset.v; draw(); break;
+    case 'beeftopic': local.beefTopic = el.dataset.v; draw(); break;
+    case 'beefsend': if (local.beefTo && local.beefTopic) { send({ type: 'beef', to: local.beefTo, topic: local.beefTopic }); vib([40, 30, 80]); } break;
+    case 'nobeef': send({ type: 'nobeef' }); break;
+    case 'beefreply': send({ type: 'beefreply', id: (S.beefs || []).find((b) => b.to === pid && b.status === 'pending')?.id, yes: !!el.dataset.v }); vib(60); break;
     case 'svsend': {
       const txt = ($('#sv-in').value || '').trim();
       if (!txt) return toast('Type something first');
-      send({ type: 'survey', i: +el.dataset.i, text: txt }); vib(30); break;
+      send({ type: 'survey', i: +el.dataset.i, text: txt }); $('#sv-in').value = ''; vib(30); break;
     }
     case 'sguess': {
       const txt = ($('#sg-in').value || '').trim();

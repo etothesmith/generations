@@ -15,19 +15,45 @@
 </head>
 <body>
 <div class="stage-bg"><div class="floor"></div></div>
-<div class="landing">
+<div class="landing entry">
   <div class="logo huge" id="logo">GENERATIONS</div>
   <div class="tagline">The Family Game Show · Culture · History · Generations</div>
-  <div class="choices-2">
-    <a href="host.html" class="btn big">📺 Host on the Big Screen</a>
-    <a href="play.html" class="btn big red">📱 Join on My Phone</a>
-    <a href="solo.html" class="btn big navy">🎮 Try the Show Solo</a>
-    <a href="learn.html" class="btn big navy">🎓 Practice on My Own</a>
-    <a href="how-to-play.html" class="btn big navy">📖 How to Play</a>
-    <a href="cookout.html" class="btn big" style="background:linear-gradient(#ff6b4a,#c0392b)">🍗 Invited to the Cookout</a>
+  <div class="entry-cards">
+    <form class="entry-card join" id="joinForm" autocomplete="off">
+      <div class="ec-k">📱 PLAYING?</div>
+      <h2>Join a Game</h2>
+      <p>Type the 4-letter code on the TV<br>(or just scan its QR code).</p>
+      <input id="code" maxlength="4" placeholder="CODE" aria-label="Room code" autocapitalize="characters" spellcheck="false">
+      <button class="btn big red" type="submit">Join →</button>
+    </form>
+    <div class="entry-card host">
+      <div class="ec-k">📺 ON THE TV OR LAPTOP</div>
+      <h2>Host a Game</h2>
+      <p>Who's running the show?</p>
+      <label class="ec-opt"><input type="radio" name="mode" value="1" checked><span><b>🎮 The game runs itself</b><small>Auto-Host. Everybody plays — even you. Recommended.</small></span></label>
+      <label class="ec-opt"><input type="radio" name="mode" value="0"><span><b>🎙️ I'll host it</b><small>You press the buttons and judge answers (you don't play).</small></span></label>
+      <button class="btn big" id="hostBtn">Start a Room →</button>
+    </div>
   </div>
-  <p class="note">Open <b>Host</b> on a TV or laptop everyone can see. Everybody else scans the QR code on that screen (or taps <b>Join</b>) and plays on their own phone. No game going yet? Warm up with <b>Invited to the Cookout</b> 🍗</p>
+  <div class="entry-more">
+    <a href="how-to-play.html">📖 How to Play <small>1-minute slides</small></a>
+    <a href="solo.html">🎮 Try It Solo <small>play with bots</small></a>
+    <a href="learn.html">🎓 Practice <small>learn each game</small></a>
+    <a href="cookout.html">🍗 Cookout Game <small>while you wait</small></a>
+  </div>
 </div>
+<script>
+  document.getElementById('joinForm').onsubmit = (e) => {
+    e.preventDefault();
+    const c = (document.getElementById('code').value || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+    location.href = 'play.html' + (c ? '?room=' + encodeURIComponent(c) : '');
+  };
+  document.getElementById('code').addEventListener('input', (e) => { e.target.value = e.target.value.toUpperCase(); });
+  document.getElementById('hostBtn').onclick = () => {
+    const v = document.querySelector('input[name=mode]:checked').value;
+    location.href = 'host.html?auto=' + v;
+  };
+</script>
 <script type="module">
   import { loadArt, ART } from './js/assets.js';
   loadArt().then(() => { if (ART.logo) document.getElementById('logo').innerHTML = `<img src="${ART.logo}" alt="GENERATIONS" style="max-height:30vh;max-width:90vw">`; });

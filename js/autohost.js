@@ -64,6 +64,24 @@ export const AutoHostMixin = {
     const sig = (s.phase || '') + ':' + (q ? q.id + ':' + q.stage + ':' + (q.steal ? 's' : '') + ':' + (q.si ? q.si.turn + '.' + q.si.songs.length : '') : '');
     if (sig !== this.botSig) { this.botSig = sig; this.botQ = {}; this.botFns = {}; }
 
+    if (s.phase === 'lobby' && s.setup) {
+      const step = s.setup.step;
+      for (const b of bots) {
+        if (step === 'warmup' && s.survey && (s.survey.answered[b.pid] || 0) < s.survey.prompts.length) {
+          const i = s.survey.answered[b.pid] || 0;
+          this.botLater('sv' + b.pid + i, 1500 + Math.random() * 3000, () => say({ type: 'survey', pid: b.pid, i, text: rnd(['food', 'church', 'music', 'family', 'Grandma', 'spades', 'cake', 'the grill', 'kids', 'TV']) }));
+        }
+        if (step === 'games' && !(s.vote.picks[b.pid] || []).length) {
+          const opts = this.gameOptions().slice().sort(() => Math.random() - 0.5).slice(0, 3);
+          this.botLater('gv' + b.pid, 2000 + Math.random() * 4000, () => say({ type: 'gamevote', pid: b.pid, list: opts }));
+        }
+        if (step === 'beef') {
+          const mine = s.beefs.find((x) => x.to === b.pid && x.status === 'pending');
+          if (mine) this.botLater('br' + mine.id, 2500, () => say({ type: 'beefreply', pid: b.pid, id: mine.id, yes: true }));
+          else if (!(s.setup.beefDone || {})[b.pid]) this.botLater('nb' + b.pid, 3000 + Math.random() * 3000, () => say({ type: 'nobeef', pid: b.pid }));
+        }
+      }
+    }
     if (s.phase === 'board') {
       const t = s.teams.find((x) => x.id === s.controlTeam);
       if (t && t.members.length && t.members.every((id) => this.isBot(id))) {
@@ -166,6 +184,14 @@ export const AutoHostMixin = {
   autoHostTick() {
     const s = this.s, q = s.q;
     if (s.paused || !s.settings.autoHost) return;
+    if (s.phase === 'lobby' && s.setup && ['warmup', 'games', 'beef'].includes(s.setup.step)) {
+      const pr = this.setupProgress();
+      const pending = s.setup.step === 'beef' && (s.beefs || []).some((b) => b.status === 'pending');
+      const sigL = 'L|' + s.setup.step + '|' + pr.done + '/' + pr.n + '|' + pending;
+      if (sigL !== this.ahSig) { this.ahSig = sigL; this.ahSince = this.now(); }
+      if (pr.n && pr.done >= pr.n && !pending && this.now() - this.ahSince > 3500) { this.ahSince = this.now() + 60000; this.setupNext(); }
+      return;
+    }
     if (['lobby', 'teams', 'champion'].includes(s.phase)) return;
     const now = this.now();
     const sig = [s.phase, q && q.id, q && q.stage, q && q.si && q.si.turn, q && q.ch && q.ch.idx, s.final && s.final.revealIdx, s.final && s.final.judged, s.spin && s.spin.stage].join('|');

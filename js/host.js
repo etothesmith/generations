@@ -13,6 +13,7 @@ import qrcode from '../vendor/qrcode.mjs';
 import { openEditor, loadCustom } from './editor.js';
 import { CallManager, VideoWall, playVoice } from './social.js';
 import { normalize } from './normalize.js';
+import { SETUP_STEPS, stepsFor, GAME_PITCH, BEEF_TOPICS } from './setupdata.js';
 
 const WATCH = (new URLSearchParams(location.search).get('watch') || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 4);
 // TV social layer: family chat feed, voice notes, and the video wall
@@ -95,6 +96,7 @@ async function boot() {
   wireTvSocial('tv-' + code, '📺 The House');
   window.GEN = { engine: E, transport: T }; // handy for debugging in the browser console
   if (SOLO) startSolo(code);
+  else { const au = new URLSearchParams(location.search).get('auto'); if (au === '0' || au === '1') E.setSetting('autoHost', au === '1'); }
 
   document.addEventListener('click', delegate);
   document.addEventListener('focusout', onRename);
@@ -275,7 +277,25 @@ function roundName(s) {
 function renderTop(s) {
   const [a, b] = roundName(s);
   const logo = ART.logo ? `<div class="logo small" style="height:5vh"><img src="${ART.logo}" alt="GENERATIONS"></div>` : `<div class="logo small">GENERATIONS</div>`;
-  setHTML(ui.top, `${logo}<div class="round-label">${a}<small>${b}</small></div><div class="room-pill">Room <b>${s.code}</b></div>`);
+  const pr = showProgress(s);
+  setHTML(ui.top, `${logo}<div class="round-label">${a}<small>${b}</small></div><div class="top-right">${pr ? `<div class="prog-pill" title="How much show is left"><span class="pp-bar"><i style="width:${pr.pct}%"></i></span>${esc(pr.label)} · ~${pr.mins} min left</div>` : ''}<div class="room-pill">Room <b>${s.code}</b></div></div>`);
+}
+// "Game 3 of 9 · ~22 min left" — people stay when they can see the finish line
+function showProgress(s) {
+  if (['lobby', 'teams', 'champion'].includes(s.phase)) return null;
+  const fmt = s.settings.format || 'classic';
+  let tilesLeft = 0, tilesAll = 0;
+  if (s.board) for (const c of s.board.cats) for (const t of c.tiles) { tilesAll++; if (!t.used) tilesLeft++; }
+  const segs = s.remix ? s.remix.segments : [];
+  const segIdx = s.remix ? s.remix.segIdx : 0;
+  const segLeft = s.round >= 2 ? segs.slice(segIdx).reduce((n, g, i) => n + (g.qids.length - (i === 0 ? g.idx : 0)), 0) : 0;
+  const r2est = s.round >= 2 ? segLeft : (s.settings.lineup || []).length * 1.4 || 9;
+  const mins = Math.max(1, Math.round((s.round <= 1 ? tilesLeft * 1.1 : 0) + (s.round <= 2 ? r2est * 1.4 : 0) + (fmt === 'party' ? 0 : s.round <= 3 && s.phase !== 'champion' ? 4 : 0)));
+  let label, pct;
+  if (s.round <= 1 && tilesAll) { label = `Board ${tilesAll - tilesLeft}/${tilesAll}`; pct = (tilesAll - tilesLeft) / tilesAll * (fmt === 'classic' ? 45 : 100); }
+  else if (s.round === 2 && segs.length) { label = `Game ${Math.min(segIdx + 1, segs.length)} of ${segs.length}`; pct = (fmt === 'party' ? 0 : 45) + segIdx / segs.length * (fmt === 'party' ? 100 : 45); }
+  else { label = 'Final Wager'; pct = 92; }
+  return { label, pct: Math.round(pct), mins };
 }
 
 function joinUrl(code) {
@@ -292,7 +312,7 @@ function playerCard(p, opts = {}) {
   const g = GENERATIONS[p.gen] || GENERATIONS.millennial;
   return `<div class="pcard ${p.connected ? '' : 'off'}" data-k="p-${S ? S.phase : ''}-${p.pid}" data-act="${opts.act || ''}" data-pid="${p.pid}">
     <div class="av">${renderAvatar(p.avatar, 'idle', 120)}</div>
-    <div class="nm">${esc(p.name)}${opts.away ? ' <span class="away-tag" title="Playing from somewhere else">🏠</span>' : ''}</div>
+    <div class="nm">${S && S.setup && S.setup.captain === p.pid ? '👑 ' : ''}${esc(p.name)}${opts.away ? ' <span class="away-tag" title="Playing from somewhere else">🏠</span>' : ''}</div>
     <span class="gen-chip" style="background:${g.color};color:${p.gen === 'genx' || p.gen === 'millennial' ? '#fff' : '#2B2B2B'}">${badgeHTML(p.gen) || g.icon} ${g.label}</span>
     ${opts.kick ? `<button class="x" data-act="kick" data-pid="${p.pid}" title="Remove">✕</button>` : ''}
   </div>`;
@@ -304,12 +324,55 @@ function renderMain(s) {
   setHTML(ui.main, fn ? fn(s) : '');
 }
 
-function viewLobby(s) {
+function setupTracker(s) {
+  const steps = stepsFor(s);
+  const cur = s.phase === 'teams' ? 'teams' : (s.setup && s.setup.step) || 'join';
+  const ci = steps.findIndex((x) => x.id === cur);
+  return `<div class="setup-track">${steps.map((st, i) => `<div class="st ${i < ci ? 'done' : i === ci ? 'now' : ''}"><span class="si">${i < ci ? '✓' : st.icon}</span><span>${i + 1}. ${esc(st.label)}</span></div>`).join('<i></i>')}
+    <div class="st-join">Join anytime: <b>${s.code}</b></div></div>`;
+}
+function capOf(s) { return s.setup && s.setup.captain; }
+function setupPlayers(s, mark) {
+  const ps = Object.values(s.players).filter((p) => !p.audience).sort((a, b) => a.joinedAt - b.joinedAt);
+  return `<div class="sp-grid">${ps.map((p) => `<div class="sp ${mark(p) ? 'ok' : ''} ${p.connected === false ? 'off' : ''}">
+      <div class="sp-av">${renderAvatar(p.avatar, mark(p) ? 'cheer' : 'idle', 90)}</div>
+      <div class="sp-n">${capOf(s) === p.pid ? '👑 ' : ''}${esc(p.name)}</div><div class="sp-s">${mark(p) ? '✅ Done' : '⏳ …'}</div></div>`).join('')}</div>`;
+}
+function viewSetupStep(s) {
+  const step = s.setup.step;
+  const pr = E.setupProgress();
+  const head = (icon, title, sub) => `${setupTracker(s)}<div class="setup-head"><div class="sh-i">${icon}</div><div><h1>${title}</h1><div class="sh-sub">${sub}</div></div><div class="sh-count"><b>${pr.done}</b>/${pr.n}<small>done</small></div></div>`;
+  if (step === 'warmup') {
+    const need = s.survey.prompts.length;
+    return `<div class="setup">${head('📋', 'Warm-Up: 3 quick questions', `Everybody answer on your phone. <b>Your answers become a game later</b> — the Family Survey!`)}
+      ${setupPlayers(s, (p) => (s.survey.answered[p.pid] || 0) >= need)}
+      <div class="setup-q">${s.survey.prompts.map((q, i) => `<div><span>${i + 1}</span>${esc(q)}</div>`).join('')}</div></div>`;
+  }
+  if (step === 'games') {
+    const tally = E.gameTally(), max = Math.max(1, ...tally.map((x) => x.pts));
+    const lineupN = { short: 5, normal: 7, long: 9 }[s.settings.remixLength] || 7;
+    const plan = Object.fromEntries(REMIX_PLAN.map((p) => [p.type, p]));
+    return `<div class="setup">${head('🗳️', 'Pick the Games', `On your phone, tap your <b>top 3</b> in order. Most votes play first. Top ${lineupN} make the show.`)}
+      <div class="gv-grid">${tally.map((x, i) => `<div class="gv ${x.pts && i < lineupN ? 'in' : ''}"><span class="gv-r">${x.pts ? '#' + (i + 1) : ''}</span><span class="gv-ic">${iconHTML(plan[x.type].icon)}</span><span class="gv-t"><b>${esc(plan[x.type].label)}</b><small>${esc(GAME_PITCH[x.type] || '')}</small></span><span class="gv-bar"><i style="width:${x.pts / max * 100}%"></i></span><span class="gv-p">${x.pts || ''}</span></div>`).join('')}</div></div>`;
+  }
+  if (step === 'beef') {
+    const nm = (pid) => esc(pname(s, pid));
+    const B = s.beefs || [];
+    return `<div class="setup">${head('🥊', 'Got Beef? Settle It On Stage', `Optional! Call somebody out on your phone. If they accept, you'll go <b>head-to-head</b> during the show — and you'll be on opposite teams.`)}
+      <div class="beef-list">${B.length ? B.map((b) => `<div class="beef ${b.status}"><div class="bf-p">${renderAvatar(s.players[b.from] && s.players[b.from].avatar, 'cheer', 90)}<b>${nm(b.from)}</b></div>
+        <div class="bf-mid"><div class="bf-vs">VS</div><div class="bf-t">“${esc(b.topic)}”</div><div class="bf-s">${b.status === 'on' ? '🥊 IT\'S ON!' : b.status === 'no' ? '🙅🏾 Not today' : '⏳ Waiting for an answer…'}</div></div>
+        <div class="bf-p">${renderAvatar(s.players[b.to] && s.players[b.to].avatar, b.status === 'no' ? 'idle' : 'gasp', 90)}<b>${nm(b.to)}</b></div>
+        <button class="x" data-act="cancelbeef" data-v="${b.id}" title="Remove">✕</button></div>`).join('') : `<div class="beef-empty">No beef yet… 👀<br><small>No beef? Tap <b>🤝 We good</b> on your phone.</small></div>`}</div></div>`;
+  }
+  return viewJoinStep(s);
+}
+function viewLobby(s) { return s.setup && s.setup.step !== 'join' ? viewSetupStep(s) : viewJoinStep(s); }
+function viewJoinStep(s) {
   const players = Object.values(s.players).sort((a, b) => a.joinedAt - b.joinedAt);
   const url = joinUrl(s.code);
   const cats = E.availableCategories();
   const catBtns = cats.map((c) => `<button class="cat-toggle ${s.categories.includes(c) ? 'on' : ''}" data-act="cat" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
-  return `<div class="lobby">
+  return `<div class="lobby-wrap">${setupTracker(s)}<div class="lobby">
     <div class="join-card">
       <div class="lbl">Scan to join or go to the link</div>
       <div class="code">${s.code}</div>
@@ -326,6 +389,7 @@ function viewLobby(s) {
         <div class="grp always set-summary"><span>Show</span>
           ${Object.entries(SHOW_FORMATS).map(([k, f]) => `<button data-act="set" data-k="format" data-v="${k}" title="${esc(f.blurb)}" class="seg-btn ${(s.settings.format || 'classic') === k ? 'on' : ''}">${f.label}</button>`).join('')}
           <button class="seg-btn ${s.settings.autoHost ? 'on' : ''}" data-act="set" data-k="autoHost" data-v="${s.settings.autoHost ? '' : '1'}" title="The show moves itself along, so the host can play on a phone too">🎮 Auto-Host ${s.settings.autoHost ? 'ON' : 'OFF'}</button>
+          ${s.settings.format === 'party' ? '' : `<span class="seg-lbl">Board</span>${[['quick', 'Quick ~20 min'], ['standard', 'Standard ~35 min'], ['full', 'Full ~50 min']].map(([k, l]) => `<button class="seg-btn ${(s.settings.boardSize || 'standard') === k ? 'on' : ''}" data-act="set" data-k="boardSize" data-v="${k}">${l}</button>`).join('')}`}
           <button class="cat-toggle cust" data-act="lobbyopen">${lobbyOpen ? '✓ Done' : '⚙️ Customize the show'}</button>
         </div>
         <div class="grp" style="flex-basis:100%"><span>Teams</span>${splitChips(s, 'mode')}</div>
@@ -350,10 +414,10 @@ function viewLobby(s) {
       <div style="display:flex;gap:1vw;justify-content:center">
         <button class="btn ghost" data-act="newroom" title="Start over with a brand-new room code">🔄 New Room</button>
         <button class="btn ghost" data-act="editor">✏️ Family Questions</button>
-        <button class="btn big" data-act="form" ${players.length < 2 || (s.categories.length < 3 && s.settings.format !== 'party') ? 'disabled' : ''}>Make Teams →</button>
+        <button class="btn big" data-act="setupnext" ${players.filter((p) => !p.audience).length < 2 || (s.categories.length < 3 && s.settings.format !== 'party') ? 'disabled' : ''}>Everybody's In →</button>
       </div>
     </div>
-  </div>`;
+  </div></div>`;
 }
 
 function splitChips(s, act) {
@@ -369,13 +433,16 @@ function viewTeams(s) {
       <h3 contenteditable="true" spellcheck="false" data-team="${t.id}">${esc(t.name)}</h3>
       <div class="mem">${t.members.map((pid) => s.players[pid] ? playerCard(s.players[pid], { act: 'move' }) : '').join('') || '<div class="hint">Empty</div>'}</div>
     </div>`).join('');
-  return `<div style="width:100%">
-    <div class="segment" style="margin-bottom:1vh">${ART.family ? `<img class="family-strip" src="${ART.family}" alt="">` : ''}<h1 style="font-size:clamp(26px,4vw,70px)">Meet the Teams</h1></div>
+  const lineup = (s.settings.lineup || []).map((t) => REMIX_PLAN.find((p) => p.type === t)).filter(Boolean);
+  const beefs = (s.beefs || []).filter((b) => b.status === 'on' && s.players[b.from] && s.players[b.to]);
+  return `<div style="width:100%">${setupTracker(s)}
+    <div class="segment" style="margin-bottom:1vh"><h1 style="font-size:clamp(24px,3.4vw,60px)">Meet the Teams</h1></div>
     <div class="teams-wrap" style="--n:${s.teams.length}">${cols}</div>
-    <div class="hint">Tap a player to move them to another team · Tap a team name to rename it</div>
+    <div class="hint">Tap a player to move them · Tap a team name to rename it${beefs.length ? ` · 🥊 Rivals are on opposite teams: ${beefs.map((b) => `${esc(pname(s, b.from))} vs ${esc(pname(s, b.to))}`).join(', ')}` : ''}</div>
+    ${lineup.length ? `<div class="lineup-row"><span>Tonight's lineup</span>${s.settings.format === 'party' ? '' : '<b>Round 1: The Board</b> →'} ${lineup.map((p, i) => `<b>${i + 1}. ${esc(p.label)}</b>`).join(' ')}${s.settings.format === 'party' ? '' : ' → <b>Final Wager</b>'}</div>` : ''}
     <div class="split-row"><span>How should we split?</span>${splitChips(s, 'split')}</div>
     <div style="display:flex;gap:1vw;justify-content:center;margin-top:1vh">
-      <button class="btn ghost" data-act="back">← Lobby</button>
+      <button class="btn ghost" data-act="setupback">← Back</button>
       ${['random', 'mixed'].includes(s.teamMode) ? `<button class="btn navy" data-act="form">🔀 Reshuffle</button>` : ''}
       <button class="btn big green" data-act="start" ${s.teams.filter((t) => t.members.length).length < 2 ? 'disabled' : ''}>Start the Show! 🎬</button>
     </div>
@@ -385,11 +452,13 @@ function viewTeams(s) {
 
 function viewBoard(s) {
   const cats = s.board.cats;
-  let html = `<div class="board" style="--cols:${cats.length}">`;
+  let html = `<div class="board" style="--cols:${cats.length};--rows:${Math.max(...cats.map((c) => c.tiles.length))}">`;
   html += cats.map((c) => `<div class="cat-head">${iconHTML(c.icon)}<div class="cn">${esc(c.name)}</div></div>`).join('');
-  for (let r = 0; r < 5; r++) {
+  const rows = Math.max(...cats.map((c) => c.tiles.length));
+  for (let r = 0; r < rows; r++) {
     html += cats.map((c, ci) => {
       const t = c.tiles[r];
+      if (!t) return '<div class="tile used"></div>';
       return `<div class="tile ${t.used ? 'used' : ''}" data-act="tile" data-ci="${ci}" data-ti="${r}">${t.used ? '' : '$' + t.value}</div>`;
     }).join('');
   }
@@ -572,7 +641,7 @@ function viewQuestion(s) {
     if (perks.length) below += `<div class="perks">${perks.join('<br>')}</div>`;
     if (q.context) below += `<div class="context"><b>Did you know?</b> ${esc(q.context)}</div>`;
   }
-  return `<div class="qwrap"><div class="qcard" data-k="q-${q.flipId}" data-flip="${q.flipId}">${paused}${huddle}${q.isDD ? '' : stepsHTML(q)}${catMeta(q, s)}${body}<div class="status-banner big">${status}</div>${below}${timerHTML(q)}</div>${podiumsHTML(s, q)}</div>`;
+  return `<div class="qwrap"><div class="qcard" data-k="q-${q.flipId}" data-flip="${q.flipId}">${paused}${huddle}${q.beef ? beefBar(s, q.beef) : ''}${q.isDD ? '' : stepsHTML(q)}${catMeta(q, s)}${body}<div class="status-banner big">${status}</div>${below}${timerHTML(q)}</div>${podiumsHTML(s, q)}</div>`;
 }
 
 // the 5 steps of a buzz-in question, current one lit
@@ -801,13 +870,24 @@ function viewSegment(s) {
   const seg = s.remix.segments[s.remix.segIdx];
   return `<div class="segment ${ART.roundFrame ? 'framed' : ''}" ${ART.roundFrame ? `style="background-image:url(${ART.roundFrame})"` : ''}>
     <div class="pill">${s.settings.format === 'practice' ? '🎓 Practice Run' : s.settings.format === 'party' ? 'Party Night' : 'Round 2'} · ${s.remix.segIdx + 1} of ${s.remix.segments.length}</div><br>
-    ${seg.party && ART.party[seg.type] ? `<img class="seg-art" src="${ART.party[seg.type]}" alt="">` : iconHTML(seg.icon)}
-    <h1>${esc(seg.label)}</h1>
+    ${seg.type === 'beef' ? beefVs(s, seg.beef) : seg.party && ART.party[seg.type] ? `<img class="seg-art" src="${ART.party[seg.type]}" alt="">` : iconHTML(seg.icon)}
+    <h1>${seg.type === 'beef' ? '🥊 ' : ''}${esc(seg.label)}</h1>
     <p>${esc(seg.blurb)}</p>
     <button class="btn big" data-act="next">Let's Go!</button>
   </div>`;
 }
 
+function beefBar(s, id) {
+  const b = (s.beefs || []).find((x) => x.id === id);
+  if (!b) return '';
+  return `<div class="beef-bar">🥊 BEEF: <b>${esc(pname(s, b.from))}</b> ${(b.score && b.score[b.from]) || 0} — ${(b.score && b.score[b.to]) || 0} <b>${esc(pname(s, b.to))}</b> · “${esc(b.topic)}”</div>`;
+}
+function beefVs(s, id) {
+  const b = (s.beefs || []).find((x) => x.id === id);
+  if (!b) return '';
+  const side = (pid) => `<div class="bv-p">${renderAvatar(s.players[pid] && s.players[pid].avatar, 'cheer', 160)}<b>${esc(pname(s, pid))}</b><span class="bv-sc">${(b.score && b.score[pid]) || 0}</span></div>`;
+  return `<div class="beef-vs">${side(b.from)}<div class="bv-x">VS</div>${side(b.to)}</div>`;
+}
 function standingsHTML(s) {
   const max = Math.max(1, ...s.teams.map((t) => Math.max(0, t.score)));
   return `<div class="standings">${s.teams.map((t, i) => `<div class="stand" style="--tc:${t.color}">
@@ -943,12 +1023,20 @@ function socialButtons() {
       : `<button class="btn green" data-act="tvcall" title="Video call with family">📹${n ? ` ${n}` : ''}</button>`);
 }
 let menuOpen = false;
+let kickAsk = null;
 // plain-English "what's happening right now" line for the host bar
 function nowText(s) {
   const q = s.q, nm = (pid) => esc(pname(s, pid));
   const auto = s.settings.autoHost;
   switch (s.phase) {
-    case 'lobby': return 'Waiting for players to join';
+    case 'lobby': {
+      const st = s.setup ? s.setup.step : 'join', pr = E.setupProgress(), cap = s.setup && s.setup.captain;
+      const capTxt = cap ? ` · 👑 <b>${nm(cap)}</b> (Captain) can also move us along from their phone` : '';
+      if (st === 'warmup') return `Warm-up questions: <b>${pr.done}/${pr.n}</b> done${capTxt}`;
+      if (st === 'games') return `Game votes: <b>${pr.done}/${pr.n}</b> in${capTxt}`;
+      if (st === 'beef') return `Beef calls: <b>${pr.done}/${pr.n}</b> answered${capTxt}`;
+      return `Waiting for everybody to join${capTxt}`;
+    }
     case 'teams': return 'Check the teams, then start the show';
     case 'segment': return auto ? 'Next game starting…' : 'Introduce the next game, then press the big button';
     case 'board': return s.picker ? `<b>${nm(s.picker)}</b> is picking a tile${auto ? '' : ' — or tap one for them'}` : 'Pick a tile';
@@ -1011,6 +1099,14 @@ function renderControls(s) {
     if (q.stage === 'reveal') next('Next →');
     if (q.stage !== 'reveal') m.push(`<button class="btn navy" data-act="skip">⏭ Skip this question<span class="kbd">S</span></button>`);
   }
+  if (s.phase === 'lobby' && s.setup) {
+    const steps = E.setupSteps().map((x) => x.id), i = steps.indexOf(s.setup.step), nx = E.setupSteps()[i + 1];
+    const pr = E.setupProgress();
+    const nPlayers = Object.values(s.players).filter((p) => !p.audience).length;
+    if (s.setup.step !== 'join' || nPlayers >= 2) b.push(`<button class="btn big-act" data-act="setupnext">${s.setup.step === 'join' ? "Everybody's In" : pr.done < pr.n ? 'Move On' : 'Next'} → ${nx ? esc(nx.label) : 'Teams'}<span class="kbd">Space</span></button>`);
+    if (i > 0) m.push(`<button class="btn navy" data-act="setupback">← Back a step</button>`);
+  }
+  if (s.phase === 'teams') b.push(`<button class="btn green big-act" data-act="start" ${s.teams.filter((t) => t.members.length).length < 2 ? 'disabled' : ''}>🎬 Start the Show!</button>`);
   if (s.phase === 'spin' && s.spin) {
     if (s.spin.stage === 'ready') next('🎡 Spin It');
     if (s.spin.stage === 'again') next('🎡 Spin Again');
@@ -1034,6 +1130,9 @@ function renderControls(s) {
     m.push(`<button class="btn navy ${scoreEdit ? 'on' : ''}" data-act="scores">± Fix scores</button>`);
     m.push(`<button class="btn navy" data-act="undo">↶ Undo last points</button>`);
   }
+  // 👥 manage players: remove anyone (left early, wrong name, duplicate)
+  const plist = Object.values(s.players).sort((a, b) => a.joinedAt - b.joinedAt);
+  if (plist.length) m.push(`<div class="c-sub">👥 Players · tap ✕ to remove</div><div class="c-players">${plist.map((p) => `<div class="c-pl ${p.connected === false ? 'off' : ''}"><span>${p.bot ? '🤖 ' : ''}${esc(p.name)}${p.connected === false ? ' <small>(left)</small>' : ''}</span>${kickAsk === p.pid ? `<button class="btn red" data-act="kickyes" data-pid="${p.pid}">Remove ${esc(p.name)}?</button>` : `<button class="btn ghost" data-act="kickask" data-pid="${p.pid}" aria-label="Remove ${esc(p.name)}">✕</button>`}</div>`).join('')}</div>`);
   m.push(`<button class="btn navy" data-act="remote">📱 Run it from my phone</button>`);
   const soc = socialButtons();
   if (soc) m.push(`<div class="c-row">${soc}</div>`);
@@ -1192,6 +1291,11 @@ function onFx(type, data) {
     }
     case 'lightning': banner(`⚡ LIGHTNING! ⚡<div class="banner-sub">${esc(nm(data.pid))} +$25</div>`, false, 1300); sfx('tick'); break;
     case 'finalteam': sfx('drumroll'); crowdReact('bob', 1600); break;
+    case 'beef': sfx('buzz'); banner(`🥊 ${esc(nm(data.from))} called out ${esc(nm(data.to))}!`, false, 1800); crowdReact('gasp', 1500); break;
+    case 'beefon': sfx('airhorn'); banner('🥊 IT\'S ON!', true, 1400); crowdReact('cheer', 1500); break;
+    case 'beefoff': sfx('crickets'); break;
+    case 'beefwin': { const w = data.winner; sfx('fanfare'); confetti(); banner(w ? `🥊 BEEF SETTLED<div class="banner-sub">${esc(nm(w))} wins it! +$300</div>` : '🥊 IT\'S A DRAW!<div class="banner-sub">Y\'all are even… for now</div>', true, 2600); break; }
+    case 'kicked': break;
     case 'addtime': banner(`+${data.sec} SECONDS`, true, 1000); sfx('tick'); break;
     case 'react': reaction(data.e, data.name); if (Math.random() < .25) crowdReact('bob', 700); break;
     case 'showopen': setTimeout(() => mascotSay('present', 'Welcome to GENERATIONS! Phones out, family!', 3800), 7200); sfx('fanfare'); setTimeout(() => sfx('whoosh'), 500); showOpen(E.s.teams.filter((t) => t.members.length), (pid) => renderAvatar(E.s.players[pid]?.avatar, 'cheer', 90)); setTimeout(() => crowdReact('cheer', 2200), 1800); break;
@@ -1218,7 +1322,7 @@ function onFx(type, data) {
 function delegate(e) {
   const el = e.target.closest('[data-act]');
   // close the ☰ More menu when tapping anywhere else (or after picking an item)
-  if (menuOpen && (!el || el.dataset.act !== 'cmenu') && !(el && ['peek', 'end'].includes(el.dataset.act))) {
+  if (menuOpen && (!el || el.dataset.act !== 'cmenu') && !(el && ['peek', 'end', 'kickask'].includes(el.dataset.act))) {
     if (!e.target.closest('.c-menu') || el) { menuOpen = false; if (S) setTimeout(() => renderControls(S), 0); }
   }
   if (!el || !el.dataset.act) return;
@@ -1251,6 +1355,11 @@ function delegate(e) {
     case 'sstrike': E.hostSurveyStrike(); break;
     case 'shufflecats': E.shuffleCategories(); break;
     case 'form': E.formTeams(); break;
+    case 'setupnext': E.setupNext(); break;
+    case 'setupback': E.setupBack(); break;
+    case 'cancelbeef': E.cancelBeef(d.v); break;
+    case 'kickask': e.stopPropagation(); kickAsk = d.pid; renderControls(S); return;
+    case 'kickyes': e.stopPropagation(); kickAsk = null; E.kick(d.pid); break;
     case 'merge': E.mergeOldNew(); break;
     case 'back': E.s.phase = 'lobby'; E.s.teams = []; E.publish(); break;
     case 'move': E.movePlayer(d.pid); break;
@@ -1307,7 +1416,7 @@ function onRename(e) {
 function onKey(e) {
   if (e.target.closest('input, textarea, [contenteditable], .modal')) return;
   const k = e.key.toLowerCase();
-  if (k === ' ' || k === 'enter') { e.preventDefault(); E.next(); }
+  if (k === ' ' || k === 'enter') { e.preventDefault(); if (S.phase === 'lobby' || S.phase === 'teams') E.setupNext(); else E.next(); }
   else if (k === 'c') { if (S.phase === 'final_reveal') E.judgeFinal(true); else E.judge(true); }
   else if (k === 'x') { if (S.phase === 'final_reveal') E.judgeFinal(false); else if (S.q && S.q.type === 'family_survey') E.hostSurveyStrike(); else E.judge(false); }
   else if (k === 'p') E.togglePause();

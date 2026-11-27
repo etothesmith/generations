@@ -65,7 +65,7 @@ function body() {
       const ctrl = teamById(s.controlTeam);
       main = `<div class="msg">${ctrl ? `<b style="color:${ctrl.color}">${esc(ctrl.name)}</b> picks` : 'Pick a tile'}${s.nextMult ? ' · <b style="color:var(--gold)">2X NEXT!</b>' : ''}</div>
         <div class="rm-board" style="--cols:${s.board.cats.length}">${s.board.cats.map((c) => `<div class="rm-cat">${esc(c.name)}</div>`).join('')}
-        ${[0, 1, 2, 3, 4].map((r) => s.board.cats.map((c, ci) => c.tiles[r].used ? '<span></span>' : `<button data-cmd="tile" data-arg='${JSON.stringify({ ci, ti: r })}'>${c.tiles[r].value}${c.tiles[r].dd ? '★' : ''}</button>`).join('')).join('')}</div>
+        ${[...Array(Math.max(...s.board.cats.map((c) => c.tiles.length))).keys()].map((r) => s.board.cats.map((c, ci) => !c.tiles[r] || c.tiles[r].used ? '<span></span>' : `<button data-cmd="tile" data-arg='${JSON.stringify({ ci, ti: r })}'>${c.tiles[r].value}${c.tiles[r].dd ? '★' : ''}</button>`).join('')).join('')}</div>
         <div class="sub">★ = hidden Family Wager (only you can see that)</div>`;
       acts = btn('endround', 'End Round 1', 'navy');
       break;

@@ -83,7 +83,17 @@ Everything is bundled locally: the Firebase SDK, fonts and the QR code generator
 
 ## 4. How to host
 
-**Lobby.** Wait for everyone to join. Pick a **Show** format (Classic / Party Night / Trivia Only / 🎓 Practice Run), then under **How should we split?** pick a team split, and (behind **⚙️ Customize the show**) set the **Answer time** and **Remix** length and choose 6 board categories. Then tap **Make Teams →**.
+**The front door.** `index.html` has two cards. **Join** (type a room code) and **Host**, where you choose **🎮 The game runs itself** (Auto-Host, recommended) or **🎙️ I'll host it**.
+
+**Pre-show (both TV and phones show a step tracker):** 📱 Join → 📋 Warm-Up → 🗳️ Pick Games → 🥊 Settle a Beef → 👥 Teams.
+- The first person to join is the **👑 Captain**. Their phone has Next/Back, format and length controls, so nobody has to stand at the TV. During play with Auto-Host, they also get **⏭ Keep it moving**.
+- **Warm-Up** asks each phone the Family Survey questions one at a time, so the survey game has answers.
+- **Pick Games:** everyone ranks their top 3 (3/2/1 points). The top vote-getters become the lineup, in order: Short = 5 games, Normal = 7, Long = 9.
+- **Settle a Beef:** challenge anyone on a topic. If they accept, you're put on opposite teams and get a 3-question head-to-head; the winner's team gets **+300**.
+- **Board size:** Quick (4×3), Standard (5×4) or Full (6×5). The top bar shows the progress and about how much time is left.
+- **Remove a player:** ☰ More → 👥 Players → ✕ (tap twice). This is safe mid-game.
+- **Phones:** the ⚙️ menu lets each player pick text size, Simple or Full layout, vibration, high contrast, tips and left-handed mode.
+
 - Generations come from birth year: Elders (before 1965) · Gen X (1965–80) · Millennials (81–96) · Gen Z (97–2012) · Gen Alpha (2013+, grouped with Gen Z).
 - Split options adapt to who showed up: **each generation its own team**, **Old Heads vs. Young Bucks**, **Grandparents & Grandkids vs. The Parents** (3+ generations), **Older Crew vs. Younger Crew** (by birth year), **Mixed families** (age-balanced draft), or **Random ×2/×3/×4**. You can switch splits again on the Teams screen.
 - **🎓 Practice Run** plays every game once with its own practice questions (data/practice.json). Those never appear in real games, don't mark questions as seen and don't count toward a Season.

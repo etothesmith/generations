@@ -6,6 +6,7 @@
 import { genFromYear, GENERATIONS, GEN_ORDER, TEAM_COLORS, TEAM_NAMES, shuffle, uid } from './util.js';
 import { installParty, PARTY_TYPES, PARTY_STAGES } from './party.js';
 import { AutoHostMixin } from './autohost.js';
+import { SetupMixin } from './setup.js';
 export { PARTY, PARTY_TYPES } from './party.js';
 
 export const TIMES = {
@@ -136,13 +137,14 @@ export class Engine {
       players: {}, teams: [], teamMode: 'gen', teamCount: 2, canMerge: false,
       round: 0, controlTeam: null, board: null, remix: null, final: null,
       q: null, fx: null, categories: DEFAULT_CATS.slice(),
-      settings: { answerTime: 'relaxed', remixLength: 'normal', theme: 'classic', playAlong: true, format: 'classic', remixOff: {}, autoHost: false },
+      settings: { answerTime: 'relaxed', remixLength: 'normal', theme: 'classic', playAlong: true, format: 'classic', remixOff: {}, autoHost: true, boardSize: 'standard', lineup: null },
       season: null,
       stats: {},
       survey: null,
     };
     this.surveyAnswers = [];
     this.setupSurvey();
+    this.setupState();
     if (bank.length) this.s.categories = this.freshCategories();
     setInterval(() => this.tick(), 100);
   }
@@ -208,6 +210,7 @@ export class Engine {
       p.name = name; p.year = m.year || p.year; p.gen = gen; if (m.avatar) p.avatar = m.avatar; p.connected = true; p.remote = !!m.remote;
       if (m.audience !== undefined && !this.teamOf(p.pid)) p.audience = !!m.audience;
     }
+    if (!p.bot) this.pickCaptain();
     this.publish();
   }
   renamePid(oldPid, newPid) {
@@ -228,14 +231,31 @@ export class Engine {
     team.members.push(p.pid);
   }
   kick(pid) {
-    delete this.s.players[pid];
-    for (const t of this.s.teams) t.members = t.members.filter((x) => x !== pid);
+    const s = this.s;
+    if (!s.players[pid]) return;
+    const q = s.q;
+    // if they were holding up the current question, move it along first
+    if (q && s.phase === 'question') {
+      if (q.answerer === pid && q.stage === 'answering') this.judge(false);
+      if (q.podium) for (const [tid, id] of Object.entries(q.podium)) if (id === pid) { delete q.podium[tid]; q.eligible = (q.eligible || []).filter((x) => x !== tid); }
+    }
+    if (s.final && s.final.captains) for (const [tid, id] of Object.entries(s.final.captains)) if (id === pid) {
+      const t = s.teams.find((x) => x.id === tid); const nx = t && t.members.find((x) => x !== pid);
+      if (nx) s.final.captains[tid] = nx;
+    }
+    delete s.players[pid];
+    for (const t of s.teams) { t.members = t.members.filter((x) => x !== pid); if (t.members.length) t.rot = t.rot % t.members.length; }
+    if (s.picker === pid) s.picker = null;
+    s.beefs = (s.beefs || []).filter((b) => b.from !== pid && b.to !== pid);
+    if (s.vote && s.vote.picks) delete s.vote.picks[pid];
+    if (this.setupState().captain === pid) { this.setupState().captain = null; this.pickCaptain(); }
+    this.fx('kicked', { pid });
     this.publish();
   }
 
   // ---------------- teams ----------------
   setTeamMode(mode, count) {
-    this.s.teamMode = mode;
+    this.s.teamMode = mode; this.s.teamModeChosen = true;
     if (count) this.s.teamCount = count;
     this.publish();
   }
@@ -297,8 +317,10 @@ export class Engine {
       }
     }
     this.s.teams = teams;
+    this.separateBeefs();
     this.s.canMerge = mode === 'gen' && teams.some((t) => t.members.length < 2);
     this.s.phase = 'teams';
+    this.setupState().step = 'teams';
     this.publish();
   }
   mergeOldNew() {
@@ -398,10 +420,14 @@ export class Engine {
   answerMs() { return ANSWER_TIMES[this.s.settings.answerTime] || TIMES.answer; }
   stat(pid) { return (this.s.stats[pid] = this.s.stats[pid] || { correct: 0, crossovers: 0, steals: 0, points: 0 }); }
 
+  boardShape() {
+    return { quick: [4, 3], standard: [5, 4], full: [6, 5] }[this.s.settings.boardSize] || [5, 4];
+  }
   buildBoard() {
     const used = new Set();
-    const cats = this.s.categories.map((name) => {
-      const tiles = VALUES.map((v) => {
+    const [nc, nv] = this.boardShape();
+    const cats = this.s.categories.slice(0, nc).map((name) => {
+      const tiles = VALUES.slice(0, nv).map((v) => {
         let q = this.pickOne((x) => x.round === 1 && x.category === name && x.value === v, used);
         if (!q) q = this.pickOne((x) => x.round === 1 && x.category === name, used);
         if (q) used.add(q.id);
@@ -458,8 +484,9 @@ export class Engine {
     this.s.q.timerTotal = ms;
   }
   startQuestion(full, opts = {}) {
-    const podium = {};
+    let podium = {};
     for (const t of this.s.teams) { const p = this.podiumFor(t); if (p) podium[t.id] = p; }
+    if (opts.podium) podium = { ...opts.podium };
     // shuffle answer positions so nobody learns "it's always A"
     if (['trivia', 'hashtag', 'saying', 'emoji'].includes(full.questionType) && full.choices && full.choices.length && 'ABCD'.includes(full.answer)) {
       const right = full.choices['ABCD'.indexOf(full.answer)];
@@ -477,7 +504,7 @@ export class Engine {
       chosen: null, result: null, answer: null, answerText: null, context: null,
       wager: null, stamp: null, voteCount: 0, counts: null, top: null, awards: null,
       ogg: null, huddleUntil: 0, huddleUsed: false, lockouts: {}, flipId: uid(5),
-      era: full.generationEra || 'all', crossover: null,
+      era: full.generationEra || 'all', crossover: null, beef: opts.beef || null,
     };
     this.s.phase = 'question';
     this.fx('flip');
@@ -602,6 +629,7 @@ export class Engine {
       this.award(team.id, pts, q.id);
       q.result = 'correct';
       q.winnerTeam = team.id;
+      this.beefPoint(q, q.answerer);
       const st = this.stat(q.answerer);
       st.correct++; st.points += pts; if (q.steal) st.steals++;
       // Generation Crossover: answering a question written for ANOTHER generation
@@ -1188,8 +1216,8 @@ export class Engine {
     if (!q) return;
     if (!q.id.startsWith('__')) this.markSeen(q.id);
     const podiumTeams = Object.keys(q.podium || {});
-    if (q.type !== 'majority_rules') this.rotate(podiumTeams);
-    if (q.winnerTeam) s.controlTeam = q.winnerTeam;
+    if (q.type !== 'majority_rules' && !q.beef) this.rotate(podiumTeams);
+    if (q.winnerTeam && !q.beef) s.controlTeam = q.winnerTeam;
     s.q = null;
     this.cur = null;
     if (s.round === 1) {
@@ -1202,7 +1230,7 @@ export class Engine {
     } else if (s.round === 2) {
       const seg = s.remix.segments[s.remix.segIdx];
       seg.idx++;
-      if (seg.idx >= seg.qids.length) { s.remix.segIdx++; return this.afterSegment(); }
+      if (seg.idx >= seg.qids.length) { if (seg.type === 'beef') this.settleBeef(seg.beef); s.remix.segIdx++; return this.afterSegment(); }
       return this.startSegmentQuestion();
     }
     this.publish();
@@ -1252,7 +1280,14 @@ export class Engine {
     const used = new Set();
     const segments = [];
     const lens = this.practice ? Object.fromEntries(PRACTICE_PLAN.map((p) => [p.type, p.count])) : this.remixLengths();
-    for (const plan of (this.practice ? PRACTICE_PLAN : REMIX_PLAN)) {
+    let plans = this.practice ? PRACTICE_PLAN : REMIX_PLAN;
+    const lineup = !this.practice && s.settings.lineup;
+    if (lineup && lineup.length) {
+      // the family voted: play their games, in their order
+      plans = lineup.map((t) => REMIX_PLAN.find((p) => p.type === t)).filter(Boolean);
+      for (const p of plans) lens[p.type] = Math.max(1, Math.min(2, (REMIX_LENGTHS[s.settings.remixLength] || REMIX_LENGTHS.normal)[p.type] || 1));
+    }
+    for (const plan of plans) {
       const qids = [];
       const n = lens[plan.type] ?? plan.count;
       for (let i = 0; i < n; i++) {
@@ -1269,6 +1304,11 @@ export class Engine {
         if (q) { used.add(q.id); qids.push(q.id); }
       }
       if (qids.length) segments.push({ ...plan, qids, idx: 0 });
+    }
+    // Beef Battles: one after every couple of games
+    if (!this.practice) {
+      const beefs = this.beefSegments(used);
+      beefs.forEach((b, i) => segments.splice(Math.min(segments.length, 1 + i * 3), 0, b));
     }
     s.remix = { segments, segIdx: 0 };
     if (!opts.quiet) this.onFx('roundcard', { n: 2, title: 'For the Culture Remix' });
@@ -1287,6 +1327,7 @@ export class Engine {
     if (seg.type === 'hum_it') return this.startCharades('hum');
     if (PARTY_TYPES.includes(seg.type)) return this.startParty(seg.type);
     if (seg.type === 'family_survey') return this.startSurvey(+seg.qids[seg.idx].replace('__survey__', ''));
+    if (seg.type === 'beef') { const full = this.byId[seg.qids[seg.idx]]; return this.startQuestion(full, { value: 200, podium: this.beefPodium(seg.beef) || undefined, beef: seg.beef }); }
     this.startQuestion(this.byId[seg.qids[seg.idx]], { value: this.byId[seg.qids[seg.idx]].value });
   }
 
@@ -1589,6 +1630,8 @@ export class Engine {
       case 'endround': return this.endRoundEarly();
       case 'start': return this.s.phase === 'teams' ? this.startGame() : null;
       case 'form': return this.s.phase === 'lobby' ? this.formTeams() : null;
+      case 'setupnext': return ['lobby', 'teams'].includes(this.s.phase) ? this.setupNext() : null;
+      case 'kick': return this.kick(String(a));
     }
   }
 
@@ -1621,6 +1664,11 @@ export class Engine {
         return;
       }
       case 'party': return this.onParty(m.pid, m);
+      case 'gamevote': return this.onGameVote(m.pid, m.list);
+      case 'beef': return this.onBeef(m.pid, m.to, m.topic);
+      case 'beefreply': return this.onBeefReply(m.pid, m.id, !!m.yes);
+      case 'nobeef': return this.onNoBeef(m.pid);
+      case 'captain': return this.onCaptain(m.pid, m);
       case 'host': return this.onHostCmd(m);
     }
   }
@@ -1628,3 +1676,4 @@ export class Engine {
 
 installParty(Engine);
 Object.assign(Engine.prototype, AutoHostMixin);
+Object.assign(Engine.prototype, SetupMixin);
