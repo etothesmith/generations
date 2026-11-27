@@ -306,7 +306,11 @@ function body() {
       const ctrl = teamById(s.controlTeam);
       const up = t ? upNext(t) : null;
       const mine = t && ctrl && t.id === ctrl.id;
-      return `${scoreStrip()}<div class="msg">${mine ? '<b style="color:var(--gold)">Your team picks!</b> Tap a tile 👇🏾' : ctrl ? esc(ctrl.name) + ' is picking…' : 'Eyes on the board!'}</div>
+      const iPick = s.picker === pid;
+      const pickHead = iPick ? `<div class="pick-me"><div class="pm-k">👉 YOUR PICK!</div><div class="pm-s">Tap a dollar amount below. Bigger = harder.</div></div>`
+        : mine ? `<div class="msg"><b style="color:var(--gold)">Your team picks!</b> ${s.picker ? esc(pname(s.picker)) + ' is choosing — help them out (anyone on your team can tap).' : 'Tap a tile 👇🏾'}</div>`
+        : `<div class="msg">${ctrl ? `<b style="color:${ctrl.color}">${esc(ctrl.name)}</b> is picking${s.picker ? ` (${esc(pname(s.picker))})` : ''}…` : 'Eyes on the board!'}</div>`;
+      return `${scoreStrip()}${pickHead}
         ${miniBoard(mine)}
         ${up ? `<div class="team-banner" style="background:${t.color}">${up === pid ? "YOU'RE UP NEXT! Get ready to buzz 🔔" : 'Up next for your team: ' + esc(pname(up))}</div>` : ''}
         ${(S.survey && (S.survey.answered[pid] || 0) < S.survey.prompts.length) ? surveyCard() : ''}`;
@@ -425,6 +429,18 @@ function questionBody() {
     if (q.answerer === pid && !local.wagered) return `<div class="big-emoji">💰</div><h2>Family Wager!</h2><div class="msg">Category: ${esc(q.category)}</div>${wagerUI(q.maxWager, 5, 'wager', `Wager $5 – ${money(q.maxWager)}`)}${timerBar(q.timerEnd, q.timerTotal)}`;
     return `<div class="big-emoji">💰</div><h2>Family Wager!</h2><div class="msg">${esc(pname(q.answerer))} is placing a wager…</div>`;
   }
+  if (q.stage === 'ready') {
+    const card = `<div class="rd-ph"><div class="rd-v">${money(q.value)}</div><div class="rd-c">${esc(q.category)}</div></div>`;
+    if (onPodium) {
+      if (q.ready && q.ready[pid]) return `${card}<div class="result good">YOU'RE READY ✓</div><div class="msg">Here comes the question… <b>wait for BUZZ!</b></div>`;
+      return `${card}<h2 style="text-align:center">You're at the podium!</h2>
+        <ol class="rd-steps"><li>Read the question</li><li>Wait for <b>BUZZ!</b> (too early = locked out)</li><li>Buzz first, then tap your answer</li></ol>
+        <button class="buzzer live ready-btn" data-act="ready">I'M READY</button>${timerBar(q.timerEnd, q.timerTotal)}`;
+    }
+    const myPod = t && q.podium[t.id];
+    return `${card}<div class="msg">${myPod ? `<b>${esc(pname(myPod))}</b> is at the podium for your team.` : 'Next question coming up!'}</div>
+      <div class="sub">${S.settings.playAlong ? '🤫 You can answer secretly too, for bonus points.' : 'Cheer them on!'}</div>`;
+  }
   if (q.stage === 'reveal') {
     const mine = t && q.winnerTeam === t.id;
     const head = q.result === 'correct'
@@ -441,7 +457,7 @@ function questionBody() {
     if (q.stage === 'answering') return `${qBox(q)}<div class="msg">${esc(pname(q.answerer))} is answering…${q.attempted.includes(t.id) ? '' : '<br>If they miss, you can STEAL!'}</div>`;
     const locked = (q.lockouts && q.lockouts[pid] > now) || q.stage !== 'open' || local.buzzed;
     const label = local.buzzed ? 'BUZZED!' : (q.lockouts && q.lockouts[pid] > now ? 'TOO SOON!' : q.stage === 'open' ? 'BUZZ!' : 'WAIT…');
-    return `${qBox(q)}<div class="sub">${q.steal ? 'STEAL CHANCE!' : q.stage === 'open' ? 'Buzzers are open!' : "Don't buzz early — wait for it!"}</div>
+    return `${qBox(q)}<div class="buzz-say ${q.stage === 'open' ? 'go' : ''}">${q.steal ? (q.stage === 'open' ? '🔔 STEAL — BUZZ NOW!' : 'STEAL CHANCE — wait for it…') : q.stage === 'open' ? '🔔 BUZZ NOW!' : "✋ Read first — DON'T buzz yet"}</div>
       <button class="buzzer ${q.stage === 'open' && !locked ? 'live' : ''} ${local.buzzed ? 'won' : ''} ${locked && !local.buzzed && q.stage !== 'reading' ? 'locked' : ''} ${q.stage === 'reading' ? 'locked' : ''}" data-act="buzz">${label}</button>
       ${timerBar(q.stage === 'open' ? q.timerEnd : 0, q.timerTotal)}`;
   }
@@ -669,6 +685,7 @@ async function onClick(e) {
         draw(); break;
       }
       await connect(room); sendJoin(); draw(); break;
+    case 'ready': vib(40); send({ type: 'ready' }); break;
     case 'buzz':
       if (local.buzzed) return;
       el.classList.add('hit'); vib(80);

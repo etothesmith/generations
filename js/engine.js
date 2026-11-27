@@ -9,6 +9,7 @@ import { AutoHostMixin } from './autohost.js';
 export { PARTY, PARTY_TYPES } from './party.js';
 
 export const TIMES = {
+  ready: 20000,       // 'Ready?' card before each buzz-in question
   open: 12000, answer: 10000, steal: 5000, stealOpen: 6000, ddAnswer: 15000,
   wager: 25000, vote: 20000, pick: 15000, pitch: 10000, pitchVote: 15000,
   finalWager: 30000, finalAnswer: 45000, collect: 300, falseStart: 1000, huddle: 15000,
@@ -147,6 +148,7 @@ export class Engine {
   }
   now() { return this.t.serverNow(); }
   publish() {
+    if (this.s.phase === 'board') { const t = this.s.teams.find((x) => x.id === this.s.controlTeam); this.s.picker = t ? this.podiumFor(t) : null; }
     this.s.seq++;
     this.t.publishState(this.s);
     this.onChange(this.s);
@@ -492,7 +494,27 @@ export class Engine {
       q.maxWager = Math.max(this.s.teams.find((t) => t.id === team).score, 500);
       this.setTimer(TIMES.wager);
       this.fx('dailydouble', { team });
-    } else { q.stage = 'reading'; this.setTimer(readMs(full.prompt)); }
+    } else {
+      // "Ready?" card: show who's at the podium BEFORE the question appears
+      q.stage = 'ready'; q.ready = {}; q.readMs = readMs(full.prompt);
+      this.setTimer(TIMES.ready);
+    }
+    this.publish();
+  }
+  goReading() {
+    const q = this.s.q;
+    if (!q || q.stage !== 'ready') return;
+    q.stage = 'reading'; this.setTimer(q.readMs || 4000);
+    this.fx('go');
+    this.publish();
+  }
+  onReady(pid) {
+    const q = this.s.q;
+    if (!q || q.stage !== 'ready' || !Object.values(q.podium).includes(pid) || q.ready[pid]) return;
+    q.ready[pid] = true;
+    this.fx('readyup', { pid });
+    const waiting = Object.values(q.podium).filter((id) => !q.ready[id] && this.s.players[id] && this.s.players[id].connected !== false);
+    if (!waiting.length) { q.timerEnd = this.now() + 900; q.timerTotal = 900; }
     this.publish();
   }
   openBuzzers() {
@@ -1131,6 +1153,7 @@ export class Engine {
     const s = this.s, q = s.q;
     if (s.phase === 'question' && q) {
       if (this.partyNext()) return;
+      if (q.stage === 'ready') return this.goReading();
       if (q.stage === 'reading') return this.openBuzzers();
       if (q.stage === 'wager') return this.onWager(q.answerer, Math.min(q.value, q.maxWager));
       if (q.stage === 'vote') return this.revealMajority();
@@ -1443,6 +1466,7 @@ export class Engine {
         q.timerEnd = 0;
         if (PARTY_STAGES.includes(q.stage)) return this.partyNext();
         switch (q.stage) {
+          case 'ready': return this.goReading();
           case 'reading': return this.openBuzzers();
           case 'open': if (q.type === 'family_survey') return this.surveyTurn(q.podium[Object.keys(q.podium)[0]], 'fo_answer', SURVEY.faceoff);
             if (!q.result) q.result = q.steal ? 'wrong' : 'none'; return this.reveal();
@@ -1574,6 +1598,7 @@ export class Engine {
     switch (m.type) {
       case 'join': return this.onJoin(m);
       case 'avatar': if (this.s.players[m.pid]) { this.s.players[m.pid].avatar = m.avatar; this.publish(); } return;
+      case 'ready': return this.onReady(m.pid);
       case 'buzz': return this.onBuzz(m.pid, m.t);
       case 'answer': return this.onAnswer(m.pid, m.choice);
       case 'lifeline': return this.onLifeline(m.pid);

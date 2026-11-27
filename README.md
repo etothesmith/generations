@@ -135,6 +135,8 @@ Everything is bundled locally: the Firebase SDK, fonts and the QR code generator
 
 **Host Remote.** Opens in **Simple** mode: one big button at the bottom for whatever's next, ✅/❌ when you judge, a 4-button sound pad (Applause, Ooooh, Drumroll, Airhorn), **⏱ +10s**, Pause and Skip. **⚙️ Full** adds score ± buttons, Undo and 4 more sounds. The TV keyboard has **T** (+10 s) and **Alt+1…8** (sound pad).
 
+**Round 1 flow.** The TV and the picker's phone show **👉 YOUR PICK** (the controlling team's podium player). After a tile is picked, a **Ready?** card shows the value, category and the 4 steps; podium players tap **I'M READY** (it starts by itself after 20 s, or press Start). Each question shows a 5-step tracker: Ready · Read · Buzz · Answer · Reveal. The host bar shows **NOW** (what's happening), one big action button, and Pause / Auto-Host / **☰ More** (skip, peek, scores, undo, remote, chat, sound, end game).
+
 **🎮 Auto-Host.** Turn it on in the lobby (or 🎮 Auto on the TV mid-game) and the show runs itself: segment cards, reveals, rounds and Final Wager reveals advance on their own, a random tile is picked if the team in control waits 14 s, Sing It! titles count unless they repeat, and typed Final Wager answers are checked against the answer list. Peek is hidden. **🤖 Add a bot** (Customize) fills empty seats with practice bots that play every game.
 
 **Phones.** **Aa** turns on big text and buttons. Phones buzz and flash when an action is waiting for you, and stay awake during the show. Right answers tapped within 3 seconds earn a **⚡ Lightning** +$25.

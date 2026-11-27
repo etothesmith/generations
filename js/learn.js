@@ -81,6 +81,13 @@ async function buzzQuestion(title, q, { tutorial = false, cat } = {}) {
   const right = q.answer;
   const catL = `${cat || q.category} · ${money(q.value || 200)}`;
   const prompt = q.questionType === 'emoji' ? `<span class="emoji-big">${esc(q.prompt)}</span>Name that movie, show or song!` : q.questionType === 'hashtag' ? `<span style="font-family:var(--display);font-size:28px;color:var(--gold)">${esc(q.prompt.replace(/^Decode this hashtag:\s*/i, ''))}</span>` : esc(q.prompt).replace(/\n/g, '<br>');
+  // 0) Ready? card — same as game night
+  show(title, `<div class="big-emoji" style="font-family:var(--display);color:var(--gold);font-size:64px">${money(q.value || 200)}</div><div class="msg" style="text-transform:uppercase;font-weight:900">${esc(cat || q.category)}</div>
+    <ol style="text-align:left;max-width:300px;margin:8px auto;font-weight:700;line-height:1.5"><li>Read the question</li><li>Wait for <b>BUZZ!</b></li><li>Buzz first, then tap your answer</li></ol>
+    <button class="buzzer live" data-act="rdy" style="font-size:32px;background:radial-gradient(circle at 35% 30%,#5bf08f,#1d9b4f 70%)">I'M READY</button>
+    ${tutorial ? coach("On game night the podium player taps <b>I'M READY</b> first. Then the question appears.") : ''}`);
+  const rr = await wait(['rdy'], 20000);
+  if (!alive(my)) return;
   // 1) reading: buzzer locked
   let early = false;
   show(title, `${qbox(catL, prompt)}<div class="sub">Don't buzz early — wait for it!</div><button class="buzzer locked" data-act="buzz">WAIT…</button>

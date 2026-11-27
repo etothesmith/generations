@@ -91,6 +91,9 @@ export const AutoHostMixin = {
     const podBots = Object.entries(q.podium || {}).filter(([, pid]) => this.isBot(pid));
 
     switch (q.stage) {
+      case 'ready':
+        for (const [, pid] of podBots) this.botLater('rd' + pid, 800 + Math.random() * 1500, () => say({ type: 'ready', pid }));
+        break;
       case 'open':
         if (q.type === 'family_survey') break;
         for (const [tid, pid] of podBots) if (q.eligible.includes(tid)) {

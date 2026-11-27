@@ -395,8 +395,12 @@ function viewBoard(s) {
   }
   html += '</div>';
   const ctrl = s.teams.find((t) => t.id === s.controlTeam);
-  html += `<div class="board-foot">${ctrl ? `<span style="color:${ctrl.color}">●</span> <b>${esc(ctrl.name)}</b> picks the next tile` : ''} · 2 hidden <b>Family Wagers</b> on the board</div>`;
-  return html;
+  const pk = s.picker && s.players[s.picker];
+  const banner = ctrl ? `<div class="pick-banner" style="--tc:${ctrl.color}">
+      ${pk ? `<div class="pb-av">${renderAvatar(pk.avatar, 'cheer', 90)}</div>` : ''}
+      <div class="pb-txt"><div class="pb-k">👉 YOUR PICK</div><div class="pb-n">${pk ? esc(pk.name) + ' · ' : ''}<span style="color:${ctrl.color}">${esc(ctrl.name)}</span></div>
+      <div class="pb-s">Choose a category and dollar amount on your phone${s.settings.autoHost ? '' : ' (or the host taps one here)'}</div></div></div>` : '';
+  return banner + html + `<div class="board-foot">💰 2 hidden <b>Family Wagers</b> are on this board · Get it right and <b>you pick next</b></div>`;
 }
 
 function teamById(s, id) { return s.teams.find((t) => t.id === id); }
@@ -426,7 +430,8 @@ function podiumsHTML(s, q) {
     const p = s.players[pid] || {};
     const buzzed = q.answerer === pid && q.stage === 'answering';
     let tag = '';
-    if (q.lockouts && q.lockouts[pid] > T.serverNow()) tag = `<div class="tag red">FALSE START</div>`;
+    if (q.stage === 'ready') tag = q.ready && q.ready[pid] ? `<div class="tag grn">READY ✓</div>` : `<div class="tag wait">TAP READY…</div>`;
+    else if (q.lockouts && q.lockouts[pid] > T.serverNow()) tag = `<div class="tag red">FALSE START</div>`;
     else if (buzzed) tag = `<div class="tag">${q.steal ? 'STEAL!' : 'BUZZED IN'}</div>`;
     else if (q.stage === 'reveal' && q.winnerTeam === t.id) tag = `<div class="tag grn">+${money(q.isDD ? q.wager : q.value)}</div>`;
     else if (q.stage === 'reveal' && q.awards && q.awards[t.id]) tag = `<div class="tag grn">+${money(q.awards[t.id])}</div>`;
@@ -533,15 +538,23 @@ function viewQuestion(s) {
     body = `<div class="dd-splash">FAMILY<br>WAGER!</div><div class="status-banner">${esc(pname(s, q.answerer))} for <span style="color:${t?.color}">${esc(t?.name)}</span> is wagering on their phone…<br><small>Category: ${esc(q.category)} · up to ${money(q.maxWager)}</small></div>`;
     return `<div class="qwrap"><div class="qcard" data-k="q-${q.flipId}" data-flip="${q.flipId}">${paused}${body}${timerHTML(q)}</div>${podiumsHTML(s, q)}</div>`;
   }
+  if (q.stage === 'ready') {
+    const all = Object.entries(q.podium);
+    const nReady = all.filter(([, pid]) => q.ready && q.ready[pid]).length;
+    body = `<div class="rd-kick">UP NEXT</div><div class="rd-val">${money(q.value)}</div><div class="rd-cat">${esc(q.category)}</div>
+      <div class="rd-how"><div><span>1</span>Read the question</div><div><span>2</span>Wait for <b>BUZZ!</b></div><div><span>3</span>First buzz answers</div><div><span>4</span>Wrong? The other team can <b>steal</b></div></div>
+      <div class="status-banner big">Podium players: tap <span class="hl">I'M READY</span> on your phone <span class="rd-count">${nReady}/${all.length}</span></div>`;
+    return `<div class="qwrap"><div class="qcard ready-card" data-k="q-${q.flipId}" data-flip="${q.flipId}">${paused}${body}${timerHTML(q)}</div>${podiumsHTML(s, q)}</div>`;
+  }
   const isTag = q.type === 'hashtag';
   const ptxt = isTag ? q.prompt.replace(/^Decode this hashtag:\s*/i, '') : q.prompt;
   const isEmoji = q.type === 'emoji';
   body = `${isTag ? '<div class="status-banner" style="margin:0">Decode this hashtag!</div>' : ''}${isEmoji ? '<div class="status-banner" style="margin:0">Name this movie, show or song!</div>' : ''}<div class="prompt ${isTag ? 'hashtag' : ''} ${isEmoji ? 'emoji' : ''} ${ptxt.length > 110 ? 'long' : ''}">${esc(ptxt)}</div>`;
   const showChoices = q.stage !== 'reading' || !q.choices ? true : true;
   if (showChoices) body += choicesHTML(q, 'trivia');
-  if (q.stage === 'reading') status = 'Get ready…';
-  else if (q.stage === 'open') status = q.steal ? `<span class="hl">STEAL!</span> Buzz in!` : '<span class="hl">BUZZERS OPEN!</span>';
-  else if (q.stage === 'answering') status = `${esc(pname(s, q.answerer))}${q.steal ? ' — STEAL!' : ''} — what's your answer?`;
+  if (q.stage === 'reading') status = '👀 Read along… <span class="hl">✋ Don\'t buzz yet!</span>';
+  else if (q.stage === 'open') status = q.steal ? `<span class="hl">STEAL!</span> ${esc(q.eligible.map((id) => teamById(s, id)?.name).join(' & '))} — buzz in now!` : '🔔 <span class="hl">BUZZ NOW!</span>';
+  else if (q.stage === 'answering') status = `🎯 <span class="hl">${esc(pname(s, q.answerer))}</span>${q.steal ? ' (STEAL)' : ''} — pick your answer on your phone!`;
   else if (q.stage === 'reveal') {
     const t = q.winnerTeam ? teamById(s, q.winnerTeam) : null;
     if (q.result === 'correct') status = `<span class="hl">CORRECT!</span> ${esc(t?.name)} ${q.isDD && q.wager ? '+' + money(q.wager) : '+' + money(q.value)}${q.crossover ? ` <span class="xover">+${money(q.crossover.bonus)} CROSSOVER!</span>` : ''}`;
@@ -559,7 +572,14 @@ function viewQuestion(s) {
     if (perks.length) below += `<div class="perks">${perks.join('<br>')}</div>`;
     if (q.context) below += `<div class="context"><b>Did you know?</b> ${esc(q.context)}</div>`;
   }
-  return `<div class="qwrap"><div class="qcard" data-k="q-${q.flipId}" data-flip="${q.flipId}">${paused}${huddle}${catMeta(q, s)}${body}<div class="status-banner">${status}</div>${below}${timerHTML(q)}</div>${podiumsHTML(s, q)}</div>`;
+  return `<div class="qwrap"><div class="qcard" data-k="q-${q.flipId}" data-flip="${q.flipId}">${paused}${huddle}${q.isDD ? '' : stepsHTML(q)}${catMeta(q, s)}${body}<div class="status-banner big">${status}</div>${below}${timerHTML(q)}</div>${podiumsHTML(s, q)}</div>`;
+}
+
+// the 5 steps of a buzz-in question, current one lit
+function stepsHTML(q) {
+  const ST = [['ready', 'Ready'], ['reading', 'Read'], ['open', 'Buzz'], ['answering', 'Answer'], ['reveal', 'Reveal']];
+  const cur = ST.findIndex(([k]) => k === q.stage);
+  return `<div class="q-steps">${ST.map(([, l], i) => `<span class="${i < cur ? 'done' : i === cur ? 'now' : ''}">${i < cur ? '✓' : i + 1} ${l}</span>`).join('<i></i>')}</div>`;
 }
 
 function viewBlitz(s, q, paused) {
@@ -922,18 +942,53 @@ function socialButtons() {
     + (c.inCall ? `${c.local ? `<button class="btn navy" data-act="tvmute" aria-label="Mute">${c.muted ? '🔇' : '🎙️'}</button>` : ''}<button class="btn red" data-act="tvcallleave">📹 Leave</button>`
       : `<button class="btn green" data-act="tvcall" title="Video call with family">📹${n ? ` ${n}` : ''}</button>`);
 }
+let menuOpen = false;
+// plain-English "what's happening right now" line for the host bar
+function nowText(s) {
+  const q = s.q, nm = (pid) => esc(pname(s, pid));
+  const auto = s.settings.autoHost;
+  switch (s.phase) {
+    case 'lobby': return 'Waiting for players to join';
+    case 'teams': return 'Check the teams, then start the show';
+    case 'segment': return auto ? 'Next game starting…' : 'Introduce the next game, then press the big button';
+    case 'board': return s.picker ? `<b>${nm(s.picker)}</b> is picking a tile${auto ? '' : ' — or tap one for them'}` : 'Pick a tile';
+    case 'spin': return 'Sankofa Spin!';
+    case 'round_end': return 'Round over — check the scores';
+    case 'final_intro': return 'Final Wager is next';
+    case 'final_wager': return 'Teams are betting on their phones';
+    case 'final_answer': return 'Teams are typing their answers';
+    case 'final_reveal': return auto ? 'Revealing answers…' : 'Read each answer, then tap ✅ or ❌';
+    case 'champion': return 'We have a winner! 🏆';
+  }
+  if (s.phase !== 'question' || !q) return '';
+  const ready = q.ready ? Object.values(q.podium).filter((id) => q.ready[id]).length : 0;
+  const M = {
+    ready: `Waiting for podium players to tap READY (${ready}/${Object.keys(q.podium).length})`,
+    reading: 'Everyone is reading — buzzers open in a moment',
+    open: q.steal ? 'STEAL! The other team can buzz' : 'Buzzers are OPEN',
+    answering: q.choices ? `<b>${nm(q.answerer)}</b> is answering on their phone (it checks itself)` : `<b>${nm(q.answerer)}</b> is answering out loud — tap ✅ or ❌`,
+    reveal: auto ? 'Showing the answer…' : 'Answer is up — press Next when ready',
+    wager: `<b>${nm(q.answerer)}</b> is placing a Family Wager`,
+    vote: 'Everyone is voting on their phone',
+    si_turn: auto ? 'Singing! Titles count unless repeated' : 'Did they sing a real song with the word? Tap ✅ or ❌',
+  };
+  return M[q.stage] || 'Players are playing on their phones';
+}
 function renderControls(s) {
-  if (WATCH) { setHTML(ui.controls, socialButtons() + `<button class="btn navy" data-act="sound">${soundOn() ? '🔊' : '🔇'}</button>`); return; }
-  const b = [];
+  if (WATCH) { setHTML(ui.controls, `<div class="cbar"><div class="c-side">${socialButtons()}<button class="btn navy" data-act="sound">${soundOn() ? '🔊' : '🔇'}</button></div></div>`); return; }
+  const b = [];          // the big action buttons
+  const m = [];          // the ☰ More menu
   const q = s.q;
-  const next = (label, extra = '') => b.push(`<button class="btn" data-act="next" ${extra}>${label}<span class="kbd">␣</span></button>`);
+  const next = (label, extra = '') => b.push(`<button class="btn big-act" data-act="next" ${extra}>${label}<span class="kbd">Space</span></button>`);
+  const judge = (yes, no, act = 'judge') => {
+    b.push(`<button class="btn green big-act" data-act="${act}" data-v="1">${yes}<span class="kbd">C</span></button>`);
+    b.push(`<button class="btn red big-act" data-act="${act}" data-v="0">${no}<span class="kbd">X</span></button>`);
+  };
   if (s.phase === 'question' && q) {
-    if (q.stage === 'reading') next('Open Buzzers');
+    if (q.stage === 'ready') next('▶ Start the Question');
+    if (q.stage === 'reading') next('🔔 Open Buzzers Now');
     if (q.stage === 'wager') next('Use Default Wager');
-    if (q.stage === 'answering') {
-      b.push(`<button class="btn green" data-act="judge" data-v="1">✅ Correct<span class="kbd">C</span></button>`);
-      b.push(`<button class="btn red" data-act="judge" data-v="0">❌ Wrong<span class="kbd">X</span></button>`);
-    }
+    if (q.stage === 'answering') judge('✅ Correct', '❌ Wrong');
     if (q.stage === 'vote') next('Reveal Votes');
     if (q.stage === 'pick') next('Start Pitches');
     if (q.stage === 'pitch') next('Next Pitch');
@@ -945,52 +1000,59 @@ function renderControls(s) {
     const PN = { ht_vote1: 'Lock Votes → Debate', ht_vote2: 'Reveal the Shift', ml_vote: 'Reveal', tt_write: 'Close Writing', tt_vote: 'Reveal Winner', tw_write: 'Skip This Teller', tw_vote: 'Reveal the Lie' };
     if (q.type === 'sing_it') {
       if (q.stage === 'si_ready') next(q.si.songs.length || q.si.last ? '▶ Next Team Now' : '🎤 Start the Battle');
-      if (q.stage === 'si_turn') {
-        b.push(`<button class="btn green" data-act="judge" data-v="1">✅ That Counts<span class="kbd">C</span></button>`);
-        b.push(`<button class="btn red" data-act="judge" data-v="0">❌ Nope / Repeat<span class="kbd">X</span></button>`);
-      }
+      if (q.stage === 'si_turn') judge('✅ That Counts', '❌ Nope / Repeat');
     }
     if (q.stage === 'ht_argue') next(q.ht.turn === 0 && q.ht.speakers.disagree ? 'Other Side →' : 'Vote Again');
     else if (PN[q.stage]) next(PN[q.stage]);
     if (q.type === 'family_survey' && ['fo_answer', 'play', 'steal'].includes(q.stage)) {
-      b.push(`<button class="btn red" data-act="sstrike">❌ Strike<span class="kbd">X</span></button>`);
-      b.push(`<span class="hint" style="margin:0 .4vw">Tap a hidden answer to award it</span>`);
+      b.push(`<button class="btn red big-act" data-act="sstrike">❌ Strike<span class="kbd">X</span></button>`);
+      b.push(`<span class="hint">Tap a hidden answer on the board to award it</span>`);
     }
     if (q.stage === 'reveal') next('Next →');
-    if (q.stage !== 'reveal') b.push(`<button class="btn navy" data-act="skip">Skip<span class="kbd">S</span></button>`);
+    if (q.stage !== 'reveal') m.push(`<button class="btn navy" data-act="skip">⏭ Skip this question<span class="kbd">S</span></button>`);
   }
   if (s.phase === 'spin' && s.spin) {
-    if (s.spin.stage === 'ready') next('Spin It');
-    if (s.spin.stage === 'again') next('Spin Again');
+    if (s.spin.stage === 'ready') next('🎡 Spin It');
+    if (s.spin.stage === 'again') next('🎡 Spin Again');
     if (s.spin.stage === 'done') next('Back to the Board →');
   }
-  if (s.phase === 'segment') { next("Let's Go"); b.push(`<button class="btn navy" data-act="skip">Skip Segment</button>`); }
-  if (s.phase === 'board') b.push(`<button class="btn navy" data-act="endround">End Round 1 Early</button>`);
+  if (s.phase === 'segment') { next("▶ Let's Go"); m.push(`<button class="btn navy" data-act="skip">⏭ Skip this game</button>`); }
+  if (s.phase === 'board') m.push(`<button class="btn navy" data-act="endround">⏩ End Round 1 early</button>`);
   if (s.phase === 'round_end') next(s.round === 1 ? 'Round 2 →' : s.settings.format === 'party' ? 'Champions →' : 'Final Wager →');
   if (s.phase === 'final_intro') next('Start Wagers');
   if (s.phase === 'final_wager') next('Close Wagers');
   if (s.phase === 'final_answer') next('Close Answers');
   if (s.phase === 'final_reveal') {
     const f = s.final;
-    if (f.revealIdx < f.order.length && !f.judged) {
-      b.push(`<button class="btn green" data-act="fjudge" data-v="1">✅ Correct<span class="kbd">C</span></button>`);
-      b.push(`<button class="btn red" data-act="fjudge" data-v="0">❌ Wrong<span class="kbd">X</span></button>`);
-    } else next('Next →');
+    if (f.revealIdx < f.order.length && !f.judged) judge('✅ Correct', '❌ Wrong', 'fjudge');
+    else next('Next →');
   }
+  const inGame = !['lobby', 'teams'].includes(s.phase);
   const peek = peekText(s);
-  if (peek && !s.settings.autoHost) b.push(`<span class="peek"><button class="btn navy" data-act="peek">👁 Peek</button><span class="peek-pop">${esc(peek)}</span></span>`);
-  if (!['lobby', 'teams'].includes(s.phase)) {
-    b.push('<span class="sep"></span>');
-    b.push(`<button class="btn navy" data-act="pause">${s.paused ? '▶ Resume' : '⏸ Pause'}<span class="kbd">P</span></button>`);
-    b.push(`<button class="btn navy ${s.settings.autoHost ? 'on' : ''}" data-act="set" data-k="autoHost" data-v="${s.settings.autoHost ? '' : '1'}" title="Auto-Host moves the show along by itself">🎮 Auto ${s.settings.autoHost ? 'ON' : 'OFF'}</button>`);
-    b.push(`<button class="btn navy ${scoreEdit ? 'on' : ''}" data-act="scores">± Scores</button>`);
-    b.push(`<button class="btn navy" data-act="undo">↶ Undo Last Points</button>`);
+  if (peek && !s.settings.autoHost) m.push(`<span class="peek"><button class="btn navy" data-act="peek">👁 Peek at the answer</button><span class="peek-pop">${esc(peek)}</span></span>`);
+  if (inGame) {
+    m.push(`<button class="btn navy ${scoreEdit ? 'on' : ''}" data-act="scores">± Fix scores</button>`);
+    m.push(`<button class="btn navy" data-act="undo">↶ Undo last points</button>`);
   }
-  b.push(`<button class="btn navy" data-act="remote" title="Run the show from your phone">📱 Remote</button>`);
-  b.push(socialButtons());
-  b.push(`<button class="btn navy" data-act="sound">${soundOn() ? '🔊' : '🔇'}</button>`);
-  if (!['lobby', 'teams', 'champion'].includes(s.phase)) b.push(`<button class="btn ghost" data-act="end">End Game</button>`);
-  setHTML(ui.controls, b.join(''));
+  m.push(`<button class="btn navy" data-act="remote">📱 Run it from my phone</button>`);
+  const soc = socialButtons();
+  if (soc) m.push(`<div class="c-row">${soc}</div>`);
+  m.push(`<button class="btn navy" data-act="sound">${soundOn() ? '🔊 Sound on' : '🔇 Sound off'}</button>`);
+  if (!['lobby', 'teams', 'champion'].includes(s.phase)) m.push(`<button class="btn ghost" data-act="end">🏁 End the game</button>`);
+
+  const side = [];
+  if (inGame) {
+    side.push(`<button class="btn navy" data-act="pause" title="Pause (P)">${s.paused ? '▶ Resume' : '⏸ Pause'}</button>`);
+    side.push(`<button class="btn navy ${s.settings.autoHost ? 'on' : ''}" data-act="set" data-k="autoHost" data-v="${s.settings.autoHost ? '' : '1'}" title="Auto-Host moves the show along by itself">🎮 Auto-Host ${s.settings.autoHost ? 'ON' : 'OFF'}</button>`);
+  }
+  side.push(`<button class="btn navy c-more ${menuOpen ? 'on' : ''}" data-act="cmenu" aria-expanded="${menuOpen}">☰ More</button>`);
+  const now = nowText(s);
+  setHTML(ui.controls, `<div class="cbar">
+    <div class="c-now">${now ? `<span class="c-k">${s.settings.autoHost && inGame ? '🎮 AUTO' : 'NOW'}</span><span class="c-txt">${now}</span>` : ''}</div>
+    <div class="c-main">${b.join('') || (s.settings.autoHost && inGame ? '<span class="hint">Sit back and play — Auto-Host has it</span>' : '')}</div>
+    <div class="c-side">${side.join('')}</div>
+    <div class="c-menu ${menuOpen ? 'open' : ''}">${m.join('')}</div>
+  </div>`);
 }
 
 // ---------------- animation frame: timers, ticks, huddle ----------------
@@ -1059,6 +1121,8 @@ function onFx(type, data) {
   switch (type) {
     case 'join': sfx('join'); break;
     case 'flip': sfx('flip'); break;
+    case 'readyup': sfx('vote'); break;
+    case 'go': sfx('whoosh'); break;
     case 'whoosh': sfx('whoosh'); mascotUnpin();
       if (E.s.phase === 'segment' && E.s.remix) { const seg = E.s.remix.segments[E.s.remix.segIdx]; if (seg) setTimeout(() => mascotSay('point', `Next up: ${seg.label}!`, 2600), E.s.remix.segIdx === 0 ? 3000 : 300); }
       break;
@@ -1153,6 +1217,10 @@ function onFx(type, data) {
 // ---------------- events ----------------
 function delegate(e) {
   const el = e.target.closest('[data-act]');
+  // close the ☰ More menu when tapping anywhere else (or after picking an item)
+  if (menuOpen && (!el || el.dataset.act !== 'cmenu') && !(el && ['peek', 'end'].includes(el.dataset.act))) {
+    if (!e.target.closest('.c-menu') || el) { menuOpen = false; if (S) setTimeout(() => renderControls(S), 0); }
+  }
   if (!el || !el.dataset.act) return;
   unlockAudio();
   const a = el.dataset.act, d = el.dataset;
@@ -1193,6 +1261,7 @@ function delegate(e) {
     case 'fjudge': E.judgeFinal(d.v === '1'); break;
     case 'skip': E.skip(); break;
     case 'pause': E.togglePause(); break;
+    case 'cmenu': menuOpen = !menuOpen; renderControls(S); break;
     case 'scores': scoreEdit = !scoreEdit; renderControls(S); renderScores(S); break;
     case 'adj': E.manualScore(d.team, +d.d); break;
     case 'undo': E.undoLast(); break;
