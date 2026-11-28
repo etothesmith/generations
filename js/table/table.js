@@ -9,6 +9,7 @@
 import { createTransport } from '../transport.js';
 import { sfx, unlockAudio, soundOn, setSound } from '../audio.js';
 import { roomCode, uid, esc } from '../util.js';
+import { castBots, botFace, lineFor, chatty, speedOf, boldOf, STYLES } from './bots.js';
 
 export const BOTS = [
   { name: 'Big Mama', img: 'assets/cookout/guest_grandma.webp' },
@@ -26,9 +27,9 @@ export function startTable(G) {
   const app = $('#app');
   const qs = new URLSearchParams(location.search);
   const store = (k, v) => { try { if (v === undefined) return JSON.parse(localStorage.getItem('tbl-' + k) || 'null'); localStorage.setItem('tbl-' + k, JSON.stringify(v)); } catch (e) { return null; } return v; };
-  const prefs = Object.assign({ name: '', level: 'medium', coach: true, opts: {} }, store(G.id + '-prefs') || {});
+  const prefs = Object.assign({ name: '', level: 'medium', coach: true, opts: {} }, store(G.id + '-prefs2') || {});
   for (const o of G.options) if (prefs.opts[o.key] === undefined) prefs.opts[o.key] = o.def;
-  const savePrefs = () => store(G.id + '-prefs', prefs);
+  const savePrefs = () => store(G.id + '-prefs2', prefs);
   const myPid = store('pid') || store('pid', uid(10));
 
   // ---------- runtime ----------
@@ -36,7 +37,7 @@ export function startTable(G) {
   let isHost = false;    // this browser runs the game
   let H = null;          // host-side state (also used offline)
   let V = null;          // the view everybody renders: {phase, seats, g, feed, bubble, code, opts}
-  let timer = null, pending = null, selected = null, lastSeen = '', coachMsg = '', handShown = 0;
+  let timer = null, nudged = '', autoKey = '', pending = null, selected = null, lastSeen = '', coachMsg = '', handShown = 0;
 
   // ================= SCREENS =================
   function menu() {
@@ -137,8 +138,8 @@ export function startTable(G) {
 
   // ================= HOSTING (offline or online) =================
   function freshSeats(humans) {
-    const pool = BOTS.slice().sort(() => Math.random() - 0.5);
-    return [0, 1, 2, 3].map((i) => humans[i] || { kind: 'bot', name: pool[i].name, img: pool[i].img });
+    const cast = castBots(4, [G.coach.name, G.coach.img, ...humans.filter(Boolean).map((h) => h.name)]);
+    return [0, 1, 2, 3].map((i) => humans[i] || cast[i]);
   }
   function startLocal(extra = {}) {
     stop();
@@ -147,6 +148,7 @@ export function startTable(G) {
     if (extra.practice && G.practiceOpts) Object.assign(H.opts, G.practiceOpts);
     H.g = G.R.newGame(H.opts);
     feed(G.startLine ? G.startLine(H.g, H.seats) : 'Shuffle up and deal!');
+    greet();
     publish();
   }
   async function hostOnline() {
@@ -195,8 +197,8 @@ export function startTable(G) {
     if (m.t === 'leave') { const i = seatOf(m.pid); if (i >= 0) { if (H.phase === 'lobby') H.seats[i] = null; else botTakeover(i); publish(); } }
   }
   function botTakeover(i) {
-    const s = H.seats[i]; const b = BOTS[(i + 3) % BOTS.length];
-    H.seats[i] = { kind: 'bot', name: b.name, img: b.img, wasPid: s.pid, wasName: s.name };
+    const s = H.seats[i]; const b = castBots(1, H.seats.map((x) => x && x.name))[0];
+    H.seats[i] = { ...b, wasPid: s.pid, wasName: s.name };
     feed(`🤖 ${b.name} is holding ${s.name}'s seat`);
   }
 
@@ -211,7 +213,8 @@ export function startTable(G) {
     H.feed.push({ t: line, at: Date.now() });
     if (H.feed.length > 8) H.feed.shift();
   }
-  function say(seat, text) { H.bubble = { seat, text, at: Date.now() }; }
+  function say(seat, text) { if (text) H.bubble = { seat, text, at: Date.now() }; }
+  function greet() { const b = H.seats.map((x, i) => [x, i]).filter(([x]) => x.kind === 'bot'); if (b.length) { const [bot, i] = b[Math.floor(Math.random() * b.length)]; say(i, lineFor('start', bot)); } }
 
   function handle(seat, move) {
     let ev;
@@ -219,8 +222,13 @@ export function startTable(G) {
     for (const e of ev) {
       const line = G.narrate(e, H.g, H.seats); if (line) feed(line);
       const s = G.sound && G.sound(e, H.g); if (s) sfx(s);
-      const tk = G.talk && G.talk(e, H.g);
-      if (tk && H.seats[tk.seat] && H.seats[tk.seat].kind === 'bot') say(tk.seat, tk.text);
+      const tk = G.talkKey && G.talkKey(e, H.g);
+      if (tk) {
+        const bot = H.seats[tk.seat];
+        if (bot && bot.kind === 'bot' && Math.random() < Math.min(1, (tk.p || 0.85) * (0.5 + chatty(bot)))) { const l = lineFor(tk.key, bot, G.lines); if (l) say(tk.seat, l.replace('{n}', tk.n ?? '')); }
+        else if (bot && bot.kind === 'human') { const pb = H.seats[(tk.seat + 2) % 4]; if (pb.kind === 'bot' && ['cut', 'made', 'score', 'domino', 'boston'].includes(tk.key) && Math.random() < 0.5) { const l = lineFor('nice', pb); if (l) say((tk.seat + 2) % 4, l); } }
+      }
+      if (e.type === 'over') { const w = e.winner; const bw = [w, w + 2].find((x) => H.seats[x].kind === 'bot'); const bl = [1 - w, 3 - w].find((x) => H.seats[x].kind === 'bot'); if (bw !== undefined) say(bw, lineFor('win', H.seats[bw])); else if (bl !== undefined) say(bl, lineFor('lose', H.seats[bl])); }
     }
     publish();
     return true;
@@ -244,7 +252,16 @@ export function startTable(G) {
     const S = H.seats[seat];
     if (S.kind === 'bot') {
       const lv = H.practice ? 'easy' : H.level;
-      timer = setTimeout(() => { const r = G.R.think(g, seat, lv); if (r) handle(seat, r.move); }, 650 + Math.random() * 650);
+      const [a, b] = speedOf(S);
+      timer = setTimeout(() => { const r = G.R.think(g, seat, lv, { bold: boldOf(S) }); if (r) handle(seat, r.move); }, a + Math.random() * (b - a));
+    } else {
+      // a human is thinking: after a while, a bot gives them a friendly nudge
+      const k = H.g.handNo + ':' + (g.played || g.board?.order || []).length + ':' + g.phase;
+      timer = setTimeout(() => {
+        if (!H.g || H.g.turn !== seat) return;
+        const bots = H.seats.map((x, i) => [x, i]).filter(([x]) => x.kind === 'bot');
+        if (bots.length && nudged !== k) { nudged = k; const [bot, i] = bots[Math.floor(Math.random() * bots.length)]; say(i, lineFor('nudge', bot)); publish(); }
+      }, 22000);
     }
   }
   function stop() { clearTimeout(timer); }
@@ -282,7 +299,7 @@ export function startTable(G) {
       $('#deal').onclick = () => {
         H.seats = freshSeats(H.seats);
         H.phase = 'game'; H.g = G.R.newGame(H.opts); H.feed = [];
-        feed(G.startLine ? G.startLine(H.g, H.seats) : 'Shuffle up and deal!'); sfx('fanfare');
+        feed(G.startLine ? G.startLine(H.g, H.seats) : 'Shuffle up and deal!'); greet(); sfx('fanfare');
         publish();
       };
       let first = null;
@@ -319,11 +336,12 @@ export function startTable(G) {
     const bub = V.bubble && Date.now() - V.bubble.at < 4500 ? V.bubble : null;
     const seatBox = (seat) => {
       const s = seats[seat], p = pos(seat, me);
-      const img = s.img ? `<img src="${s.img}" alt="">` : `<span class="ini">${esc((s.name || '?')[0])}</span>`;
+      const img = s.img || s.av ? botFace(s) : `<span class="ini">${esc((s.name || '?')[0])}</span>`;
+      const st = s.kind === 'bot' && STYLES[s.style] ? `<small class="sty">${STYLES[s.style].label}</small>` : '';
       return `<div class="tb-p p${p} ${g.turn === seat ? 'turn' : ''} t${seat % 2}">
         ${bub && bub.seat === seat ? `<div class="tb-bub">${esc(bub.text)}</div>` : ''}
         <div class="av">${img}</div><div class="nm">${esc(p === 0 ? 'You' : s.name)}${p === 2 ? ' <small>partner</small>' : ''}</div>
-        <div class="inf">${G.seatInfo(g, seat)}</div></div>`;
+        <div class="inf">${G.seatInfo(g, seat)}</div>${p !== 0 && g.handNo === 1 && (g.played || g.board?.order || []).length < 2 ? st : ''}</div>`;
     };
     app.innerHTML = `<div class="tb-game">
       <div class="tb-bar">
@@ -337,7 +355,7 @@ export function startTable(G) {
         <div class="tb-center" id="center">${G.center(g, me, seats)}</div>
         ${seatBox(me)}
       </div>
-      <div class="tb-feed">${lastFeed ? esc(lastFeed) : ''}</div>
+      <div class="tb-feed ${myTurn ? 'yt' : ''}">${myTurn ? '<b class="ytb">👉 YOUR TURN</b> ' : ''}${lastFeed ? esc(lastFeed) : ''}</div>
       <div class="tb-coach ${myTurn ? 'mine' : ''}">${G.coach.img ? `<img src="${G.coach.img}" alt="" onerror="this.outerHTML='<span class=ce>🧑🏾‍🏫</span>'">` : '<span class="ce">🧑🏾‍🏫</span>'}<div>${coach || '&nbsp;'}</div></div>
       <div class="tb-hand" id="hand">${G.hand(g, me, { myTurn, selected, tip: prefs.coach && tip ? tip.move : null })}</div>
       ${g.phase === 'hand' || g.phase === 'over' ? summary(g, me) : ''}
@@ -352,6 +370,13 @@ export function startTable(G) {
       move: (m) => { sfx('flip'); tryMove(m); },
       illegal: (why) => { coachMsg = `🚫 ${why}`; sfx('wrong'); game(); },
     });
+    const cardsEl = app.querySelector('#hand .cards'); if (cardsEl) cardsEl.style.setProperty('--n', cardsEl.children.length);
+    const fm = myTurn && G.forced ? G.forced(g, me) : null;
+    if (fm && autoKey !== key) {
+      autoKey = key;
+      coachMsg = fm.pass ? "✊🏾 No bone fits, so you knock. The game does it for you." : 'Only one card you can play. Playing it for you…';
+      setTimeout(() => { if (V && V.g && V.g.turn === me) tryMove(fm); }, 1100);
+    }
     const nx = $('#nexthand');
     if (nx) nx.onclick = () => { if (isHost) nextHand(); else T.sendInput({ t: 'next', pid: myPid }); };
     const again = $('#again');

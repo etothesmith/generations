@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GENERATIONS · Bid Whist</title>
+<meta name="theme-color" content="#14B8A6">
+<meta property="og:title" content="Teach me to play Bid Whist 🎓">
+<meta property="og:description" content="Learn Bid Whist step by step with the coach, then play the family bots or your people online.">
+<meta property="og:image" content="https://etothesmith.github.io/generations/assets/share_card.jpg">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/blockparty.css">
+<link rel="stylesheet" href="css/table.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🃏</text></svg>">
+</head>
+<body class="tbl bidwhist" data-world="teal" style="--world:#14B8A6;--world-d:#0B8577;--felt:#7A2E3A">
+<div class="stage-bg"><div class="floor"></div></div>
+<div id="app"></div>
+<script type="module">
+import { startTable } from './js/table/table.js';
+import { BIDWHIST } from './js/table/bidwhist-ui.js';
+startTable(BIDWHIST);
+</script>
+</body>
+</html>

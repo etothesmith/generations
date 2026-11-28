@@ -20363,5 +20363,545 @@
   "acceptAlso": [],
   "culturalContext": "Win the bid, grab the kitty, and toss out your weakest cards.",
   "needsReview": false
+ },
+ {
+  "id": "ride-001",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "'Caddy' is a nickname for which classic car brand?",
+  "choices": [
+   "Cadillac",
+   "Chevrolet",
+   "Chrysler",
+   "Cutlass"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "From Motown songs to rap videos, the Caddy has always meant you made it.",
+  "needsReview": false
+ },
+ {
+  "id": "ride-002",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 1,
+  "prompt": "Cars rigged with hydraulics so they can bounce and hop are called…",
+  "choices": [
+   "Lowriders",
+   "Monster trucks",
+   "Hot rods",
+   "Dragsters"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Lowrider clubs are a big part of Black and Latino car culture in Los Angeles.",
+  "needsReview": false
+ },
+ {
+  "id": "ride-003",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 1,
+  "prompt": "In the 2000s, rims that kept turning after the car stopped were called…",
+  "choices": [
+   "Spinners",
+   "Spokes",
+   "Twisters",
+   "Rollers"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Peak 2000s flex. Every music video had them.",
+  "needsReview": false
+ },
+ {
+  "id": "ride-004",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "In Houston car culture, a 'slab' is…",
+  "choices": [
+   "A custom car with candy paint and poking rims",
+   "A drag strip",
+   "A car wash",
+   "A parking lot party"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "SLAB stands for 'Slow, Loud And Bangin'.'",
+  "needsReview": false
+ },
+ {
+  "id": "ride-005",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "genz",
+  "difficulty": 1,
+  "prompt": "'Candy paint' on a car is…",
+  "choices": [
+   "A deep, glossy, see-through-looking color",
+   "Paint that smells sweet",
+   "Stickers",
+   "Paint that glows in the dark"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Candy apple red, grape, lime… the deeper the better.",
+  "needsReview": false
+ },
+ {
+  "id": "ride-006",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "Which rapper hosted MTV's car makeover show 'Pimp My Ride'?",
+  "choices": [
+   "Xzibit",
+   "Snoop Dogg",
+   "Ludacris",
+   "Ice Cube"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Yo dawg… the show ran from 2004 to 2007.",
+  "needsReview": false
+ },
+ {
+  "id": "ride-007",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "In Houston, the long wire rims that stick way out from the car are called swangas or…",
+  "choices": [
+   "Elbows",
+   "Knees",
+   "Wings",
+   "Pokes"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "They're also called 'cheese graters' and '84s' (after the 1984 Cadillac wheels).",
+  "needsReview": false
+ },
+ {
+  "id": "ride-008",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "Which 2004 song with Slim Thug and Paul Wall put Houston car culture on the national map?",
+  "choices": [
+   "'Still Tippin''",
+   "'Drive Slow'",
+   "'Ridin''",
+   "'Grillz'"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Mike Jones led the track. Who? Mike Jones!",
+  "needsReview": false
+ },
+ {
+  "id": "ride-009",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 2,
+  "prompt": "The 'Green Book,' published from 1936 to 1966, helped Black drivers find…",
+  "choices": [
+   "Places that would let them eat, sleep and buy gas",
+   "Car dealers",
+   "Gas prices",
+   "Speed traps only"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Victor Hugo Green published it so families could travel the segregated U.S. more safely.",
+  "needsReview": false
+ },
+ {
+  "id": "ride-010",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 2,
+  "prompt": "Prince's 1983 hit is about a little red…",
+  "choices": [
+   "Corvette",
+   "Cadillac",
+   "Mustang",
+   "Camaro"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "'Little Red Corvette' was one of his first big crossover hits.",
+  "needsReview": false
+ },
+ {
+  "id": "ride-011",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Which Oscar-winning 2018 movie is named after the travel guide for Black motorists?",
+  "choices": [
+   "Green Book",
+   "Driving Miss Daisy",
+   "Ray",
+   "Harriet"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "It won Best Picture, and Mahershala Ali won Best Supporting Actor.",
+  "needsReview": false
+ },
+ {
+  "id": "ride-012",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 3,
+  "prompt": "A 'donk' is traditionally which car, lifted up on giant rims?",
+  "choices": [
+   "A 1971–76 Chevy Impala or Caprice",
+   "A 1990s Honda Civic",
+   "A Ford Mustang",
+   "A Cadillac Escalade"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "The name is said to come from the Impala logo, which some folks thought looked like a donkey.",
+  "needsReview": false
+ },
+ {
+  "id": "ride-013",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 3,
+  "prompt": "In 1963, Wendell Scott became the first Black driver to win a race in NASCAR's top series. Where?",
+  "choices": [
+   "Jacksonville, Florida",
+   "Daytona Beach",
+   "Talladega",
+   "Charlotte"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "He wasn't handed the trophy that night; NASCAR finally gave his family the trophy in 2021.",
+  "needsReview": false
+ },
+ {
+  "id": "ride-014",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "genz",
+  "difficulty": 2,
+  "prompt": "In 2021, who became the first Black driver to win a NASCAR Cup Series race since Wendell Scott?",
+  "choices": [
+   "Bubba Wallace",
+   "Lewis Hamilton",
+   "Jesse Iwuji",
+   "Willy T. Ribbs"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "He won at Talladega in October 2021.",
+  "needsReview": false
+ },
+ {
+  "id": "ride-015",
+  "round": 1,
+  "category": "Rides & Car Culture",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 3,
+  "prompt": "C.R. Patterson & Sons of Greenfield, Ohio, is remembered as the first Black-owned…",
+  "choices": [
+   "Car company",
+   "Gas station chain",
+   "Tire factory",
+   "Driving school"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "They built the Patterson-Greenfield car around 1915, after decades of making carriages.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-033",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "What number did Jackie Robinson wear?",
+  "choices": [
+   "42",
+   "24",
+   "23",
+   "8"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Every MLB player wears it on April 15, Jackie Robinson Day.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-034",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 1,
+  "prompt": "Which NBA legend was nicknamed 'the Black Mamba'?",
+  "choices": [
+   "Kobe Bryant",
+   "Shaquille O'Neal",
+   "Allen Iverson",
+   "Dwyane Wade"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "He gave himself the nickname as his on-court alter ego.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-035",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "genz",
+  "difficulty": 1,
+  "prompt": "Which quarterback led the Kansas City Chiefs to Super Bowl wins in 2020, 2023 and 2024?",
+  "choices": [
+   "Patrick Mahomes",
+   "Lamar Jackson",
+   "Jalen Hurts",
+   "Russell Wilson"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "He was Super Bowl MVP all three times.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-036",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 2,
+  "prompt": "How many NBA championships did Bill Russell win as a player?",
+  "choices": [
+   "11",
+   "6",
+   "8",
+   "5"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "In 1966 he also became the first Black head coach in the NBA.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-037",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "In 2012, who became the first Black gymnast to win the Olympic all-around gold?",
+  "choices": [
+   "Gabby Douglas",
+   "Simone Biles",
+   "Dominique Dawes",
+   "Jordan Chiles"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "She was nicknamed 'the Flying Squirrel.'",
+  "needsReview": false
+ },
+ {
+  "id": "sport-038",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 2,
+  "prompt": "At the 1996 Atlanta Olympics, which sprinter in gold shoes won both the 200m and 400m?",
+  "choices": [
+   "Michael Johnson",
+   "Carl Lewis",
+   "Maurice Greene",
+   "Jesse Owens"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "He was the first man to win both at the same Olympics.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-039",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 2,
+  "prompt": "In 1957, who became the first Black player to win Wimbledon?",
+  "choices": [
+   "Althea Gibson",
+   "Arthur Ashe",
+   "Venus Williams",
+   "Zina Garrison"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "She won it again in 1958.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-040",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "Steve 'Air' McNair played college football at which HBCU?",
+  "choices": [
+   "Alcorn State",
+   "Grambling State",
+   "Jackson State",
+   "Southern"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "He finished third in the 1994 Heisman voting.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-041",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 3,
+  "prompt": "Which Negro Leagues slugger was often called 'the Black Babe Ruth'?",
+  "choices": [
+   "Josh Gibson",
+   "Satchel Paige",
+   "Cool Papa Bell",
+   "Buck O'Neil"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "In 2024, MLB's new records made him its career batting average leader.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-042",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 2,
+  "prompt": "In 2001, who became the first Black quarterback taken No. 1 overall in the NFL Draft?",
+  "choices": [
+   "Michael Vick",
+   "Donovan McNabb",
+   "Cam Newton",
+   "Daunte Culpepper"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "The Atlanta Falcons picked him out of Virginia Tech.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-043",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 3,
+  "prompt": "In 1975, who became the first Black golfer to play in the Masters?",
+  "choices": [
+   "Lee Elder",
+   "Charlie Sifford",
+   "Calvin Peete",
+   "Tiger Woods"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Tiger Woods won the Masters 22 years later, in 1997.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-044",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 3,
+  "prompt": "Who was the NBA's first Black head coach, starting in 1966?",
+  "choices": [
+   "Bill Russell",
+   "Lenny Wilkens",
+   "Al Attles",
+   "K.C. Jones"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "He was a player-coach for the Boston Celtics and won two more titles that way.",
+  "needsReview": false
  }
 ]

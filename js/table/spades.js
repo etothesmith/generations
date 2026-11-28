@@ -251,13 +251,13 @@ function beats(c, w, led, o) {
  * Pick a move for a bot (or the coach). level: 'easy' | 'medium' | 'hard'.
  * Returns { move, why } — "why" is a plain-English reason for the coach.
  */
-export function think(s, seat, level = 'medium') {
+export function think(s, seat, level = 'medium', style = {}) {
   const o = s.o, L = legal(s, seat);
   if (!L.length) return null;
   if (s.phase === 'bid') {
     const e = estimate(s.hands[seat], o);
     const p = partner(seat), pb = s.bids[p];
-    let bid = e.bid;
+    let bid = Math.max(1, Math.floor(e.books + 0.6 + (style.bold || 0) * 0.7));
     if (level === 'easy') bid = Math.max(1, Math.round(e.books + (Math.random() - 0.5)));
     if (level !== 'easy' && e.nilOk && pb !== 0 && (pb === null || pb >= 3)) return { move: { bid: 0 }, why: 'This hand is so weak it may not win a single book. Bidding Nil is worth +100 if you take zero books.', reasons: e.reasons };
     bid = Math.min(13, bid);

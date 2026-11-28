@@ -218,7 +218,8 @@ function danger(s, seat, board) {
 }
 function openEndsB(board) { return openEnds({ board }); }
 
-export function think(s, seat, level = 'medium') {
+export function think(s, seat, level = 'medium', style = {}) {
+  const bold = style.bold || 0;
   const L = legal(s, seat);
   if (!L.length) return null;
   if (L[0].pass) {
@@ -234,7 +235,7 @@ export function think(s, seat, level = 'medium') {
     const nb = cloneBoard(s.board); place(nb, m.tile, m.end);
     const c = count(null, nb), pts = c > 0 && c % 5 === 0 ? c : 0;
     const [a, b] = parse(m.tile);
-    let score = pts * 3 + (a + b) * 0.6 + (a === b ? 2.5 : 0);
+    let score = pts * (3 + bold) + (a + b) * 0.6 + (a === b ? 2.5 : 0);
     const why = [];
     if (pts) why.push(`the ends add up to ${c}, a multiple of 5, so your team scores ${pts}`);
     // keep a number you have lots of (control); avoid playing your last of a number
@@ -242,7 +243,7 @@ export function think(s, seat, level = 'medium') {
     score += keep * 0.4;
     if (level === 'hard') {
       const d = danger(s, seat, nb);
-      score -= d * 1.6;
+      score -= d * (1.6 - bold * 0.6);
       if (d >= 5 && !pts) why.push(`careful: it leaves a count the next player could score off of`);
       const ends = openEndsB(nb).map((k) => endValue({ board: nb }, k));
       const blocks = opp.filter((p) => ends.every((v) => s.knocks[p].includes(v)));

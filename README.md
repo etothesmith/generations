@@ -44,17 +44,20 @@ Everything sits on cream "sticker" cards with thick ink outlines, in the Lilita 
 Everything here starts from the front page (`index.html`).
 
 - **⚡ Quick Play** (`quickplay.html`): one person against three family bots, about 8 minutes. Three rounds: The Board (4×3), Lightning (5 rapid questions, speed bonus) and Final Wager. Everybody answers every question at once, so there's no dead air. Pick 😌 Chill, 🙂 Normal or 🌶️ Spicy bots. Each bot knows its own generation's questions best.
-- **♠️ Teach Me Spades** (`spades.html`) and **🁫 Teach Me Dominoes** (`dominoes.html`):
+- **♠️ Teach Me Spades** (`spades.html`), **🃏 Teach Me Bid Whist** (`bidwhist.html`) and **🁫 Teach Me Dominoes** (`dominoes.html`):
   - **🎓 Teach Me to Play**: short step-by-step lessons with a "try it" question on each, then a practice hand with easy bots.
   - **🤖 Play the Bots**: you and a bot partner against two family bots (Easy, Medium or Hard).
   - **🌐 Play Online**: start a table and share the 4-letter code or link. Friends join from their own phones, and the host can tap two seats to swap partners. Empty seats get bots, and if someone leaves mid-game a bot holds their seat until they come back.
   - **🧑🏾‍🏫 The coach** explains every move: how to count your books when bidding, why a card wins a book, when to cut, why a domino play scores, and who's blocking whom. Turn it off in game to get a 💡 Hint button instead. Tapping a card or bone you can't play tells you why.
   - **Spades rules**: partnership, bags (10 = −100), Nil (±100), Boston, play to 200/300/500, an optional 🃏 Jokers & Deuces house rule.
+  - **Bid Whist rules**: 54 cards with jokers, 12 each plus a 6-card kitty. Bid 3–7 ⬆️ Uptown / ⬇️ Downtown / 🚫 No Trump (No Trump beats a suit bid at the same number). The dealer is stuck if everybody passes. The winner takes the kitty, throws out 6 (they count as a book) and names trump. Big and Little Joker are the top trumps (worthless in No Trump). Score books over 6; set = lose your bid; No Trump doubles. Play to 5/7/11.
   - **Dominoes rules**: partners, double-six, 7 bones each, spinner, scoring by fives (Muggins), "Domino!" scores the other team's leftover pips rounded to 5, blocked games, play to 100/150/250.
-- The code: `js/table/` (`spades.js` and `dominoes.js` hold the rules, bots and coach; `table.js` holds the lessons, lobby, online play and coach screen) and `js/quickplay.js`.
+- **Bots never feel the same twice.** Each table casts 3 bots from 8 photo characters plus 40 more names with freshly drawn faces. Each bot gets a personality that changes how it plays and talks: 🦈 plays to win, 🎲 bids big, 🧘🏾 cool and steady, 🐢 plays it safe, 🗣️ all mouth, or 🍬 sweet as pie. Bold bots bid higher and play faster; careful ones bid lower. Table talk comes from large pools, and each device remembers the last 120 lines it heard, so lines don't repeat. Bots greet you, give you a friendly nudge if you take too long, cheer when their partner does well, and brag or take the loss at the end.
+- **Simple by default.** Tap a card once to play it. If there's only one legal card, or a domino hand with nothing to play, the game plays it for you. A pulsing 👉 YOUR TURN shows when it's on you, and games are short by default (Spades to 200, Dominoes to 100, Bid Whist to 5). The main show now defaults to the Quick board (4×3) and a Short lineup, about 20 minutes.
+- The code: `js/table/` (`spades.js`, `bidwhist.js` and `dominoes.js` hold the rules, bots and coach; `bots.js` holds the cast, personalities and table talk; `table.js` holds the lessons, lobby, online play and coach screen) and `js/quickplay.js`.
 
 ## 🔎 Question bank
-963 questions. In November 2026 every factual question was checked: fixed a few notes (Serena's record, Langston Hughes' age, a Grammy year), reworded two questions, and replaced 7 exact duplicates. Added a **Spades & Dominoes** category plus new questions in the thinner categories. Quick Play and Practice now shuffle answer positions like the main show does.
+990 questions. New: a 🚗 **Rides & Car Culture** category (Houston slab, swangas, candy paint, lowriders, the Green Book, Wendell Scott, Bubba Wallace and more) and more Sports Legends. Quick Play remembers what you've seen and serves new questions first. In November 2026 every factual question was checked: fixed a few notes (Serena's record, Langston Hughes' age, a Grammy year), reworded two questions, and replaced 7 exact duplicates. Added a **Spades & Dominoes** category plus new questions in the thinner categories. Quick Play and Practice now shuffle answer positions like the main show does.
 
 ## ✅ Firebase is connected
 

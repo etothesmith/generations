@@ -156,12 +156,12 @@ const RULES = `<ul class="tl-list">
 <li>Blocked (nobody can play): the team with fewer pips scores the other team's pips (rounded).</li>
 <li>First team to the target (150 by default) wins. House rules vary from table to table. This is "fives" (Muggins) scoring.</li></ul>`;
 
-const TALK = {
-  score: ['Gimme {n}! 💥', '{n}! Write it down!', "That's {n}, baby!", 'Ka-CHOW! {n} 🔥'],
-  domino: ['DOMINO! 🙌🏾 Count \'em up!', 'Domino, sit down! 😂', "I'm out! Domino!"],
-  knock: ['*knock knock* 😒', 'Pass… y\'all cold', 'Ugh. Knock.'],
+const LINES = {
+  score: ['Gimme {n}! 💥', '{n}! Write it down!', "That's {n}, baby!", 'Ka-CHOW! {n} 🔥', '{n} on the board!', 'Mark me down for {n} 📝', 'Count it: {n}!', 'Slap! {n}!', 'And THAT\'S {n}', '{n} more for the good guys'],
+  domino: ["DOMINO! 🙌🏾 Count 'em up!", 'Domino, sit down! 😂', "I'm out! Domino!", 'DOMINO! Pay up!', 'Slam! Domino! 💥', 'Domino, baby. Count your bones.'],
+  knock: ["*knock knock* 😒", "Pass… y'all cold", 'Ugh. Knock.', 'Who blocked me?!', 'I see what you did 👀', 'Skip me… for NOW'],
+  blocked: ['Blocked up! Count your bones!', 'Nobody can go? Lock it up!'],
 };
-const line = (k, n) => TALK[k][Math.floor(Math.random() * TALK[k].length)].replace('{n}', n);
 
 export const DOMINOES = {
   id: 'dominoes',
@@ -173,7 +173,7 @@ export const DOMINOES = {
   lessons: LESSONS,
   rulesHtml: RULES,
   options: [
-    { key: 'target', label: 'Play to', def: 150, choices: [[100, '100 (quick)'], [150, '150'], [250, '250 (long)']] },
+    { key: 'target', label: 'Play to', def: 100, choices: [[100, '100 (quick)'], [150, '150'], [250, '250 (long)']] },
   ],
   practiceOpts: { target: 100 },
   startLine: (g, seats) => `${seats[g.turn].name} has the big 6|6 and leads.`,
@@ -194,12 +194,14 @@ export const DOMINOES = {
     return null;
   },
   sound(e) { return e.type === 'play' ? (e.pts ? 'stamp' : 'tick') : e.type === 'knock' ? 'tock' : e.type === 'domino' ? 'airhorn' : e.type === 'blocked' ? 'crickets' : null; },
-  talk(e) {
-    if (e.type === 'play' && e.pts && Math.random() < 0.75) return { seat: e.seat, text: line('score', e.pts) };
-    if (e.type === 'domino') return { seat: e.seat, text: line('domino') };
-    if (e.type === 'knock' && Math.random() < 0.5) return { seat: e.seat, text: line('knock') };
+  lines: LINES,
+  talkKey(e) {
+    if (e.type === 'play' && e.pts) return { seat: e.seat, key: 'score', n: e.pts, p: 0.8 };
+    if (e.type === 'domino') return { seat: e.seat, key: 'domino' };
+    if (e.type === 'knock') return { seat: e.seat, key: 'knock', p: 0.5 };
     return null;
   },
+  forced(g, me) { if (g.phase !== 'play' || g.turn !== me) return null; const L = R.legal(g, me); if (L.length === 1 && L[0].pass) return { pass: true }; const tiles = new Set(L.map((m) => m.tile)); return L.length === 1 ? L[0] : null; },
   seatInfo(g, seat) {
     const n = g.hands[seat].length;
     const k = g.knocks[seat].length ? ` · no ${[...g.knocks[seat]].sort().join(',')}` : '';

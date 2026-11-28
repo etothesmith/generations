@@ -18,7 +18,7 @@ export const TIMES = {
 export const DEFAULT_CATS = ['Slang Across the Generations', 'Classic Black Cinema', 'Motown & Soul', 'Black TV Classics', 'Black History Deep Cuts', 'Card Check'];
 export const CAT_ICONS = {
   'Slang Across the Generations': 'hashtag', 'Black TV Classics': 'tv', 'Who Said It?': 'mic',
-  'Black History Deep Cuts': 'sankofa', 'Trailblazers': 'crown', 'Card Check': 'card', 'Spades & Dominoes': 'card',
+  'Black History Deep Cuts': 'sankofa', 'Trailblazers': 'crown', 'Card Check': 'card', 'Spades & Dominoes': 'card', 'Rides & Car Culture': 'star',
   'Classic Black Cinema': 'film', 'Motown & Soul': 'vinyl', 'R&B & Hip-Hop': 'boombox',
   'Sports Legends': 'basketball', 'Church & Gospel': 'church', "Little Ones' Corner": 'balloon',
   'Black America Road Trip': 'star', 'Civil Rights Movement': 'mic', 'Inventors & Innovators': 'bolt',
@@ -137,7 +137,7 @@ export class Engine {
       players: {}, teams: [], teamMode: 'gen', teamCount: 2, canMerge: false,
       round: 0, controlTeam: null, board: null, remix: null, final: null,
       q: null, fx: null, categories: DEFAULT_CATS.slice(),
-      settings: { answerTime: 'relaxed', remixLength: 'normal', theme: 'classic', playAlong: true, format: 'classic', remixOff: {}, autoHost: true, boardSize: 'standard', lineup: null },
+      settings: { answerTime: 'relaxed', remixLength: 'short', theme: 'classic', playAlong: true, format: 'classic', remixOff: {}, autoHost: true, boardSize: 'quick', lineup: null },
       season: null,
       stats: {},
       survey: null,

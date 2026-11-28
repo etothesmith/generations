@@ -25,6 +25,12 @@ const ROSTER = [
 const LEVELS = { chill: { base: 0.42, speed: [4, 11], label: '😌 Chill' }, normal: { base: 0.58, speed: [3, 9], label: '🙂 Normal' }, spicy: { base: 0.74, speed: [2, 7], label: '🌶️ Spicy' } };
 
 let BANK = [];
+// remember what you've already seen (across games) so Quick Play keeps feeling new
+const SEEN_KEY = 'qp-seen';
+const seen = (() => { try { return new Set(JSON.parse(localStorage.getItem(SEEN_KEY) || '[]')); } catch (e) { return new Set(); } })();
+function markSeen(id) { seen.add(id); try { localStorage.setItem(SEEN_KEY, JSON.stringify([...seen].slice(-800))); } catch (e) { /* */ } }
+// unseen first; once a pool is used up, start it over
+const fresh = (pool) => { const f = pool.filter((q) => !seen.has(q.id)); return f.length >= 3 ? f : pool; };
 let P = null; // the game
 let timer = null, tick = null;
 const prefs = (() => { try { return JSON.parse(localStorage.getItem('qp-prefs') || '{}'); } catch (e) { return {}; } })();
@@ -71,17 +77,17 @@ function start() {
   };
   // the board: 4 categories that have at least 3 multiple-choice trivia questions
   const byCat = {};
-  for (const q of BANK) if (q.questionType === 'trivia' && q.round === 1) (byCat[q.category] = byCat[q.category] || []).push(q);
+  for (const q of fresh(BANK.filter((x) => x.questionType === 'trivia' && x.round === 1))) (byCat[q.category] = byCat[q.category] || []).push(q);
   const cats = shuffle(Object.keys(byCat).filter((c) => byCat[c].length >= 3)).slice(0, 4);
   P.board = cats.map((c) => {
     const qs = shuffle(byCat[c].slice()).slice(0, 3).sort((a, b) => (a.difficulty || 1) - (b.difficulty || 1) || a.value - b.value);
     qs.forEach((q) => P.used.add(q.id));
     return { cat: c, tiles: qs.map((q, i) => ({ q, value: (i + 1) * 100, done: false })) };
   });
-  const light = shuffle(BANK.filter((q) => !P.used.has(q.id) && (q.round === 2 || q.questionType !== 'trivia'))).slice(0, 5);
+  const light = shuffle(fresh(BANK.filter((q) => !P.used.has(q.id) && (q.round === 2 || q.questionType !== 'trivia')))).slice(0, 5);
   light.forEach((q) => P.used.add(q.id));
   P.lightning = light;
-  P.finalQ = shuffle(BANK.filter((q) => !P.used.has(q.id) && q.questionType === 'trivia' && (q.difficulty || 1) >= 2))[0] || shuffle(BANK.filter((q) => !P.used.has(q.id)))[0];
+  P.finalQ = shuffle(fresh(BANK.filter((q) => !P.used.has(q.id) && q.questionType === 'trivia' && (q.difficulty || 1) >= 2)))[0] || shuffle(BANK.filter((q) => !P.used.has(q.id)))[0];
   intro('ROUND 1', 'The Board', 'Pick a category and a value. Everybody answers. Get it right (and fastest) and you pick next.', board);
 }
 
@@ -151,6 +157,7 @@ function botAnswer(p, q, secs) {
 
 function ask(q, o) {
   clearAll();
+  markSeen(q.id);
   // shuffle the answer positions every time (decade questions stay in order)
   if (q.questionType !== 'name_that_era') {
     const right = q.choices[LET.indexOf(q.answer)], ch = shuffle(q.choices);

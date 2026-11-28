@@ -83,14 +83,14 @@ const RULES = `<ul class="tl-list">
 <li>First team to the target wins. A team that falls to −200 loses.</li>
 <li><b>Jokers & Deuces</b> (optional): remove 2♣ 2♥, add jokers. Big Joker > Little Joker > 2♦ > 2♠ > A♠ > K♠ …</li></ul>`;
 
-const TALK = {
-  cut: ['Cut! ✂️', "Sorry baby, I ain't got none 😏", 'Snip snip!', 'Mine. 😤'],
-  set: ['Y\'all got SET! 📉', 'Set! Sit down somewhere 😂', 'Read \'em and weep'],
-  nil: ['Going Nil. Pray for me 🙏', 'Nil! Cover me partner'],
-  boston: ['BOSTON!! 🏃🏾‍♂️💨', 'Run it! All 13!'],
-  bigbid: ['We got this 💪🏾', "Don't play with me"],
+const LINES = {
+  cut: ['Cut! ✂️', "Sorry baby, I ain't got none 😏", 'Snip snip!', 'Mine. 😤', 'Trump tight!', 'Ooh you thought! 😂', 'Out of those, in with THIS', 'Chop chop 🔪', 'That ace ain\'t safe at my table', 'Spade on that!'],
+  set: ["Y'all got SET! 📉", 'Set! Sit down somewhere 😂', "Read 'em and weep", 'Bid what you got next time', 'SET SET SET 🥁', 'Count it up… oh wait, y\'all can\'t 😂'],
+  nil: ['Going Nil. Pray for me 🙏🏾', 'Nil! Cover me, partner', 'Zero. Nada. Nil.', 'Watch me take NOTHING'],
+  boston: ['BOSTON!! 🏃🏾‍♂️💨', 'Run it! All 13!', 'Thirteen books, baby!', 'Boston! Get up from the table!'],
+  bigbid: ['We got this 💪🏾', "Don't play with me", 'Big hand, big bid', 'Y\'all better bring it', 'I\'m feeling generous tonight'],
+  made: ['Made it! 💅🏾', 'Like I said.', 'Right on the money', 'Bid it, made it'],
 };
-const pickLine = (k) => TALK[k][Math.floor(Math.random() * TALK[k].length)];
 
 function teamName(t, me) { return t === me % 2 ? 'Your team' : 'Them'; }
 
@@ -104,7 +104,7 @@ export const SPADES = {
   lessons: LESSONS,
   rulesHtml: RULES,
   options: [
-    { key: 'target', label: 'Play to', def: 300, choices: [[200, '200 (quick)'], [300, '300'], [500, '500 (long)']] },
+    { key: 'target', label: 'Play to', def: 200, choices: [[200, '200 (quick)'], [300, '300'], [500, '500 (long)']] },
     { key: 'jokers', label: 'House rule', def: false, choices: [[false, 'Regular deck'], [true, '🃏 Jokers & Deuces']] },
     { key: 'nil', label: 'Nil bids', def: true, choices: [[true, 'Allowed'], [false, 'No Nil']] },
   ],
@@ -126,18 +126,22 @@ export const SPADES = {
     return null;
   },
   sound(e) { return { bid: 'tick', broken: 'whoosh', trick: 'stamp', handend: 'reveal' }[e.type] || null; },
-  talk(e, g) {
-    if (e.type === 'trick' && e.cut && Math.random() < 0.6) return { seat: e.winner, text: pickLine('cut') };
-    if (e.type === 'bid' && e.bid === 0) return { seat: e.seat, text: pickLine('nil') };
-    if (e.type === 'bid' && e.bid >= 6) return { seat: e.seat, text: pickLine('bigbid') };
+  lines: LINES,
+  talkKey(e) {
+    if (e.type === 'trick' && e.cut) return { seat: e.winner, key: 'cut', p: 0.6 };
+    if (e.type === 'bid' && e.bid === 0) return { seat: e.seat, key: 'nil' };
+    if (e.type === 'bid' && e.bid >= 6) return { seat: e.seat, key: 'bigbid' };
     if (e.type === 'handend') {
       const setT = e.result.find((r) => r.contract && r.made === false);
-      if (setT) return { seat: 1 - setT.team, text: pickLine('set') };
+      if (setT) return { seat: 1 - setT.team, key: 'set' };
       const b = e.result.find((r) => r.notes.some((n) => n.k === 'boston'));
-      if (b) return { seat: b.team, text: pickLine('boston') };
+      if (b) return { seat: b.team, key: 'boston' };
+      const m = e.result.find((r) => r.made);
+      if (m) return { seat: m.team, key: 'made', p: 0.4 };
     }
     return null;
   },
+  forced(g, me) { if (g.phase !== 'play' || g.turn !== me) return null; const L = R.legal(g, me); return L.length === 1 ? { card: L[0] } : null; },
   seatInfo(g, seat) {
     const b = g.bids[seat];
     if (g.phase === 'bid') return b === null ? (g.turn === seat ? '🤔 bidding…' : '') : `Bid <b>${b === 0 ? 'Nil' : b}</b>`;
@@ -169,7 +173,7 @@ export const SPADES = {
     return `${pad}<div class="cards n${h.length}">${h.map((c) => {
       const cls = [play ? (L.includes(c) ? 'ok' : 'no') : '', ctx.selected === c ? 'sel' : '', play && ctx.tip && ctx.tip.card === c ? 'sug' : ''].join(' ');
       return cardHtml(c, cls, g.o);
-    }).join('')}</div>${play && ctx.selected ? '<div class="tap2">Tap it again to play</div>' : ''}`;
+    }).join('')}</div>`;
   },
   bind(app, g, me, ctx) {
     app.querySelectorAll('[data-bid]').forEach((b) => (b.onclick = () => ctx.move({ bid: +b.dataset.bid })));
@@ -177,7 +181,7 @@ export const SPADES = {
       if (!ctx.myTurn || g.phase !== 'play') return;
       const c = el.dataset.c, why = R.whyIllegal(g, me, c);
       if (why) return ctx.illegal(why);
-      if (el.classList.contains('sel')) ctx.move({ card: c }); else ctx.select(c);
+      ctx.move({ card: c });
     }));
   },
   handSummary(g, me, seats) {
