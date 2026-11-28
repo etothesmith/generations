@@ -472,6 +472,14 @@ document.addEventListener('click', (e) => {
 (async () => {
   app().innerHTML = '<div class="msg">Loading practice…</div>';
   P = await fetch('data/practice.json').then((r) => r.json());
+  // shuffle answer positions so the right answer isn't always A
+  for (const q of P.questions || []) {
+    if (['trivia', 'hashtag', 'saying', 'emoji'].includes(q.questionType) && q.choices && 'ABCD'.includes(q.answer) && q.answer) {
+      const right = q.choices['ABCD'.indexOf(q.answer)];
+      const ch = q.choices.slice().sort(() => Math.random() - 0.5);
+      q.choices = ch; q.answer = 'ABCD'[ch.indexOf(right)];
+    }
+  }
   const want = new URLSearchParams(location.search).get('lesson');
   if (want) lesson(want); else menu();
 })();

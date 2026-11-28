@@ -18,7 +18,7 @@ export const TIMES = {
 export const DEFAULT_CATS = ['Slang Across the Generations', 'Classic Black Cinema', 'Motown & Soul', 'Black TV Classics', 'Black History Deep Cuts', 'Card Check'];
 export const CAT_ICONS = {
   'Slang Across the Generations': 'hashtag', 'Black TV Classics': 'tv', 'Who Said It?': 'mic',
-  'Black History Deep Cuts': 'sankofa', 'Trailblazers': 'crown', 'Card Check': 'card',
+  'Black History Deep Cuts': 'sankofa', 'Trailblazers': 'crown', 'Card Check': 'card', 'Spades & Dominoes': 'card',
   'Classic Black Cinema': 'film', 'Motown & Soul': 'vinyl', 'R&B & Hip-Hop': 'boombox',
   'Sports Legends': 'basketball', 'Church & Gospel': 'church', "Little Ones' Corner": 'balloon',
   'Black America Road Trip': 'star', 'Civil Rights Movement': 'mic', 'Inventors & Innovators': 'bolt',

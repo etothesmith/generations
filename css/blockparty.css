@@ -309,3 +309,14 @@ body[data-world=royal] .phone .hint, body[data-world=royal] .phone p, body[data-
 .split-chip { background: var(--paper) !important; color: var(--ink) !important; border: 3px solid var(--ink) !important; box-shadow: 3px 4px 0 var(--ink); }
 .split-chip.on { background: var(--ink) !important; color: #fff !important; }
 .lineup-row, .lineup-row span { color: var(--ink); }
+
+/* front door: the side games */
+.side-games { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: min(980px, 94vw); margin: 14px auto 4px; }
+.side-games .sg { display: grid; grid-template-columns: 44px 1fr; align-items: center; column-gap: 8px; text-decoration: none; color: var(--ink); background: var(--paper); border: 4px solid var(--ink); border-radius: 20px; box-shadow: 5px 6px 0 var(--ink); padding: 10px 12px; transition: transform .12s; }
+.side-games .sg:hover { transform: translateY(-3px) rotate(-.8deg); }
+.side-games .sg .e { grid-row: span 2; font-size: 34px; text-align: center; }
+.side-games .sg b { font-family: var(--display); font-weight: 400; font-size: 21px; }
+.side-games .sg small { font-weight: 800; font-size: 12px; opacity: .75; }
+.side-games .sg.qp { background: #FFE08A; } .side-games .sg.sp { background: #D9CCFF; } .side-games .sg.dm { background: #FFD3B0; }
+@media (max-width: 700px) { .side-games { grid-template-columns: 1fr; } }
+.entry-card.host { height: auto; min-height: 0; }

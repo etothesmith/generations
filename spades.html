@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GENERATIONS · Spades</title>
+<meta name="theme-color" content="#3B2A8F">
+<meta property="og:title" content="Teach me to play Spades 🎓">
+<meta property="og:description" content="Learn Spades step by step with the coach, then play the family bots or your people online.">
+<meta property="og:image" content="https://etothesmith.github.io/generations/assets/share_card.jpg">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/blockparty.css">
+<link rel="stylesheet" href="css/table.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♠️</text></svg>">
+</head>
+<body class="tbl spades" data-world="royal" style="--world:#3B2A8F;--world-d:#241A63;--felt:#1E8C4E">
+<div class="stage-bg"><div class="floor"></div></div>
+<div id="app"></div>
+<script type="module">
+import { startTable } from './js/table/table.js';
+import { SPADES } from './js/table/spades-ui.js';
+startTable(SPADES);
+</script>
+</body>
+</html>

@@ -40,6 +40,22 @@ Everything sits on cream "sticker" cards with thick ink outlines, in the Lilita 
 - World logic: `js/world.js` (`worldFor(state)`).
 - Holiday themes (Juneteenth, Christmas, Reunion) still use their backdrop art.
 
+## ⚡ Play on your own, and learn the table games
+Everything here starts from the front page (`index.html`).
+
+- **⚡ Quick Play** (`quickplay.html`): one person against three family bots, about 8 minutes. Three rounds: The Board (4×3), Lightning (5 rapid questions, speed bonus) and Final Wager. Everybody answers every question at once, so there's no dead air. Pick 😌 Chill, 🙂 Normal or 🌶️ Spicy bots. Each bot knows its own generation's questions best.
+- **♠️ Teach Me Spades** (`spades.html`) and **🁫 Teach Me Dominoes** (`dominoes.html`):
+  - **🎓 Teach Me to Play**: short step-by-step lessons with a "try it" question on each, then a practice hand with easy bots.
+  - **🤖 Play the Bots**: you and a bot partner against two family bots (Easy, Medium or Hard).
+  - **🌐 Play Online**: start a table and share the 4-letter code or link. Friends join from their own phones, and the host can tap two seats to swap partners. Empty seats get bots, and if someone leaves mid-game a bot holds their seat until they come back.
+  - **🧑🏾‍🏫 The coach** explains every move: how to count your books when bidding, why a card wins a book, when to cut, why a domino play scores, and who's blocking whom. Turn it off in game to get a 💡 Hint button instead. Tapping a card or bone you can't play tells you why.
+  - **Spades rules**: partnership, bags (10 = −100), Nil (±100), Boston, play to 200/300/500, an optional 🃏 Jokers & Deuces house rule.
+  - **Dominoes rules**: partners, double-six, 7 bones each, spinner, scoring by fives (Muggins), "Domino!" scores the other team's leftover pips rounded to 5, blocked games, play to 100/150/250.
+- The code: `js/table/` (`spades.js` and `dominoes.js` hold the rules, bots and coach; `table.js` holds the lessons, lobby, online play and coach screen) and `js/quickplay.js`.
+
+## 🔎 Question bank
+963 questions. In November 2026 every factual question was checked: fixed a few notes (Serena's record, Langston Hughes' age, a Grammy year), reworded two questions, and replaced 7 exact duplicates. Added a **Spades & Dominoes** category plus new questions in the thinner categories. Quick Play and Practice now shuffle answer positions like the main show does.
+
 ## ✅ Firebase is connected
 
 This copy is already wired to the Firebase project **`generations-game`** (owner: your Google account). It has a Realtime Database (us-central1) with security rules, anonymous sign-in, and a web app. The keys are in `js/config.js`. Phones can join from anywhere as soon as the folder is online (step 3).

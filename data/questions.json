@@ -1047,7 +1047,7 @@
   "acceptAlso": [
    "Langston"
   ],
-  "culturalContext": "Hughes wrote it at about 18, on a train headed to Mexico to see his father.",
+  "culturalContext": "Hughes wrote it as a teenager, on a train crossing the Mississippi River on his way to see his father in Mexico.",
   "needsReview": false
  },
  {
@@ -1395,7 +1395,7 @@
   "acceptAlso": [
    "twenty-three"
   ],
-  "culturalContext": "Her 23 are the most by any player in the Open Era.",
+  "culturalContext": "Her 23 are the most by any woman in the Open Era (since 1968).",
   "needsReview": false
  },
  {
@@ -10712,18 +10712,18 @@
   "questionType": "trivia",
   "generationEra": "millennial",
   "difficulty": 4,
-  "prompt": "In 2018, Kendrick Lamar became the first rapper to win which prize?",
+  "prompt": "Which rapper's 2008 album 'Tha Carter III' sold over a million copies in its first week?",
   "choices": [
-   "The Pulitzer Prize for Music",
-   "The Nobel Prize",
-   "The Kennedy Center Honor",
-   "An EGOT"
+   "Lil Wayne",
+   "50 Cent",
+   "Kanye West",
+   "T.I."
   ],
   "answer": "A",
   "acceptAlso": [
    "Pulitzer"
   ],
-  "culturalContext": "He won it for 'DAMN.' — the first non-classical, non-jazz work to win.",
+  "culturalContext": "'A Milli' and 'Lollipop' came off that album.",
   "needsReview": false
  },
  {
@@ -11625,18 +11625,18 @@
   "questionType": "trivia",
   "generationEra": "all",
   "difficulty": 4,
-  "prompt": "The Tuskegee Airmen were…",
+  "prompt": "Who founded the National Council of Negro Women in 1935?",
   "choices": [
-   "The first Black military pilots in the U.S. armed forces",
-   "A Black airline",
-   "Stunt pilots",
-   "A college football team"
+   "Mary McLeod Bethune",
+   "Dorothy Height",
+   "Mary Church Terrell",
+   "Ida B. Wells"
   ],
   "answer": "A",
   "acceptAlso": [
    "pilots"
   ],
-  "culturalContext": "Their red-tailed planes escorted bombers in World War II.",
+  "culturalContext": "Dorothy Height later led it for four decades.",
   "needsReview": false
  },
  {
@@ -11935,19 +11935,19 @@
   "questionType": "trivia",
   "generationEra": "all",
   "difficulty": 3,
-  "prompt": "Okra came to the Americas from…",
+  "prompt": "Lowcountry benne wafers are made with which seed, brought over from West Africa?",
   "choices": [
-   "West Africa",
-   "South America",
-   "Europe",
-   "China"
+   "Sesame",
+   "Poppy",
+   "Sunflower",
+   "Pumpkin"
   ],
   "answer": "A",
   "acceptAlso": [
    "West Africa",
    "Africa"
   ],
-  "culturalContext": "The word 'gumbo' itself is linked to a Bantu word for okra.",
+  "culturalContext": "'Benne' is a West African word for sesame.",
   "needsReview": false
  },
  {
@@ -13094,7 +13094,7 @@
   "questionType": "trivia",
   "generationEra": "all",
   "difficulty": 1,
-  "prompt": "In a game of Spades, which card usually beats everything?",
+  "prompt": "In Spades played with jokers, which card beats everything?",
   "choices": [
    "The Big Joker",
    "The Ace of Spades",
@@ -13105,7 +13105,7 @@
   "acceptAlso": [
    "Big Joker"
   ],
-  "culturalContext": "House rules may vary… but don't play with folks who don't use jokers.",
+  "culturalContext": "With the Jokers & Deuces house rule it goes Big Joker, Little Joker, 2♦, 2♠, then A♠. Without jokers, the A♠ is boss.",
   "needsReview": false
  },
  {
@@ -13183,18 +13183,18 @@
   "questionType": "trivia",
   "generationEra": "all",
   "difficulty": 4,
-  "prompt": "In Bid Whist, calling 'uptown' means…",
+  "prompt": "In Spades, who usually leads the first book of a hand?",
   "choices": [
-   "High cards rank highest",
-   "Low cards rank highest",
-   "No trump suit",
-   "You're leaving the game"
+   "The player to the dealer's left",
+   "The dealer",
+   "Whoever bid the most",
+   "The dealer's partner"
   ],
   "answer": "A",
   "acceptAlso": [
    "high cards"
   ],
-  "culturalContext": "'Downtown' flips it: low cards win.",
+  "culturalContext": "Then whoever wins each book leads the next one.",
   "needsReview": false
  },
  {
@@ -14383,7 +14383,7 @@
   ],
   "answer": "A",
   "acceptAlso": [],
-  "culturalContext": "Chance the Rapper wore it proudly on the 2017 Grammys red carpet.",
+  "culturalContext": "It took off on social media around 2016–17. Chance the Rapper's joyful three-Grammy night in 2017 became a big #BlackBoyJoy moment.",
   "needsReview": false
  },
  {
@@ -15436,7 +15436,7 @@
   "acceptAlso": [
    "Hughes"
   ],
-  "culturalContext": "He wrote the poem at 17 while crossing the Mississippi on a train.",
+  "culturalContext": "He wrote the poem as a teenager while crossing the Mississippi on a train.",
   "needsReview": false,
   "finalCategory": "Harlem Renaissance"
  },
@@ -15804,7 +15804,7 @@
   "questionType": "trivia",
   "generationEra": "genx",
   "difficulty": 5,
-  "prompt": "Queen Latifah's 1993 Grammy-winning anthem about respect for women was…",
+  "prompt": "Which 1993 Queen Latifah anthem about respect for women won her a Grammy?",
   "choices": [
    "'U.N.I.T.Y.'",
    "'Ladies First'",
@@ -15816,7 +15816,7 @@
    "UNITY",
    "U.N.I.T.Y."
   ],
-  "culturalContext": "It won Best Rap Solo Performance.",
+  "culturalContext": "'U.N.I.T.Y.' won Best Rap Solo Performance at the 1995 Grammys.",
   "needsReview": false
  },
  {
@@ -17313,16 +17313,16 @@
   "questionType": "saying",
   "generationEra": "all",
   "difficulty": 2,
-  "prompt": "Close your mouth when you…",
+  "prompt": "I'm not asking you, I'm…",
   "choices": [
-   "Chew",
-   "Talk",
-   "Sing",
-   "Sleep"
+   "Telling you",
+   "Begging you",
+   "Warning you",
+   "Paying you"
   ],
   "answer": "A",
   "acceptAlso": [],
-  "culturalContext": "Table manners, enforced.",
+  "culturalContext": "Not a request. Never was.",
   "needsReview": false
  },
  {
@@ -18808,16 +18808,16 @@
   "questionType": "saying",
   "generationEra": "all",
   "difficulty": 2,
-  "prompt": "We got food at…",
+  "prompt": "As long as you live under my…",
   "choices": [
-   "Home",
-   "The store",
-   "Church",
-   "Grandma's"
+   "Roof",
+   "Rules",
+   "Name",
+   "Watch"
   ],
   "answer": "A",
   "acceptAlso": [],
-  "culturalContext": "McDonald's is not in the budget today.",
+  "culturalContext": "…you follow my rules.",
   "needsReview": false
  },
  {
@@ -18828,16 +18828,16 @@
   "questionType": "saying",
   "generationEra": "all",
   "difficulty": 2,
-  "prompt": "Fix your…",
+  "prompt": "Children should be seen and not…",
   "choices": [
-   "Face",
-   "Hair",
-   "Plate",
-   "Shoes"
+   "Heard",
+   "Fed",
+   "Grounded",
+   "Late"
   ],
   "answer": "A",
   "acceptAlso": [],
-  "culturalContext": "Usually said at church.",
+  "culturalContext": "Especially when grown folks are talking.",
   "needsReview": false
  },
  {
@@ -19442,6 +19442,926 @@
    "relish"
   ],
   "culturalContext": "Spoon it on your greens and peas.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-001",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "In Spades, which suit is always trump?",
+  "choices": [
+   "Spades",
+   "Hearts",
+   "Diamonds",
+   "Whatever the dealer picks"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "That's the whole name of the game.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-002",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "How many bones are in a double-six domino set?",
+  "choices": [
+   "28",
+   "24",
+   "32",
+   "36"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Every number from 0 to 6 paired with every other number, once.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-003",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "In partner Spades, where does your partner sit?",
+  "choices": [
+   "Across from you",
+   "To your left",
+   "To your right",
+   "Anywhere they want"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Partners sit across so the play alternates between teams.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-004",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "In Spades, playing a spade when you can't follow the suit that was led is called…",
+  "choices": [
+   "Cutting",
+   "Reneging",
+   "Sandbagging",
+   "Bidding"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Cut it! A spade beats any card of another suit.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-005",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "In fives dominoes, what do the open ends need to add up to for you to score?",
+  "choices": [
+   "A multiple of 5",
+   "An even number",
+   "Exactly 10",
+   "More than 20"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "5, 10, 15, 20… slam it and call it out.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-006",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "In dominoes, what do you do when you can't play?",
+  "choices": [
+   "Knock (pass)",
+   "Draw two",
+   "Lose the game",
+   "Play any bone"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Everybody at the table now knows what numbers you don't have.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-007",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "In Spades, extra books your team takes beyond its bid are called…",
+  "choices": [
+   "Bags",
+   "Books",
+   "Boston",
+   "Bonus"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Too many bags will cost you.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-008",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "In Spades, not following suit even though you could is called…",
+  "choices": [
+   "Reneging",
+   "Cutting",
+   "Setting",
+   "Sloughing"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "It's cheating, and the whole table will remember it.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-009",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "How many pips are on the 6|5 domino?",
+  "choices": [
+   "11",
+   "9",
+   "10",
+   "30"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Heavy bones like this one hurt if you get caught holding them.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-010",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Under most house rules, how many bags cost a Spades team 100 points?",
+  "choices": [
+   "10",
+   "5",
+   "13",
+   "20"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "That's why good players duck once they've made their bid.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-011",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "In fives dominoes, how many points does a 5|5 score when it's the very first bone played?",
+  "choices": [
+   "10",
+   "5",
+   "20",
+   "0"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Its two ends add up to 10, a multiple of 5.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-012",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "In the most common 'jokers' version of Spades, which two cards come out of the deck to make room for the jokers?",
+  "choices": [
+   "The 2♣ and 2♥",
+   "The 2♠ and 2♦",
+   "Both red aces",
+   "The 3♣ and 3♥"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Houses vary, but that's the usual swap.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-013",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "Your Spades team bids 6 and takes exactly 6 books. How many points?",
+  "choices": [
+   "60",
+   "6",
+   "66",
+   "600"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "10 points per book bid, and no bags.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-014",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "How many doubles are in a double-six domino set?",
+  "choices": [
+   "7",
+   "6",
+   "12",
+   "14"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Blank-blank through 6|6.",
+  "needsReview": false
+ },
+ {
+  "id": "bones-015",
+  "round": 1,
+  "category": "Spades & Dominoes",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "The earliest known dominoes come from which country?",
+  "choices": [
+   "China",
+   "Italy",
+   "Egypt",
+   "Mexico"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Dominoes showed up in Europe centuries later, in 18th-century Italy.",
+  "needsReview": false
+ },
+ {
+  "id": "who-026",
+  "round": 1,
+  "category": "Who Said It?",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "'Yes we can' was the slogan of whose 2008 presidential campaign?",
+  "choices": [
+   "Barack Obama",
+   "Bill Clinton",
+   "Jesse Jackson",
+   "Joe Biden"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "It became the first Black president's rallying cry.",
+  "needsReview": false
+ },
+ {
+  "id": "who-027",
+  "round": 1,
+  "category": "Who Said It?",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Who said, 'I have a dream'?",
+  "choices": [
+   "Dr. Martin Luther King Jr.",
+   "Malcolm X",
+   "Barack Obama",
+   "John Lewis"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "At the March on Washington, August 28, 1963.",
+  "needsReview": false
+ },
+ {
+  "id": "who-028",
+  "round": 1,
+  "category": "Who Said It?",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "Who wrote, 'Caring for myself is not self-indulgence, it is self-preservation'?",
+  "choices": [
+   "Audre Lorde",
+   "bell hooks",
+   "Angela Davis",
+   "Nikki Giovanni"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "From her 1988 essay collection 'A Burst of Light.'",
+  "needsReview": false
+ },
+ {
+  "id": "who-029",
+  "round": 1,
+  "category": "Who Said It?",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 3,
+  "prompt": "In a 1962 speech, who said, 'The most disrespected person in America is the Black woman'?",
+  "choices": [
+   "Malcolm X",
+   "Dr. Martin Luther King Jr.",
+   "James Baldwin",
+   "Medgar Evers"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Beyoncé sampled the speech on 'Lemonade' in 2016.",
+  "needsReview": false
+ },
+ {
+  "id": "star-030",
+  "round": 1,
+  "category": "Trailblazers",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Who was the first Black president of the United States?",
+  "choices": [
+   "Barack Obama",
+   "Colin Powell",
+   "Jesse Jackson",
+   "Thurgood Marshall"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "He took office in January 2009 and served two terms.",
+  "needsReview": false
+ },
+ {
+  "id": "star-031",
+  "round": 1,
+  "category": "Trailblazers",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Who was the first Black First Lady of the United States?",
+  "choices": [
+   "Michelle Obama",
+   "Coretta Scott King",
+   "Oprah Winfrey",
+   "Kamala Harris"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Her memoir 'Becoming' became one of the best-selling memoirs ever.",
+  "needsReview": false
+ },
+ {
+  "id": "star-032",
+  "round": 1,
+  "category": "Trailblazers",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 2,
+  "prompt": "In which year did Barack Obama win the Nobel Peace Prize?",
+  "choices": [
+   "2009",
+   "2008",
+   "2012",
+   "2016"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "It came less than a year into his first term.",
+  "needsReview": false
+ },
+ {
+  "id": "hist-033",
+  "round": 1,
+  "category": "Black History Deep Cuts",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Which amendment, ratified in 1870, protected Black men's right to vote?",
+  "choices": [
+   "15th",
+   "13th",
+   "14th",
+   "19th"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Jim Crow laws spent nearly 100 years trying to get around it.",
+  "needsReview": false
+ },
+ {
+  "id": "hist-034",
+  "round": 1,
+  "category": "Black History Deep Cuts",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Which federal holiday falls on the third Monday in January?",
+  "choices": [
+   "Martin Luther King Jr. Day",
+   "Juneteenth",
+   "Presidents' Day",
+   "Labor Day"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "It was first observed nationally in 1986.",
+  "needsReview": false
+ },
+ {
+  "id": "shop-020",
+  "round": 1,
+  "category": "Barbershop & Beauty Shop",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Locs are also commonly called…",
+  "choices": [
+   "Dreadlocks",
+   "Cornrows",
+   "Bantu knots",
+   "Finger waves"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Lots of folks just say locs.",
+  "needsReview": false
+ },
+ {
+  "id": "shop-021",
+  "round": 1,
+  "category": "Barbershop & Beauty Shop",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 2,
+  "prompt": "Madam C.J. Walker's company was headquartered in which city?",
+  "choices": [
+   "Indianapolis",
+   "Chicago",
+   "Atlanta",
+   "Harlem"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "The Madam Walker Legacy Center still stands there.",
+  "needsReview": false
+ },
+ {
+  "id": "biz-022",
+  "round": 1,
+  "category": "Black Business & Money",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Oprah Winfrey's production company is called…",
+  "choices": [
+   "Harpo Productions",
+   "OWN Studios",
+   "O Media",
+   "Winfrey Works"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Harpo is Oprah spelled backward.",
+  "needsReview": false
+ },
+ {
+  "id": "biz-023",
+  "round": 1,
+  "category": "Black Business & Money",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "Which rapper and producer co-founded Beats headphones with Jimmy Iovine?",
+  "choices": [
+   "Dr. Dre",
+   "Jay-Z",
+   "Diddy",
+   "Kanye West"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Apple bought Beats in 2014 for about $3 billion.",
+  "needsReview": false
+ },
+ {
+  "id": "biz-024",
+  "round": 1,
+  "category": "Black Business & Money",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 2,
+  "prompt": "Who co-founded Def Jam Recordings with Rick Rubin in 1984?",
+  "choices": [
+   "Russell Simmons",
+   "Berry Gordy",
+   "Suge Knight",
+   "Master P"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Def Jam's early roster included LL Cool J and Public Enemy.",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-024",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 2,
+  "prompt": "Which singer and pianist was called the 'High Priestess of Soul'?",
+  "choices": [
+   "Nina Simone",
+   "Aretha Franklin",
+   "Sarah Vaughan",
+   "Roberta Flack"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "She was a classically trained pianist from Tryon, North Carolina.",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-025",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 3,
+  "prompt": "Which jazz singer was nicknamed 'Sassy' and 'The Divine One'?",
+  "choices": [
+   "Sarah Vaughan",
+   "Ella Fitzgerald",
+   "Dinah Washington",
+   "Carmen McRae"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "She won Amateur Night at the Apollo in 1942.",
+  "needsReview": false
+ },
+ {
+  "id": "jazz-026",
+  "round": 1,
+  "category": "Jazz & Blues",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 3,
+  "prompt": "Which Chess Records songwriter wrote 'Hoochie Coochie Man' for Muddy Waters?",
+  "choices": [
+   "Willie Dixon",
+   "Howlin' Wolf",
+   "B.B. King",
+   "Chuck Berry"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Dixon wrote hundreds of songs and played bass on many Chess sessions.",
+  "needsReview": false
+ },
+ {
+  "id": "inv-027",
+  "round": 1,
+  "category": "Inventors & Innovators",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 3,
+  "prompt": "In 1887, Alexander Miles patented a safety improvement for…",
+  "choices": [
+   "Elevator doors",
+   "Train brakes",
+   "Fire escapes",
+   "Traffic lights"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "His design closed the shaft doors automatically, so nobody fell in.",
+  "needsReview": false
+ },
+ {
+  "id": "inv-028",
+  "round": 1,
+  "category": "Inventors & Innovators",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 3,
+  "prompt": "Thomas L. Jennings, the first Black person known to receive a U.S. patent (1821), invented a process for…",
+  "choices": [
+   "Dry cleaning",
+   "Canning food",
+   "Printing money",
+   "Making soap"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "He used his earnings to free his family and support abolition.",
+  "needsReview": false
+ },
+ {
+  "id": "hbcu-029",
+  "round": 1,
+  "category": "HBCU Life",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "all",
+  "difficulty": 1,
+  "prompt": "Spelman College in Atlanta is a historically Black college for…",
+  "choices": [
+   "Women",
+   "Men",
+   "Graduate students only",
+   "Musicians"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Its brother school, Morehouse, is right across the street.",
+  "needsReview": false
+ },
+ {
+  "id": "hbcu-030",
+  "round": 1,
+  "category": "HBCU Life",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "Which Houston HBCU's marching band is called the 'Ocean of Soul'?",
+  "choices": [
+   "Texas Southern University",
+   "Prairie View A&M",
+   "Southern University",
+   "Grambling State"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Megan Thee Stallion is a TSU graduate.",
+  "needsReview": false
+ },
+ {
+  "id": "comedy-028",
+  "round": 1,
+  "category": "Comedy Kings & Queens",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 1,
+  "prompt": "Who played Sherman Klump in 'The Nutty Professor' (1996)?",
+  "choices": [
+   "Eddie Murphy",
+   "Martin Lawrence",
+   "Chris Rock",
+   "Jamie Foxx"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "He also played most of the Klump family at the dinner table.",
+  "needsReview": false
+ },
+ {
+  "id": "comedy-029",
+  "round": 1,
+  "category": "Comedy Kings & Queens",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "In 'Next Friday' (2000), who played Craig's cousin Day-Day?",
+  "choices": [
+   "Mike Epps",
+   "Chris Tucker",
+   "Katt Williams",
+   "Kevin Hart"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Mike Epps took over as Craig's sidekick after Chris Tucker.",
+  "needsReview": false
+ },
+ {
+  "id": "kids-030",
+  "round": 1,
+  "category": "Little Ones' Corner",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "genz",
+  "difficulty": 2,
+  "prompt": "What is Doc McStuffins's real first name?",
+  "choices": [
+   "Dottie",
+   "Donna",
+   "Daisy",
+   "Dorothy"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Everybody just calls her Doc.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-031",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 2,
+  "prompt": "How many Wimbledon singles titles has Venus Williams won?",
+  "choices": [
+   "5",
+   "1",
+   "3",
+   "7"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "She won 7 Grand Slam singles titles in all.",
+  "needsReview": false
+ },
+ {
+  "id": "sport-032",
+  "round": 1,
+  "category": "Sports Legends",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 2,
+  "prompt": "Which sprinter won four gold medals at the 1984 Los Angeles Olympics, matching Jesse Owens?",
+  "choices": [
+   "Carl Lewis",
+   "Edwin Moses",
+   "Michael Johnson",
+   "Florence Griffith Joyner"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "He won the same four events Owens did in 1936.",
+  "needsReview": false
+ },
+ {
+  "id": "civil-029",
+  "round": 1,
+  "category": "Civil Rights Movement",
+  "value": 500,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 3,
+  "prompt": "Who was the youngest speaker at the 1963 March on Washington?",
+  "choices": [
+   "John Lewis",
+   "Julian Bond",
+   "Stokely Carmichael",
+   "Diane Nash"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "He was 23 and chairman of SNCC.",
+  "needsReview": false
+ },
+ {
+  "id": "soul-032",
+  "round": 1,
+  "category": "Motown & Soul",
+  "value": 200,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 1,
+  "prompt": "Which Motown group sang 'Reach Out I'll Be There'?",
+  "choices": [
+   "The Four Tops",
+   "The Temptations",
+   "The Miracles",
+   "The Spinners"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Levi Stubbs's lead vocal is one of Motown's most famous.",
+  "needsReview": false
+ },
+ {
+  "id": "tv-035",
+  "round": 1,
+  "category": "Black TV Classics",
+  "value": 100,
+  "questionType": "trivia",
+  "generationEra": "millennial",
+  "difficulty": 1,
+  "prompt": "Which show followed the Winslow family of Chicago?",
+  "choices": [
+   "Family Matters",
+   "Sister, Sister",
+   "Moesha",
+   "Good Times"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Steve Urkel lived next door.",
+  "needsReview": false
+ },
+ {
+  "id": "tv-036",
+  "round": 1,
+  "category": "Black TV Classics",
+  "value": 400,
+  "questionType": "trivia",
+  "generationEra": "genx",
+  "difficulty": 2,
+  "prompt": "On 'Living Single,' what was Overton's job?",
+  "choices": [
+   "Building handyman",
+   "Lawyer",
+   "Chef",
+   "Radio DJ"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "He fixed everything in the brownstone and married Synclaire.",
+  "needsReview": false
+ },
+ {
+  "id": "card-030",
+  "round": 1,
+  "category": "Card Check",
+  "value": 300,
+  "questionType": "trivia",
+  "generationEra": "elders",
+  "difficulty": 2,
+  "prompt": "In Bid Whist, the 'kitty' is…",
+  "choices": [
+   "Extra cards the winning bidder picks up",
+   "The pot of money",
+   "The first book",
+   "The dealer's partner"
+  ],
+  "answer": "A",
+  "acceptAlso": [],
+  "culturalContext": "Win the bid, grab the kitty, and toss out your weakest cards.",
   "needsReview": false
  }
 ]

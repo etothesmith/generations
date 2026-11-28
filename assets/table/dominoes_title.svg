@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 230">
+<defs><filter id="sh"><feDropShadow dx="6" dy="7" stdDeviation="0" flood-color="#1B1B1B"/></filter>
+<g id="p"><circle r="7" fill="#1B1B1B"/></g></defs>
+<g filter="url(#sh)" stroke="#1B1B1B" stroke-width="5">
+ <g transform="translate(70 50) rotate(-18 40 80)"><rect width="80" height="160" rx="14" fill="#FFFDF4"/><line x1="10" y1="80" x2="70" y2="80"/>
+  <g stroke="none"><use href="#p" x="22" y="22"/><use href="#p" x="58" y="22"/><use href="#p" x="22" y="40"/><use href="#p" x="58" y="40"/><use href="#p" x="22" y="58"/><use href="#p" x="58" y="58"/>
+  <use href="#p" x="22" y="102"/><use href="#p" x="58" y="102"/><use href="#p" x="22" y="120"/><use href="#p" x="58" y="120"/><use href="#p" x="22" y="138"/><use href="#p" x="58" y="138"/></g></g>
+ <g transform="translate(160 30) rotate(4 40 80)"><rect width="80" height="160" rx="14" fill="#FFE08A"/><line x1="10" y1="80" x2="70" y2="80"/>
+  <g stroke="none"><use href="#p" x="22" y="22"/><use href="#p" x="58" y="22"/><use href="#p" x="40" y="40"/><use href="#p" x="22" y="58"/><use href="#p" x="58" y="58"/>
+  <use href="#p" x="22" y="102"/><use href="#p" x="58" y="102"/><use href="#p" x="40" y="120"/><use href="#p" x="22" y="138"/><use href="#p" x="58" y="138"/></g></g>
+ <g transform="translate(250 56) rotate(22 40 80)"><rect width="80" height="160" rx="14" fill="#FFFDF4"/><line x1="10" y1="80" x2="70" y2="80"/>
+  <g stroke="none"><use href="#p" x="22" y="22"/><use href="#p" x="40" y="40"/><use href="#p" x="58" y="58"/>
+  <use href="#p" x="22" y="102"/><use href="#p" x="58" y="102"/><use href="#p" x="22" y="138"/><use href="#p" x="58" y="138"/></g></g>
+</g>
+<g font-family="Lilita One,Arial Black" font-size="30" fill="#fff" stroke="#1B1B1B" stroke-width="7" paint-order="stroke" transform="rotate(-8 60 30)"><text x="8" y="40">SLAM!</text></g>
+<text x="330" y="40" font-size="34">💥</text>
+</svg>
